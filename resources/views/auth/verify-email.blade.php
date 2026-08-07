@@ -1,31 +1,42 @@
+{{--
+    Vista: auth/verify-email
+    Propósito: Informa al usuario que debe verificar su email antes de continuar.
+    Permite reenviar el email de verificación o cerrar sesión.
+--}}
 <x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
-        {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
-    </div>
 
+    <h5 class="fw-bold mb-1 text-center">Verifica tu email</h5>
+
+    <p class="text-muted text-center small mb-4">
+        Gracias por registrarte. Antes de continuar, verifica tu dirección de email
+        haciendo clic en el enlace que te hemos enviado.
+        <br>Si no lo recibiste, podemos enviarte otro.
+    </p>
+
+    {{-- Confirmación de reenvío --}}
     @if (session('status') == 'verification-link-sent')
-        <div class="mb-4 font-medium text-sm text-green-600">
-            {{ __('A new verification link has been sent to the email address you provided during registration.') }}
+        <div class="alert alert-success mb-3" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            Se ha enviado un nuevo enlace de verificación a tu email.
         </div>
     @endif
 
-    <div class="mt-4 flex items-center justify-between">
+    <div class="d-grid gap-2">
+        {{-- Botón para reenviar el email de verificación --}}
         <form method="POST" action="{{ route('verification.send') }}">
             @csrf
-
-            <div>
-                <x-primary-button>
-                    {{ __('Resend Verification Email') }}
-                </x-primary-button>
-            </div>
+            <button type="submit" class="btn btn-primary w-100">
+                <i class="bi bi-envelope-check me-2"></i>Reenviar email de verificación
+            </button>
         </form>
 
+        {{-- Opción para cerrar sesión --}}
         <form method="POST" action="{{ route('logout') }}">
             @csrf
-
-            <button type="submit" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                {{ __('Log Out') }}
+            <button type="submit" class="btn btn-outline-secondary w-100">
+                <i class="bi bi-box-arrow-left me-2"></i>Cerrar sesión
             </button>
         </form>
     </div>
+
 </x-guest-layout>

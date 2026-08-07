@@ -1,17 +1,20 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
-                </div>
-            </div>
-        </div>
-    </div>
-</x-app-layout>
+{{--
+    Vista: dashboard (stub de Breeze)
+    Propósito: Breeze redirige aquí tras el login. Redirigimos inmediatamente
+    al panel correcto según el rol del usuario (admin → /admin, customer → /mi-cuenta).
+    Usamos meta-refresh como fallback por si el JS no ejecuta.
+--}}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="0;url={{ auth()->user()?->isAdmin() ? route('admin.dashboard') : route('user.dashboard') }}">
+    <title>Redirigiendo — Factory Cards</title>
+</head>
+<body>
+    <script>
+        // Redirige al panel correcto según el rol del usuario
+        window.location.href = "{{ auth()->user()?->isAdmin() ? route('admin.dashboard') : route('user.dashboard') }}";
+    </script>
+</body>
+</html>
