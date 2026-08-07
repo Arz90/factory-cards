@@ -60,16 +60,17 @@ class ProductController extends Controller
             ->with('success', 'Producto creado correctamente.');
     }
 
-    public function edit(Product $product)
+    public function edit(Product $producto)
     {
         $categories = Category::active()->get();
         $franchises = Franchise::active()->get();
-        return view('admin.products.form', compact('product', 'categories', 'franchises'));
+        // Renombramos a $product para la vista (la vista usa $product)
+        return view('admin.products.form', ['product' => $producto, 'categories' => $categories, 'franchises' => $franchises]);
     }
 
-    public function update(Request $request, Product $product)
+    public function update(Request $request, Product $producto)
     {
-        $data = $this->validateProduct($request, $product->id);
+        $data = $this->validateProduct($request, $producto->id);
 
         if ($request->hasFile('image')) {
             // Validación manual de extensión sin fileinfo
@@ -80,15 +81,15 @@ class ProductController extends Controller
             $data['image_url'] = $this->handleImageUpload($request);
         }
 
-        $product->update($data);
+        $producto->update($data);
 
         return redirect()->route('admin.productos.index')
             ->with('success', 'Producto actualizado correctamente.');
     }
 
-    public function destroy(Product $product)
+    public function destroy(Product $producto)
     {
-        $product->delete(); // soft delete
+        $producto->delete(); // soft delete
 
         return redirect()->route('admin.productos.index')
             ->with('success', 'Producto eliminado.');
