@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Banner;
 use App\Models\User;
 use App\Models\Franchise;
 use App\Models\Category;
@@ -132,6 +133,44 @@ class DatabaseSeeder extends Seeder
 
         foreach ($products as $p) {
             Product::firstOrCreate(['slug' => $p['slug']], $p);
+        }
+
+        // ── Banners del hero slider ────────────────────────────────────────
+        // Usamos placeholders de placehold.co para no depender de imágenes reales en desarrollo.
+        // La imagen_path apunta a public/images/banners/ — se sobreescribirá al subir imágenes reales.
+        $banners = [
+            [
+                'title'       => 'Próximos Lanzamientos TCG',
+                'subtitle'    => '15 NOVIEMBRE 2025',
+                'image_path'  => 'images/banners/placeholder-1.jpg',
+                'link_url'    => null,
+                'button_text' => 'PRECOMPRA',
+                'is_active'   => true,
+                'order'       => 0,
+            ],
+            [
+                'title'       => 'Magic: The Gathering',
+                'subtitle'    => 'YA DISPONIBLE',
+                'image_path'  => 'images/banners/placeholder-2.jpg',
+                'link_url'    => null,
+                'button_text' => 'VER PRODUCTOS',
+                'is_active'   => true,
+                'order'       => 1,
+            ],
+            [
+                'title'       => 'Pokémon TCG',
+                'subtitle'    => 'TEMPORADA 2025',
+                'image_path'  => 'images/banners/placeholder-3.jpg',
+                'link_url'    => null,
+                'button_text' => 'EXPLORAR',
+                'is_active'   => true,
+                'order'       => 2,
+            ],
+        ];
+
+        foreach ($banners as $b) {
+            // firstOrCreate por título para poder re-ejecutar el seeder sin duplicar
+            Banner::firstOrCreate(['title' => $b['title']], $b);
         }
     }
 }

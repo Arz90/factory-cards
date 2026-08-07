@@ -69,6 +69,11 @@
             <i class="bi bi-trophy"></i> Franquicias
         </a>
 
+        <div class="nav-section mt-2">Contenido</div>
+        <a href="{{ route('admin.banners.index') }}" class="nav-link @if(request()->routeIs('admin.banners.*')) active @endif">
+            <i class="bi bi-image"></i> Banners
+        </a>
+
         <div class="nav-section mt-2">Ventas</div>
         <a href="{{ route('admin.orders.index') }}" class="nav-link @if(request()->routeIs('admin.orders.*')) active @endif">
             <i class="bi bi-receipt"></i> Pedidos

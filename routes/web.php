@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\FranchiseController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\BannerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -91,6 +92,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('pedidos', [AdminOrderController::class, 'index'])->name('orders.index');
     Route::get('pedidos/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
     Route::patch('pedidos/{order}/estado', [AdminOrderController::class, 'updateStatus'])->name('orders.status');
+
+    // Banners (hero slider de la portada)
+    Route::resource('banners', BannerController::class);
+    Route::patch('banners/{banner}/toggle', [BannerController::class, 'toggleActivo'])->name('banners.toggle');
 });
 
 /*

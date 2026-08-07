@@ -11,104 +11,76 @@
 @section('content')
 
 {{-- ================================================================
-     HERO BANNER — Slider a todo ancho con fondo oscuro
-     Bootstrap Carousel con autoplay, controles laterales e indicadores.
+     HERO BANNER — Slider dinámico (banners gestionados desde admin)
+     Los slides se cargan desde la tabla 'banners' vía ShopController.
+     Si no hay banners activos se muestra un slide de bienvenida.
 ================================================================ --}}
+@if($banners->isNotEmpty())
+
 <div id="heroSlider"
      class="carousel slide carousel-fade"
      data-bs-ride="carousel"
      data-bs-interval="5000">
 
-    {{-- Indicadores de slide --}}
+    {{-- ── Indicadores de posición (uno por banner) ── --}}
     <div class="carousel-indicators hero-indicadores">
-        <button type="button" data-bs-target="#heroSlider" data-bs-slide-to="0"
-                class="active" aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#heroSlider" data-bs-slide-to="1"
-                aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#heroSlider" data-bs-slide-to="2"
-                aria-label="Slide 3"></button>
+        @foreach($banners as $indice => $banner)
+            <button type="button"
+                    data-bs-target="#heroSlider"
+                    data-bs-slide-to="{{ $indice }}"
+                    class="{{ $indice === 0 ? 'active' : '' }}"
+                    aria-current="{{ $indice === 0 ? 'true' : 'false' }}"
+                    aria-label="Slide {{ $indice + 1 }}">
+            </button>
+        @endforeach
     </div>
 
+    {{-- ── Slides generados dinámicamente desde la BD ── --}}
     <div class="carousel-inner">
+        @foreach($banners as $indice => $banner)
+            <div class="carousel-item {{ $indice === 0 ? 'active' : '' }}">
+                <div class="hero-slide">
 
-        {{-- ── Slide 1: Precompra destacada ─────────────────────────────────── --}}
-        <div class="carousel-item active">
-            <div class="hero-slide hero-slide--oscuro">
-                {{-- Imagen de fondo (placeholder hasta tener asset real) --}}
-                <img src="https://placehold.co/1600x520/0d1117/222222?text=."
-                     class="hero-bg-img" alt="">
-                {{-- Overlay degradado para legibilidad del texto --}}
-                <div class="hero-overlay"></div>
+                    {{-- Imagen de fondo del banner (o placeholder si no hay archivo) --}}
+                    <img src="{{ $banner->urlImagen() }}"
+                         class="hero-bg-img"
+                         alt="{{ $banner->title }}">
 
-                <div class="container-xl hero-contenido">
-                    <div class="row">
-                        <div class="col-lg-6 hero-texto">
-                            {{-- Fecha en amarillo grande (característica visual de la referencia) --}}
-                            <span class="hero-fecha">15 NOVIEMBRE 2025</span>
-                            <h1 class="hero-titulo">Próximos<br>Lanzamientos TCG</h1>
-                            <p class="hero-subtitulo">
-                                Reserva antes del lanzamiento y asegura tu caja al mejor precio
-                            </p>
-                            <a href="{{ route('shop.catalog') }}" class="btn-hero-precompra">
-                                PRECOMPRA
-                            </a>
+                    {{-- Overlay degradado para que el texto sea legible --}}
+                    <div class="hero-overlay"></div>
+
+                    {{-- Texto superpuesto a la izquierda --}}
+                    <div class="container-xl hero-contenido">
+                        <div class="row">
+                            <div class="col-lg-6 hero-texto">
+
+                                {{-- Subtítulo como etiqueta amarilla (opcional) --}}
+                                @if($banner->subtitle)
+                                    <span class="hero-fecha">{{ $banner->subtitle }}</span>
+                                @endif
+
+                                {{-- Título principal del slide --}}
+                                <h1 class="hero-titulo">{{ $banner->title }}</h1>
+
+                                {{-- Botón de llamada a la acción --}}
+                                @if($banner->link_url)
+                                    <a href="{{ $banner->link_url }}" class="btn-hero-precompra">
+                                        {{ $banner->button_text }}
+                                    </a>
+                                @else
+                                    <a href="{{ route('shop.catalog') }}" class="btn-hero-precompra">
+                                        {{ $banner->button_text }}
+                                    </a>
+                                @endif
+
+                            </div>
                         </div>
                     </div>
+
                 </div>
             </div>
-        </div>
-
-        {{-- ── Slide 2: Magic The Gathering ─────────────────────────────────── --}}
-        <div class="carousel-item">
-            <div class="hero-slide hero-slide--verde">
-                <img src="https://placehold.co/1600x520/0f1a0a/141a0e?text=."
-                     class="hero-bg-img" alt="">
-                <div class="hero-overlay"></div>
-
-                <div class="container-xl hero-contenido">
-                    <div class="row">
-                        <div class="col-lg-6 hero-texto">
-                            <span class="hero-fecha">YA DISPONIBLE</span>
-                            <h1 class="hero-titulo">Magic: The<br>Gathering</h1>
-                            <p class="hero-subtitulo">
-                                Las últimas expansiones con los mejores precios del mercado
-                            </p>
-                            <a href="{{ route('shop.franchise', 'magic-the-gathering') }}"
-                               class="btn-hero-precompra">
-                                VER PRODUCTOS
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        {{-- ── Slide 3: Pokémon ─────────────────────────────────────────────── --}}
-        <div class="carousel-item">
-            <div class="hero-slide hero-slide--rojo">
-                <img src="https://placehold.co/1600x520/1a0a0a/1a0e0e?text=."
-                     class="hero-bg-img" alt="">
-                <div class="hero-overlay"></div>
-
-                <div class="container-xl hero-contenido">
-                    <div class="row">
-                        <div class="col-lg-6 hero-texto">
-                            <span class="hero-fecha">TEMPORADA 2025</span>
-                            <h1 class="hero-titulo">Pokémon<br>TCG</h1>
-                            <p class="hero-subtitulo">
-                                Sobres, displays y colecciones — todo al mejor precio
-                            </p>
-                            <a href="{{ route('shop.franchise', 'pokemon') }}"
-                               class="btn-hero-precompra">
-                                EXPLORAR
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>{{-- /.carousel-inner --}}
+        @endforeach
+    </div>
 
     {{-- ── Controles de navegación laterales ── --}}
     <button class="carousel-control-prev hero-control" type="button"
@@ -123,6 +95,21 @@
     </button>
 
 </div>{{-- /#heroSlider --}}
+
+@else
+    {{-- Estado vacío: no hay banners activos — visible solo para admin logueado --}}
+    @auth
+        @if(auth()->user()->isAdmin())
+        <div class="bg-light border text-center py-5">
+            <i class="bi bi-image text-muted fs-1"></i>
+            <p class="text-muted mt-2 mb-3">No hay banners activos. Crea uno desde el panel de administración.</p>
+            <a href="{{ route('admin.banners.create') }}" class="btn btn-primary btn-sm">
+                <i class="bi bi-plus-lg me-1"></i>Crear banner
+            </a>
+        </div>
+        @endif
+    @endauth
+@endif
 
 
 {{-- ================================================================
