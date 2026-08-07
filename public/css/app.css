@@ -519,12 +519,149 @@ body {
 
 
 /* ================================================================
-   FOOTER
+   FOOTER — Dos secciones: footer-top (#0f1923) + footer-bottom (#080d12)
 ================================================================ */
 
-.footer-link:hover  { color: #fff !important; }
-.footer-social      { transition: color var(--fc-transition); }
-.footer-social:hover{ color: var(--fc-verde) !important; }
+/* ── Sección principal del footer ── */
+.footer-principal { margin-top: 4rem; }
+
+.footer-top {
+    background: #0f1923;
+    padding: 4rem 0 3rem;
+}
+
+/* Logo en el footer */
+.footer-logo-factory {
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: var(--fc-verde);
+    letter-spacing: -.5px;
+}
+.footer-logo-cards {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #e2e8f0;
+    letter-spacing: -.5px;
+}
+
+/* Texto descriptivo de la marca */
+.footer-desc {
+    color: #64748b;
+    font-size: .875rem;
+    line-height: 1.7;
+}
+
+/* Título de columna — mayúsculas pequeñas, verde brillante */
+.footer-col-title {
+    font-size: .7rem;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--fc-verde);
+    margin-bottom: 1rem;
+}
+
+/* Lista de enlaces del footer */
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.footer-links li { margin-bottom: .5rem; }
+.footer-links a {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: .875rem;
+    transition: color var(--fc-transition), padding-left var(--fc-transition);
+    display: inline-block;
+}
+.footer-links a:hover {
+    color: #fff;
+    padding-left: 4px;
+}
+
+/* Newsletter */
+.footer-newsletter-input {
+    background: #1e2d3d;
+    border: 1px solid #2d4057;
+    color: #e2e8f0;
+    border-radius: 4px;
+}
+.footer-newsletter-input::placeholder { color: #64748b; }
+.footer-newsletter-input:focus {
+    background: #1e2d3d;
+    border-color: var(--fc-verde);
+    color: #e2e8f0;
+    box-shadow: 0 0 0 2px rgba(41,164,79,.2);
+}
+.footer-newsletter-btn {
+    background: var(--fc-verde);
+    color: #fff;
+    border: none;
+    font-weight: 700;
+    font-size: .78rem;
+    border-radius: 4px;
+    padding: 6px 14px;
+    transition: background var(--fc-transition);
+}
+.footer-newsletter-btn:hover { background: var(--fc-verde-dark); color: #fff; }
+
+/* Botones de redes sociales */
+.footer-social-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: #1e2d3d;
+    color: #94a3b8;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: background var(--fc-transition), color var(--fc-transition);
+}
+.footer-social-btn:hover { background: var(--fc-verde); color: #fff; }
+
+/* ── Sub-footer inferior ── */
+.footer-bottom {
+    background: #080d12;
+    padding: 1.1rem 0;
+    border-top: 1px solid #1a2535;
+}
+
+.footer-copyright {
+    color: #475569;
+    font-size: .8rem;
+}
+
+/* Badges de métodos de pago */
+.footer-pay-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    background: #1a2535;
+    color: #94a3b8;
+    border: 1px solid #2d3f55;
+    border-radius: 4px;
+    font-size: .72rem;
+    font-weight: 600;
+    letter-spacing: .2px;
+    white-space: nowrap;
+}
+
+/* Badge SSL — destaca en verde */
+.footer-ssl {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    background: rgba(41,164,79,.12);
+    color: #4ade80;
+    border: 1px solid rgba(41,164,79,.25);
+    border-radius: 4px;
+    font-size: .72rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
 
 
 /* ================================================================

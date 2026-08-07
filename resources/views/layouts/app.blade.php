@@ -422,96 +422,145 @@
 
 
 {{-- ================================================================
-     FOOTER
+     FOOTER — SEO optimizado y centrado en la confianza del usuario.
+     Estructura: footer principal (4 columnas) + sub-footer de pagos.
+     Rutas inexistentes usan href="#" para evitar RouteNotFoundException.
 ================================================================ --}}
-<footer class="bg-dark text-white pt-5 pb-3 mt-5">
-    <div class="container">
-        <div class="row g-4">
+<footer class="footer-principal" itemscope itemtype="https://schema.org/WPFooter">
 
-            {{-- Col 1: Marca --}}
-            <div class="col-12 col-md-4">
-                <h5 class="fw-black mb-3">
-                    <span class="text-warning">Factory</span> Cards
-                </h5>
-                <p class="text-muted small">
-                    Tu tienda de referencia para cartas Pokémon, Magic: The Gathering y juegos de mesa TCG.
-                    Productos originales, stock actualizado y envío rápido.
-                </p>
-                <div class="d-flex gap-3 mt-3">
-                    <a href="#" class="text-muted fs-5 footer-social" title="Instagram"><i class="bi bi-instagram"></i></a>
-                    <a href="#" class="text-muted fs-5 footer-social" title="Twitter/X"><i class="bi bi-twitter-x"></i></a>
-                    <a href="#" class="text-muted fs-5 footer-social" title="Facebook"><i class="bi bi-facebook"></i></a>
-                    <a href="#" class="text-muted fs-5 footer-social" title="YouTube"><i class="bi bi-youtube"></i></a>
+    {{-- ── SECCIÓN SUPERIOR: 4 columnas de contenido ── --}}
+    <div class="footer-top">
+        <div class="container">
+            <div class="row g-5">
+
+                {{-- Columna 1: Marca + descripción + Newsletter + Redes --}}
+                <div class="col-12 col-lg-4">
+
+                    {{-- Logo --}}
+                    <a href="{{ route('home') }}" class="text-decoration-none d-inline-block mb-3" aria-label="Factory Cards — Inicio">
+                        <span class="footer-logo-factory">Factory</span><span class="footer-logo-cards">Cards</span>
+                    </a>
+
+                    {{-- Descripción (texto SEO relevante) --}}
+                    <p class="footer-desc mb-4">
+                        Tu tienda especializada en TCG: Pokémon, Magic: The Gathering, One Piece y mucho más.
+                        Stock actualizado, precios competitivos y envío rápido a toda España.
+                    </p>
+
+                    {{-- Newsletter inline --}}
+                    <p class="footer-col-title mb-2" style="font-size:.72rem;">OFERTAS EXCLUSIVAS PARA SUSCRIPTORES</p>
+                    <form action="#" method="POST" class="d-flex gap-2 mb-4" aria-label="Formulario de suscripción al boletín">
+                        @csrf
+                        <input type="email"
+                               class="form-control form-control-sm footer-newsletter-input"
+                               placeholder="tu@email.com"
+                               aria-label="Tu correo electrónico"
+                               required>
+                        <button type="submit" class="btn btn-sm footer-newsletter-btn text-nowrap">
+                            Suscribirme
+                        </button>
+                    </form>
+
+                    {{-- Redes sociales --}}
+                    <div class="d-flex gap-2" aria-label="Redes sociales de Factory Cards">
+                        <a href="#" class="footer-social-btn" title="Instagram" aria-label="Instagram">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                        <a href="#" class="footer-social-btn" title="TikTok" aria-label="TikTok">
+                            <i class="bi bi-tiktok"></i>
+                        </a>
+                        <a href="#" class="footer-social-btn" title="YouTube" aria-label="YouTube">
+                            <i class="bi bi-youtube"></i>
+                        </a>
+                        <a href="#" class="footer-social-btn" title="Discord" aria-label="Discord">
+                            <i class="bi bi-discord"></i>
+                        </a>
+                    </div>
                 </div>
-            </div>
 
-            {{-- Col 2: Franquicias --}}
-            <div class="col-6 col-md-2">
-                <h6 class="text-uppercase fw-bold mb-3 small" style="color:var(--fc-verde)">Franquicias</h6>
-                <ul class="list-unstyled small">
-                    @foreach($headerFranchises ?? [] as $franchise)
-                        <li class="mb-1">
-                            <a href="{{ route('shop.franchise', $franchise->slug) }}"
-                               class="text-muted text-decoration-none footer-link">
-                                {{ $franchise->name }}
-                            </a>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-
-            {{-- Col 3: Información --}}
-            <div class="col-6 col-md-2">
-                <h6 class="text-uppercase fw-bold mb-3 small" style="color:var(--fc-verde)">Información</h6>
-                <ul class="list-unstyled small">
-                    <li class="mb-1"><a href="#" class="text-muted text-decoration-none footer-link">Sobre nosotros</a></li>
-                    <li class="mb-1"><a href="#" class="text-muted text-decoration-none footer-link">Cómo comprar</a></li>
-                    <li class="mb-1"><a href="#" class="text-muted text-decoration-none footer-link">Envíos y entregas</a></li>
-                    <li class="mb-1"><a href="#" class="text-muted text-decoration-none footer-link">Devoluciones</a></li>
-                    <li class="mb-1"><a href="#" class="text-muted text-decoration-none footer-link">Contacto</a></li>
-                </ul>
-            </div>
-
-            {{-- Col 4: Mi cuenta --}}
-            <div class="col-6 col-md-2">
-                <h6 class="text-uppercase fw-bold mb-3 small" style="color:var(--fc-verde)">Mi cuenta</h6>
-                <ul class="list-unstyled small">
-                    <li class="mb-1"><a href="{{ route('login') }}" class="text-muted text-decoration-none footer-link">Iniciar sesión</a></li>
-                    <li class="mb-1"><a href="{{ route('register') }}" class="text-muted text-decoration-none footer-link">Registrarse</a></li>
-                    <li class="mb-1"><a href="{{ route('user.orders') }}" class="text-muted text-decoration-none footer-link">Mis pedidos</a></li>
-                    <li class="mb-1"><a href="{{ route('cart.index') }}" class="text-muted text-decoration-none footer-link">Carrito</a></li>
-                </ul>
-            </div>
-
-            {{-- Col 5: Pago seguro --}}
-            <div class="col-6 col-md-2">
-                <h6 class="text-uppercase fw-bold mb-3 small" style="color:var(--fc-verde)">Pago seguro</h6>
-                <div class="d-flex flex-wrap gap-2">
-                    <span class="badge bg-secondary p-2"><i class="bi bi-credit-card-2-front-fill me-1"></i>Tarjeta</span>
-                    <span class="badge bg-secondary p-2"><i class="bi bi-bank me-1"></i>TPV Virtual</span>
-                    <span class="badge bg-secondary p-2"><i class="bi bi-shield-check me-1"></i>3D Secure</span>
+                {{-- Columna 2: Franquicias — enlaces de valor SEO --}}
+                <div class="col-6 col-md-4 col-lg-2">
+                    <h3 class="footer-col-title">Franquicias</h3>
+                    <ul class="footer-links" aria-label="Franquicias disponibles">
+                        {{-- Franquicias dinámicas desde la BD (cacheadas 5 min en ViewServiceProvider) --}}
+                        @foreach($headerFranchises ?? [] as $franchise)
+                            <li>
+                                <a href="{{ route('shop.franchise', $franchise->slug) }}">
+                                    {{ $franchise->name }}
+                                </a>
+                            </li>
+                        @endforeach
+                        <li><a href="{{ route('shop.catalog') }}">Juegos de Mesa</a></li>
+                        <li><a href="{{ route('shop.catalog') }}">Ver todo el catálogo</a></li>
+                    </ul>
                 </div>
-                <div class="mt-3">
-                    <i class="bi bi-lock-fill text-success me-1 small"></i>
-                    <span class="text-muted small">Conexión SSL cifrada</span>
+
+                {{-- Columna 3: Atención al Cliente --}}
+                <div class="col-6 col-md-4 col-lg-3">
+                    <h3 class="footer-col-title">Atención al Cliente</h3>
+                    <ul class="footer-links" aria-label="Atención al cliente">
+                        {{-- href="#" porque estas páginas aún no existen en web.php --}}
+                        <li><a href="#">Preguntas frecuentes (FAQ)</a></li>
+                        <li><a href="#">Envíos y entregas</a></li>
+                        <li><a href="#">Devoluciones y reembolsos</a></li>
+                        <li><a href="#">Seguimiento de pedido</a></li>
+                        <li><a href="#">Contacto</a></li>
+                        {{-- Enlace condicional: pedidos si está autenticado, login si no --}}
+                        @auth
+                            <li><a href="{{ route('user.orders') }}">Mis pedidos</a></li>
+                        @else
+                            <li><a href="{{ route('login') }}">Iniciar sesión</a></li>
+                        @endauth
+                    </ul>
                 </div>
-            </div>
 
-        </div>
+                {{-- Columna 4: Información Legal --}}
+                <div class="col-6 col-md-4 col-lg-3">
+                    <h3 class="footer-col-title">Información Legal</h3>
+                    <ul class="footer-links" aria-label="Información legal">
+                        {{-- href="#" porque las páginas legales aún no están en web.php --}}
+                        <li><a href="#">Aviso Legal</a></li>
+                        <li><a href="#">Política de Privacidad</a></li>
+                        <li><a href="#">Términos y Condiciones</a></li>
+                        <li><a href="#">Política de Cookies</a></li>
+                        <li><a href="#">Sobre nosotros</a></li>
+                    </ul>
+                </div>
 
-        <hr class="border-secondary my-4">
-
-        <div class="row align-items-center">
-            <div class="col-md-6 small text-muted">
-                &copy; {{ date('Y') }} Factory Cards. Todos los derechos reservados.
-            </div>
-            <div class="col-md-6 text-md-end small text-muted">
-                <a href="#" class="text-muted text-decoration-none me-3">Política de privacidad</a>
-                <a href="#" class="text-muted text-decoration-none me-3">Aviso legal</a>
-                <a href="#" class="text-muted text-decoration-none">Cookies</a>
             </div>
         </div>
     </div>
+
+    {{-- ── SECCIÓN INFERIOR: copyright + métodos de pago ── --}}
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="row align-items-center g-3">
+
+                {{-- Copyright --}}
+                <div class="col-12 col-md-5">
+                    <p class="footer-copyright mb-0">
+                        &copy; {{ date('Y') }} Factory Cards. Todos los derechos reservados.
+                    </p>
+                </div>
+
+                {{-- Métodos de pago + SSL --}}
+                <div class="col-12 col-md-7">
+                    <div class="d-flex align-items-center justify-content-md-end flex-wrap gap-2">
+                        <span class="footer-pay-badge"><i class="bi bi-credit-card-fill me-1"></i>Visa</span>
+                        <span class="footer-pay-badge"><i class="bi bi-credit-card me-1"></i>Mastercard</span>
+                        <span class="footer-pay-badge"><i class="bi bi-paypal me-1"></i>PayPal</span>
+                        <span class="footer-pay-badge">Bizum</span>
+                        <span class="footer-pay-badge"><i class="bi bi-lightning-charge-fill me-1"></i>Stripe</span>
+                        <span class="footer-ssl">
+                            <i class="bi bi-shield-lock-fill me-1"></i>Pago Seguro SSL 256-bit
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
 </footer>
 
 
