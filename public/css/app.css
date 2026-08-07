@@ -1,91 +1,467 @@
 /* ================================================================
    Factory Cards — Estilos principales
+   Referencia visual: miceliongames.com
    Stack: Bootstrap 5 + Bootstrap Icons + Nunito
 ================================================================ */
 
+/* ── Variables de diseño ── */
 :root {
-    --fc-primary:     #2563EB;   /* Azul principal */
-    --fc-warning:     #F59E0B;   /* Amarillo/dorado */
-    --fc-dark:        #111827;
-    --fc-card-radius: 12px;
-    --fc-transition:  .2s ease;
+    /* Paleta principal */
+    --fc-verde:        #29A44F;   /* Verde brillante — navbar y acentos */
+    --fc-verde-dark:   #1D7A39;   /* Verde oscuro — hover, outline, footer */
+    --fc-verde-bg:     #f0faf4;   /* Verde muy claro — hover en chips */
+    --fc-amarillo:     #FFD700;   /* Amarillo dorado — fecha hero, acentos */
+    --fc-dark:         #111827;   /* Texto oscuro base */
+    --fc-gris-claro:   #F5F5F5;   /* Fondo barra franquicias */
+
+    /* Tipografía y forma */
+    --fc-card-radius:  12px;
+    --fc-transition:   .2s ease;
 }
 
 /* ── Tipografía global ── */
 body {
     font-family: 'Nunito', sans-serif;
     color: var(--fc-dark);
-    background: #F9FAFB;
+    background: #fff;
 }
 
-/* ── Header sticky ── */
-#site-header {
-    position: sticky;
-    top: 0;
-    z-index: 1030;
-}
+/* ── Elimina el margin-top que Bootstrap sticky-top añade vía --bs-scroll-margin ── */
+#bloque-cabecera-sticky { z-index: 1030; }
 
-/* ── Topbar ── */
-.topbar {
-    font-size: .85rem;
-}
-.topbar-category-select {
-    background-color: #374151;
+
+/* ================================================================
+   CABECERA PRINCIPAL (fondo blanco)
+================================================================ */
+
+/* Logo de la tienda */
+.logo-tienda       { line-height: 1; }
+.logo-factory      { font-size: 1.5rem; font-weight: 900; color: var(--fc-verde); letter-spacing: -.5px; }
+.logo-cards        { font-size: 1.5rem; font-weight: 700; color: var(--fc-dark);  letter-spacing: -.5px; }
+
+/* Buscador principal — input group con select + text + botón */
+.buscador-principal   { border: 1.5px solid #dee2e6; border-radius: 6px; overflow: hidden; }
+.buscador-select      { min-width: 130px; max-width: 160px; font-size: .82rem; flex-shrink: 0;
+                        background-color: #f8f9fa; cursor: pointer; }
+.buscador-btn         { border-radius: 0; background: var(--fc-dark); color: #fff; }
+.buscador-btn:hover   { background: #333; color: #fff; }
+
+/* Botón EVENTOS */
+.btn-eventos {
+    background: var(--fc-dark);
     color: #fff;
-    border-right: 1px solid #4B5563 !important;
-    min-width: 140px;
-    cursor: pointer;
+    font-size: .78rem;
+    font-weight: 800;
+    letter-spacing: .5px;
+    border: none;
+    padding: 6px 16px;
 }
-.topbar-category-select option { background: #1f2937; }
+.btn-eventos:hover { background: #333; color: #fff; }
 
-/* ── Navbar principal ── */
-#main-navbar {
-    border-bottom: 3px solid var(--fc-warning);
+/* Iconos de cabecera (Entrar, Deseos) */
+.icono-cabecera {
+    color: var(--fc-dark);
+    text-align: center;
+    transition: color var(--fc-transition);
+    line-height: 1;
 }
-#main-navbar .navbar-brand { letter-spacing: -.5px; }
-.fw-black { font-weight: 900; }
+.icono-cabecera:hover     { color: var(--fc-verde); }
+.icono-etiqueta           { display: block; font-size: .65rem; font-weight: 700; margin-top: 2px; line-height: 1; }
+.icono-admin              { color: var(--fc-verde); }
+.icono-admin:hover        { color: var(--fc-verde-dark); }
 
-/* ── Barra de franquicias ── */
-.franchise-bar {
-    overflow-x: auto;
-    scrollbar-width: none; /* Firefox */
+/* Badge del carrito */
+.cart-badge { font-size: .6rem; min-width: 16px; height: 16px; padding: 0 3px; line-height: 16px; }
+
+
+/* ================================================================
+   NAVBAR VERDE (fondo verde brillante)
+================================================================ */
+
+#navbar-verde {
+    background-color: var(--fc-verde);
+    border-bottom: 2px solid var(--fc-verde-dark);
 }
-.franchise-bar::-webkit-scrollbar { display: none; }
 
-.franchise-item {
-    min-width: 64px;
-    padding: 4px 6px;
-    border-radius: 8px;
+/* Links de la navbar */
+.nav-verde-link {
+    display: block;
+    padding: 10px 14px;
+    color: #fff !important;
+    font-size: .78rem;
+    font-weight: 800;
+    letter-spacing: .4px;
+    text-decoration: none;
+    white-space: nowrap;
     transition: background var(--fc-transition);
 }
-.franchise-item:hover,
-.franchise-item.active {
-    background: #EFF6FF;
+.nav-verde-link:hover,
+.nav-verde-link.active-link { background: rgba(0,0,0,.15); }
+
+/* Link resaltado (ej: VENDE TUS CARTAS) */
+.nav-verde-link--resaltado { color: #FFE066 !important; }
+
+/* Dropdown en navbar verde */
+.dropdown-verde {
+    border: none;
+    border-radius: 6px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.15);
+    margin-top: 0;
+    min-width: 200px;
 }
-.franchise-item.active .franchise-label { color: var(--fc-primary) !important; }
-.franchise-icon { font-size: 1.5rem; color: var(--fc-primary); display: block; }
-.franchise-icon-img {
-    width: 40px;
-    height: 40px;
+.dropdown-verde .dropdown-item {
+    font-size: .87rem;
+    font-weight: 600;
+    padding: 8px 16px;
+}
+.dropdown-verde .dropdown-item:hover { background: var(--fc-verde-bg); color: var(--fc-verde-dark); }
+
+/* Botón carrito en navbar */
+.btn-carrito-navbar {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 16px;
+    border: 1.5px solid var(--fc-verde-dark);
+    border-radius: 4px;
+    background: transparent;
+    color: #fff;
+    font-size: .78rem;
+    font-weight: 800;
+    letter-spacing: .4px;
+    text-decoration: none;
+    transition: background var(--fc-transition), color var(--fc-transition);
+    white-space: nowrap;
+}
+.btn-carrito-navbar:hover { background: var(--fc-verde-dark); color: #fff; }
+.carrito-precio { font-weight: 400; font-size: .75rem; opacity: .85; }
+
+
+/* ================================================================
+   BARRA DE FRANQUICIAS (iconos monocromáticos)
+================================================================ */
+
+/* Contenedor con scroll horizontal sin scrollbar visible */
+.franquicias-scroll {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 2px;
+}
+.franquicias-scroll::-webkit-scrollbar { display: none; }
+
+/* Chip individual de franquicia */
+.franquicia-chip {
+    padding: 5px 12px;
+    border-radius: 6px;
+    transition: background var(--fc-transition), color var(--fc-transition);
+    min-width: 72px;
+}
+.franquicia-chip:hover   { background: var(--fc-verde-bg); }
+.franquicia-chip--activo { background: var(--fc-verde-bg); }
+.franquicia-chip--activo .franquicia-mono-etiqueta { color: var(--fc-verde); }
+
+/* Icono monocromático (Bootstrap Icon en gris oscuro) */
+.franquicia-mono-icono {
+    font-size: 1.4rem;
+    color: #555;
+    line-height: 1;
+    margin-bottom: 2px;
+}
+
+/* Imagen monocromática (filter CSS para desaturar) */
+.franquicia-mono-img {
+    width: 36px;
+    height: 36px;
     object-fit: contain;
+    filter: grayscale(100%) contrast(0.8);
+    transition: filter var(--fc-transition);
+    margin-bottom: 2px;
+}
+.franquicia-chip:hover .franquicia-mono-img,
+.franquicia-chip--activo .franquicia-mono-img {
+    filter: none; /* Muestra color al hover/activo */
+}
+
+/* Etiqueta de texto debajo del icono */
+.franquicia-mono-etiqueta {
+    font-size: .6rem;
+    font-weight: 700;
+    color: #555;
+    white-space: nowrap;
+    letter-spacing: .2px;
+}
+
+
+/* ================================================================
+   HERO BANNER — Slider a todo ancho
+================================================================ */
+
+/* Slide base — define altura y posición */
+.hero-slide {
+    position: relative;
+    height: 480px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+/* Fondos temáticos por slide */
+.hero-slide--oscuro { background: linear-gradient(135deg, #0d1117 0%, #1a2332 70%, #0d1117 100%); }
+.hero-slide--verde  { background: linear-gradient(135deg, #0f1a0a 0%, #1a3015 70%, #0f1a0a 100%); }
+.hero-slide--rojo   { background: linear-gradient(135deg, #1a0a0a 0%, #2d1010 70%, #1a0a0a 100%); }
+
+/* Imagen de fondo del slide (oculta, es solo un pixel de color) */
+.hero-bg-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: .3;
+}
+
+/* Overlay degradado para enfocar el texto a la izquierda */
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(0,0,0,.75) 0%, rgba(0,0,0,.2) 60%, transparent 100%);
+    z-index: 1;
+}
+
+/* Contenedor del texto dentro del slide */
+.hero-contenido {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+}
+
+/* Bloque de texto del hero */
+.hero-texto {
+    padding: 2rem 0;
+    animation: fadeInUp .5s ease both;
+}
+
+/* Fecha en amarillo grande — elemento visual clave */
+.hero-fecha {
+    display: inline-block;
+    color: var(--fc-amarillo);
+    font-size: 1.1rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: .75rem;
+}
+
+/* Título principal del hero */
+.hero-titulo {
+    color: #fff;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 8px rgba(0,0,0,.4);
+}
+
+/* Subtítulo descriptivo */
+.hero-subtitulo {
+    color: rgba(255,255,255,.8);
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    max-width: 400px;
+}
+
+/* Botón PRECOMPRA amarillo — elemento clave de la referencia */
+.btn-hero-precompra {
+    display: inline-block;
+    padding: 12px 32px;
+    background: var(--fc-amarillo);
+    color: #111;
+    font-size: .9rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background var(--fc-transition), transform var(--fc-transition);
+    border: none;
+}
+.btn-hero-precompra:hover {
+    background: #e6c200;
+    color: #111;
+    transform: translateY(-1px);
+}
+
+/* Indicadores del carousel */
+.hero-indicadores .active { background-color: var(--fc-amarillo) !important; }
+.hero-indicadores [data-bs-slide-to] {
+    width: 28px;
+    height: 3px;
+    border-radius: 2px;
+    background-color: rgba(255,255,255,.5);
+    opacity: 1;
+    border: none;
+}
+
+/* Controles laterales del carousel */
+.hero-control {
+    width: 48px;
+    background: rgba(0,0,0,.3);
+    transition: background var(--fc-transition);
+}
+.hero-control:hover { background: rgba(0,0,0,.6); }
+
+
+/* ================================================================
+   TRUST BADGES (Barra de confianza)
+================================================================ */
+
+/* Contenedor de la barra */
+.trust-badges-barra {
+    background: #fff;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+
+/* Cada badge individual */
+.trust-badge {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    border-color: #eee !important;
+}
+
+/* Icono grande del badge */
+.trust-badge-icono {
+    font-size: 1.6rem;
+    color: var(--fc-verde);
+    flex-shrink: 0;
+}
+
+/* Título del badge (negrita) */
+.trust-badge-titulo {
+    font-size: .82rem;
+    font-weight: 800;
+    color: var(--fc-dark);
+    line-height: 1.2;
+}
+
+/* Subtítulo descriptivo del badge */
+.trust-badge-subtitulo {
+    font-size: .72rem;
+    color: #888;
+    line-height: 1.3;
+    margin-top: 2px;
+}
+
+/* En mobile: solo 2 columnas, quitar borde derecho del 2º y 4º */
+@media (max-width: 767.98px) {
+    .trust-badge:nth-child(2) { border-right: none !important; }
+    .trust-badge { padding: 12px 14px; gap: 8px; }
+    .trust-badge-icono { font-size: 1.3rem; }
+}
+
+
+/* ================================================================
+   SECCIÓN DESTACADA — Split 50/50
+================================================================ */
+
+/* Contenedor de la sección */
+.seccion-destacada { overflow: hidden; }
+
+/* Mitad izquierda: fondo oscuro con texto */
+.destacado-lado-texto {
+    background: #0f1923;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+}
+
+/* Bloque de contenido interior con padding */
+.destacado-contenido {
+    padding: 4rem 5%;
+    max-width: 540px;
+}
+
+/* Etiqueta pequeña de franquicia (color verde, mayúsculas) */
+.destacado-franquicia-label {
+    display: inline-block;
+    color: var(--fc-verde);
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+/* Título grande del producto destacado */
+.destacado-titulo {
+    color: #fff;
+    font-size: clamp(1.8rem, 3.5vw, 3rem);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -.5px;
+    margin-bottom: 1rem;
+}
+
+/* Fecha del producto */
+.destacado-fecha {
+    color: rgba(255,255,255,.6);
+    font-size: .88rem;
+    font-weight: 600;
+    margin-bottom: .75rem;
+}
+
+/* Descripción breve */
+.destacado-descripcion {
+    color: rgba(255,255,255,.75);
+    font-size: .9rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+/* Botón de precompra — verde brillante, sin rounded (estilo cuadrado) */
+.btn-destacado-precompra {
+    display: inline-flex;
+    align-items: center;
+    padding: 14px 30px;
+    background: var(--fc-verde);
+    color: #fff;
+    font-size: .9rem;
+    font-weight: 800;
+    letter-spacing: .5px;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background var(--fc-transition), transform var(--fc-transition);
+}
+.btn-destacado-precompra:hover {
+    background: var(--fc-verde-dark);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+/* Mitad derecha: imagen a sangre */
+.destacado-lado-imagen {
+    position: relative;
+    min-height: 400px;
+    overflow: hidden;
+    background: #162230;
+}
+.destacado-imagen {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     display: block;
-    margin: 0 auto;
+    transition: transform .4s ease;
 }
-.franchise-label { font-size: .7rem; white-space: nowrap; }
+.destacado-lado-imagen:hover .destacado-imagen { transform: scale(1.03); }
 
-/* ── Trust Bar ── */
-.trust-bar { font-size: .82rem; }
 
-/* ── Cart badge ── */
-.cart-badge {
-    font-size: .65rem;
-    min-width: 18px;
-    height: 18px;
-    line-height: 18px;
-    padding: 0 4px;
-}
+/* ================================================================
+   TARJETAS DE PRODUCTO
+================================================================ */
 
-/* ── Tarjetas de producto ── */
 .product-card {
     border: 1px solid #E5E7EB;
     border-radius: var(--fc-card-radius);
@@ -106,48 +482,55 @@ body {
     transition: transform var(--fc-transition);
 }
 .product-card:hover .card-img-top { transform: scale(1.04); }
-.product-card .card-body { padding: 1rem; }
-.product-card .product-badge {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    font-size: .7rem;
-    font-weight: 700;
-    letter-spacing: .5px;
-    padding: 3px 8px;
-    border-radius: 4px;
-}
-.product-card .price-current {
-    font-size: 1.2rem;
-    font-weight: 800;
-    color: var(--fc-primary);
-}
-.product-card .price-original {
-    font-size: .85rem;
-    color: #9CA3AF;
-    text-decoration: line-through;
-}
+.product-card .card-body  { padding: 1rem; }
 .product-card .card-title {
-    font-size: .9rem;
+    font-size: .88rem;
     font-weight: 700;
     line-height: 1.3;
+    color: var(--fc-dark);
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
-.product-card .btn-add-cart {
-    font-size: .8rem;
+.product-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: .68rem;
     font-weight: 700;
-    letter-spacing: .3px;
+    letter-spacing: .5px;
+    padding: 3px 8px;
+    border-radius: 4px;
+}
+.price-current  { font-size: 1.15rem; font-weight: 800; color: var(--fc-verde-dark); }
+.price-original { font-size: .82rem; color: #9CA3AF; text-decoration: line-through; }
+
+/* Título de sección con acento verde */
+.seccion-titulo-acento {
+    display: inline-block;
+    width: 4px;
+    height: 1.2em;
+    background: var(--fc-verde);
+    border-radius: 2px;
+    margin-right: 10px;
+    vertical-align: middle;
 }
 
-/* ── Footer ── */
-.footer-link:hover { color: #fff !important; }
-.footer-social { transition: color var(--fc-transition); }
-.footer-social:hover { color: var(--fc-warning) !important; }
 
-/* ── Admin layout ── */
+/* ================================================================
+   FOOTER
+================================================================ */
+
+.footer-link:hover  { color: #fff !important; }
+.footer-social      { transition: color var(--fc-transition); }
+.footer-social:hover{ color: var(--fc-verde) !important; }
+
+
+/* ================================================================
+   ADMIN LAYOUT (panel de administración)
+================================================================ */
+
 .admin-sidebar {
     min-height: calc(100vh - 56px);
     background: #1E293B;
@@ -169,29 +552,52 @@ body {
 .admin-sidebar .nav-link.active {
     color: #fff;
     background: rgba(255,255,255,.06);
-    border-left-color: var(--fc-warning);
+    border-left-color: var(--fc-amarillo);
 }
 .admin-sidebar .nav-link i { width: 20px; text-align: center; margin-right: 8px; }
 .admin-content { margin-left: 240px; min-height: 100vh; background: #F1F5F9; }
 
-/* ── Utilities ── */
-.text-truncate-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-.cursor-pointer { cursor: pointer; }
 
-/* ── Animaciones ── */
+/* ================================================================
+   UTILIDADES
+================================================================ */
+
+.fw-black           { font-weight: 900; }
+.text-truncate-2    { display: -webkit-box; -webkit-line-clamp: 2;
+                      -webkit-box-orient: vertical; overflow: hidden; }
+.cursor-pointer     { cursor: pointer; }
+.min-vh-50          { min-height: 50vh; }
+
+/* Animación de entrada para elementos del hero */
 @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(16px); }
+    from { opacity: 0; transform: translateY(20px); }
     to   { opacity: 1; transform: translateY(0); }
 }
-.fade-in-up { animation: fadeInUp .35s ease both; }
+.fade-in-up { animation: fadeInUp .4s ease both; }
 
-/* ── Responsive ── */
+
+/* ================================================================
+   RESPONSIVE
+================================================================ */
+
 @media (max-width: 991.98px) {
-    .admin-sidebar { display: none; }
-    .admin-content { margin-left: 0; }
+    /* Admin: sidebar oculto en mobile */
+    .admin-sidebar  { display: none; }
+    .admin-content  { margin-left: 0; }
+
+    /* Hero: menos altura en mobile */
+    .hero-slide { height: 320px; }
+    .hero-titulo { font-size: 1.8rem; }
+    .hero-subtitulo { font-size: .88rem; }
+
+    /* Sección destacada: apila verticalmente */
+    .destacado-contenido { padding: 2.5rem 5%; }
+    .destacado-lado-imagen { min-height: 260px; }
+}
+
+@media (max-width: 575.98px) {
+    .hero-slide { height: 260px; }
+    .hero-titulo { font-size: 1.5rem; }
+    .hero-fecha  { font-size: .85rem; letter-spacing: 1px; }
+    .btn-hero-precompra { padding: 10px 22px; font-size: .82rem; }
 }

@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     {{-- Bootstrap Icons --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    {{-- Google Fonts --}}
+    {{-- Google Fonts: Nunito --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     {{-- Estilos propios --}}
@@ -21,210 +21,297 @@
 </head>
 <body>
 
-{{-- ============================================================
-     HEADER (3 NIVELES)
-============================================================ --}}
-<header id="site-header">
+{{-- ================================================================
+     BLOQUE PEGAJOSO: Cabecera blanca + Navbar verde (sticky-top)
+     Replica la estructura de dos barras de miceliongames.com
+================================================================ --}}
+<div id="bloque-cabecera-sticky" class="sticky-top">
 
-    {{-- ─── NIVEL 1: TOPBAR (Buscador + Selector de categorías) ─────────── --}}
-    <div class="topbar bg-dark text-white py-2 d-none d-lg-block">
-        <div class="container">
+    {{-- ── CABECERA PRINCIPAL (Fondo blanco) ──────────────────────────────────
+         Estructura: Logo | Buscador + EVENTOS | Iconos de cuenta
+    ─────────────────────────────────────────────────────────────────────────── --}}
+    <header id="cabecera-principal" class="bg-white border-bottom">
+        <div class="container-xl py-2">
             <div class="row align-items-center g-2">
 
-                {{-- Logo pequeño / Slogan --}}
-                <div class="col-lg-3">
-                    <a href="{{ route('home') }}" class="text-white text-decoration-none fw-bold fs-5 topbar-brand">
-                        <span class="text-warning">Factory</span> Cards
+                {{-- ── Columna izquierda: Logo de la tienda ── --}}
+                <div class="col-auto col-lg-2">
+                    <a href="{{ route('home') }}" class="text-decoration-none logo-tienda d-inline-block">
+                        {{-- Placeholder de logo — reemplazar por <img> cuando esté el archivo --}}
+                        <span class="logo-factory">Factory</span><span class="logo-cards">Cards</span>
                     </a>
                 </div>
 
-                {{-- Buscador con selector de categorías --}}
-                <div class="col-lg-6">
-                    <form action="{{ route('shop.search') }}" method="GET" class="d-flex" role="search">
-                        <select name="category" class="form-select form-select-sm topbar-category-select rounded-0 rounded-start border-0" style="width:160px; flex-shrink:0;">
-                            <option value="">Todas las categorías</option>
-                            @foreach($headerCategories ?? [] as $cat)
-                                <option value="{{ $cat->slug }}" {{ request('category') === $cat->slug ? 'selected' : '' }}>
-                                    {{ $cat->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        <input
-                            type="search"
-                            name="q"
-                            class="form-control form-control-sm rounded-0 border-0"
-                            placeholder="Buscar cartas, expansiones, juegos..."
-                            value="{{ request('q') }}"
-                            autocomplete="off"
-                        >
-                        <button class="btn btn-warning btn-sm rounded-0 rounded-end px-3" type="submit">
-                            <i class="bi bi-search"></i>
-                        </button>
-                    </form>
-                </div>
+                {{-- ── Columna central: Buscador con categorías + botón EVENTOS ──
+                     Oculto en mobile (el buscador aparece en el drawer offcanvas)
+                ── --}}
+                <div class="col-lg-7 d-none d-lg-block">
+                    <div class="d-flex align-items-center gap-2">
 
-                {{-- Links de cuenta --}}
-                <div class="col-lg-3 text-end">
-                    @auth
-                        <a href="{{ route('user.dashboard') }}" class="text-white text-decoration-none small me-3">
-                            <i class="bi bi-person-circle me-1"></i>{{ auth()->user()->name }}
-                        </a>
-                        @if(auth()->user()->isAdmin())
-                            <a href="{{ route('admin.dashboard') }}" class="text-warning text-decoration-none small me-3">
-                                <i class="bi bi-speedometer2 me-1"></i>Admin
-                            </a>
-                        @endif
-                        <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                            @csrf
-                            <button type="submit" class="btn btn-link text-white text-decoration-none p-0 small">
-                                <i class="bi bi-box-arrow-right me-1"></i>Salir
+                        {{-- Formulario de búsqueda --}}
+                        <form action="{{ route('shop.search') }}" method="GET"
+                              class="d-flex flex-grow-1 buscador-principal" role="search">
+
+                            {{-- Dropdown de categorías --}}
+                            <select name="category"
+                                    class="form-select form-select-sm buscador-select border-end-0 rounded-0 rounded-start">
+                                <option value="">Categorías</option>
+                                @foreach($headerCategories ?? [] as $cat)
+                                    <option value="{{ $cat->slug }}"
+                                            {{ request('category') === $cat->slug ? 'selected' : '' }}>
+                                        {{ $cat->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            {{-- Campo de texto --}}
+                            <input
+                                type="search"
+                                name="q"
+                                class="form-control form-control-sm rounded-0 border-start-0 border-end-0"
+                                placeholder="Buscar..."
+                                value="{{ request('q') }}"
+                                autocomplete="off"
+                            >
+
+                            {{-- Botón lupa --}}
+                            <button class="btn btn-dark btn-sm rounded-0 rounded-end px-3 buscador-btn" type="submit">
+                                <i class="bi bi-search"></i>
                             </button>
                         </form>
-                    @else
-                        <a href="{{ route('login') }}" class="text-white text-decoration-none small me-3">
-                            <i class="bi bi-person me-1"></i>Iniciar sesión
+
+                        {{-- Botón EVENTOS — negro redondeado --}}
+                        <a href="#" class="btn btn-dark btn-sm rounded-pill px-3 fw-bold text-nowrap btn-eventos">
+                            EVENTOS
                         </a>
-                        <a href="{{ route('register') }}" class="text-white text-decoration-none small">
-                            <i class="bi bi-person-plus me-1"></i>Registro
+
+                    </div>
+                </div>
+
+                {{-- ── Columna derecha: Iconos de cuenta + Lista de deseos ── --}}
+                <div class="col ms-auto col-lg-3">
+                    <div class="d-flex justify-content-end align-items-center gap-3">
+
+                        @auth
+                            {{-- Usuario autenticado: icono de cuenta --}}
+                            <a href="{{ route('user.dashboard') }}"
+                               class="icono-cabecera text-decoration-none"
+                               title="{{ auth()->user()->name }}">
+                                <i class="bi bi-person fs-4 d-block text-center lh-1"></i>
+                                <span class="icono-etiqueta">Mi cuenta</span>
+                            </a>
+                            @if(auth()->user()->isAdmin())
+                                {{-- Acceso rápido al panel admin para admins --}}
+                                <a href="{{ route('admin.dashboard') }}"
+                                   class="icono-cabecera text-decoration-none icono-admin"
+                                   title="Panel Admin">
+                                    <i class="bi bi-speedometer2 fs-4 d-block text-center lh-1"></i>
+                                    <span class="icono-etiqueta">Admin</span>
+                                </a>
+                            @endif
+                        @else
+                            {{-- Invitado: botón de "Entrar" --}}
+                            <a href="{{ route('login') }}"
+                               class="icono-cabecera text-decoration-none">
+                                <i class="bi bi-person fs-4 d-block text-center lh-1"></i>
+                                <span class="icono-etiqueta">Entrar</span>
+                            </a>
+                        @endauth
+
+                        {{-- Lista de deseos (stub — Fase 4) --}}
+                        <a href="#" class="icono-cabecera text-decoration-none" title="Lista de deseos">
+                            <i class="bi bi-heart fs-4 d-block text-center lh-1"></i>
+                            <span class="icono-etiqueta">Deseos</span>
                         </a>
-                    @endauth
+
+                        {{-- Carrito visible en mobile dentro de la cabecera --}}
+                        <a href="{{ route('cart.index') }}"
+                           class="icono-cabecera text-decoration-none position-relative d-lg-none">
+                            <i class="bi bi-cart3 fs-4 d-block text-center lh-1"></i>
+                            <span class="icono-etiqueta">Carrito</span>
+                            @if(($cartCount ?? 0) > 0)
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-badge">
+                                    {{ $cartCount }}
+                                </span>
+                            @endif
+                        </a>
+
+                        {{-- Botón hamburguesa: abre menú móvil --}}
+                        <button class="btn btn-outline-secondary d-lg-none border-0"
+                                type="button"
+                                data-bs-toggle="offcanvas"
+                                data-bs-target="#menuMovil"
+                                aria-controls="menuMovil">
+                            <i class="bi bi-list fs-4"></i>
+                        </button>
+
+                    </div>
                 </div>
 
             </div>
         </div>
-    </div>
+    </header>
 
-    {{-- ─── NIVEL 2: MENÚ PRINCIPAL + CARRITO ────────────────────────────── --}}
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm" id="main-navbar">
-        <div class="container">
+    {{-- ── NAVBAR VERDE — Links de categorías + Carrito (desktop) ────────────
+         Fondo verde brillante, texto blanco en mayúsculas.
+         El carrito aparece como botón outline a la derecha.
+    ─────────────────────────────────────────────────────────────────────────── --}}
+    <nav id="navbar-verde" class="d-none d-lg-block">
+        <div class="container-xl">
+            <div class="d-flex align-items-stretch">
 
-            {{-- Logo principal (visible en mobile y desktop) --}}
-            <a class="navbar-brand fw-black fs-4" href="{{ route('home') }}">
-                <span class="text-warning">Factory</span><span class="text-white"> Cards</span>
-            </a>
+                {{-- ── Links de navegación principal ── --}}
+                <ul class="nav navbar-verde-nav me-auto">
 
-            {{-- Botones mobile: carrito + hamburguesa --}}
-            <div class="d-flex d-lg-none align-items-center gap-2">
-                <a href="{{ route('cart.index') }}" class="btn btn-outline-warning btn-sm position-relative">
-                    <i class="bi bi-cart3 fs-5"></i>
-                    @if(($cartCount ?? 0) > 0)
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-badge">
-                            {{ $cartCount }}
-                        </span>
-                    @endif
-                </a>
-                <button class="navbar-toggler border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </div>
-
-            {{-- Navegación desktop --}}
-            <div class="collapse navbar-collapse" id="navbarMain">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">Inicio</a>
-                    </li>
+                    {{-- JUEGOS TCG: dropdown con franquicias --}}
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle {{ request()->routeIs('shop.*') ? 'active' : '' }}"
-                           href="{{ route('shop.catalog') }}" role="button" data-bs-toggle="dropdown">
-                            Tienda
+                        <a class="nav-verde-link dropdown-toggle" href="{{ route('shop.catalog') }}"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            JUEGOS TCG
                         </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('shop.catalog') }}">Ver todo</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            @foreach($headerCategories ?? [] as $cat)
+                        <ul class="dropdown-menu dropdown-verde">
+                            @foreach($headerFranchises ?? [] as $f)
                                 <li>
-                                    <a class="dropdown-item" href="{{ route('shop.category', $cat->slug) }}">
-                                        {{ $cat->name }}
+                                    <a class="dropdown-item" href="{{ route('shop.franchise', $f->slug) }}">
+                                        {{ $f->name }}
                                     </a>
                                 </li>
                             @endforeach
                         </ul>
                     </li>
+
+                    {{-- JUEGOS DE MESA --}}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('shop.catalog', ['filter' => 'preorder']) }}">
-                            Precompras <span class="badge bg-warning text-dark ms-1">NEW</span>
-                        </a>
+                        <a class="nav-verde-link" href="{{ route('shop.catalog') }}">JUEGOS DE MESA</a>
                     </li>
+
+                    {{-- WARHAMMER --}}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('shop.catalog', ['filter' => 'offers']) }}">Ofertas</a>
+                        <a class="nav-verde-link" href="{{ route('shop.franchise', 'warhammer') }}">WARHAMMER</a>
                     </li>
+
+                    {{-- JUEGOS DE ROL --}}
+                    <li class="nav-item">
+                        <a class="nav-verde-link" href="{{ route('shop.catalog') }}">JUEGOS DE ROL</a>
+                    </li>
+
+                    {{-- ACCESORIOS --}}
+                    <li class="nav-item">
+                        <a class="nav-verde-link" href="{{ route('shop.category', 'accesorios') }}">ACCESORIOS</a>
+                    </li>
+
+                    {{-- VENDE TUS CARTAS (stub) --}}
+                    <li class="nav-item">
+                        <a class="nav-verde-link nav-verde-link--resaltado" href="#">VENDE TUS CARTAS</a>
+                    </li>
+
                 </ul>
 
-                {{-- Carrito desktop --}}
-                <a href="{{ route('cart.index') }}" class="btn btn-warning fw-bold position-relative d-none d-lg-inline-flex align-items-center gap-2">
-                    <i class="bi bi-cart3 fs-5"></i>
-                    <span>Carrito</span>
-                    @if(($cartCount ?? 0) > 0)
-                        <span class="badge bg-danger rounded-pill cart-badge">{{ $cartCount }}</span>
-                    @endif
-                </a>
-            </div>
+                {{-- ── Botón carrito (outline verde oscuro) ── --}}
+                <div class="d-flex align-items-center py-1">
+                    <a href="{{ route('cart.index') }}" class="btn-carrito-navbar">
+                        <i class="bi bi-cart3 me-1"></i>
+                        CARRITO
+                        <span class="carrito-precio ms-1">€0,00</span>
+                        @if(($cartCount ?? 0) > 0)
+                            <span class="badge bg-white text-success rounded-pill ms-1 small">{{ $cartCount }}</span>
+                        @endif
+                    </a>
+                </div>
 
+            </div>
         </div>
     </nav>
 
-    {{-- ─── NIVEL 3: BARRA DE FRANQUICIAS (iconos) ────────────────────────── --}}
-    <div class="franchise-bar bg-white border-bottom shadow-sm d-none d-lg-block">
-        <div class="container">
-            <div class="d-flex align-items-center justify-content-center gap-4 py-2 overflow-auto franchise-scroll">
-                <a href="{{ route('shop.catalog') }}" class="franchise-item text-center text-decoration-none {{ !request()->route('slug') ? 'active' : '' }}">
-                    <span class="franchise-icon"><i class="bi bi-grid-fill"></i></span>
-                    <span class="franchise-label d-block small fw-semibold text-dark">Todo</span>
+</div>{{-- fin bloque-cabecera-sticky --}}
+
+
+{{-- ================================================================
+     BARRA DE FRANQUICIAS — Iconos monocromáticos con etiqueta
+     Fondo gris muy claro, scroll horizontal sin scrollbar visible.
+     No es pegajosa: se oculta al hacer scroll.
+================================================================ --}}
+<div id="barra-franquicias" class="border-bottom bg-white">
+    <div class="container-xl">
+        <div class="d-flex align-items-center gap-0 franquicias-scroll py-1">
+
+            {{-- Todo --}}
+            <a href="{{ route('shop.catalog') }}"
+               class="franquicia-chip flex-shrink-0 text-center text-decoration-none
+                       {{ request()->routeIs('shop.catalog') && !request()->route('slug') ? 'franquicia-chip--activo' : '' }}">
+                <span class="franquicia-mono-icono"><i class="bi bi-grid"></i></span>
+                <span class="franquicia-mono-etiqueta">TODO</span>
+            </a>
+
+            {{-- Divisor visual --}}
+            <div class="flex-shrink-0 mx-1" style="width:1px;height:32px;background:#ddd;"></div>
+
+            {{-- Una chip por franquicia activa --}}
+            @foreach($headerFranchises ?? [] as $franchise)
+                <a href="{{ route('shop.franchise', $franchise->slug) }}"
+                   class="franquicia-chip flex-shrink-0 text-center text-decoration-none
+                           {{ request()->route('slug') === $franchise->slug ? 'franquicia-chip--activo' : '' }}"
+                   title="{{ $franchise->name }}">
+                    @if($franchise->icon_url)
+                        {{-- Imagen monocromatica via CSS filter --}}
+                        <img src="{{ asset($franchise->icon_url) }}"
+                             alt="{{ $franchise->name }}"
+                             class="franquicia-mono-img">
+                    @else
+                        <span class="franquicia-mono-icono"><i class="bi bi-collection"></i></span>
+                    @endif
+                    <span class="franquicia-mono-etiqueta">{{ Str::upper($franchise->name) }}</span>
                 </a>
-                @foreach($headerFranchises ?? [] as $franchise)
-                    <a href="{{ route('shop.franchise', $franchise->slug) }}"
-                       class="franchise-item text-center text-decoration-none {{ request()->route('slug') === $franchise->slug ? 'active' : '' }}"
-                       title="{{ $franchise->name }}">
-                        @if($franchise->icon_url)
-                            <img src="{{ asset($franchise->icon_url) }}" alt="{{ $franchise->name }}" class="franchise-icon-img">
-                        @else
-                            <span class="franchise-icon"><i class="bi bi-collection-fill"></i></span>
-                        @endif
-                        <span class="franchise-label d-block small fw-semibold text-dark">{{ $franchise->name }}</span>
-                    </a>
-                @endforeach
-            </div>
+            @endforeach
+
         </div>
     </div>
+</div>
 
-</header>
 
-{{-- ============================================================
-     MENÚ MÓVIL OFFCANVAS (Drawer)
-============================================================ --}}
-<div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel">
-    <div class="offcanvas-header bg-primary text-white">
-        <h5 class="offcanvas-title fw-bold" id="mobileMenuLabel">
-            <span class="text-warning">Factory</span> Cards
-        </h5>
+{{-- ================================================================
+     MENÚ MÓVIL OFFCANVAS
+================================================================ --}}
+<div class="offcanvas offcanvas-start" tabindex="-1" id="menuMovil" aria-labelledby="menuMovilLabel">
+
+    <div class="offcanvas-header" style="background:var(--fc-verde);">
+        <a href="{{ route('home') }}"
+           class="text-white text-decoration-none fw-bold fs-5"
+           id="menuMovilLabel">
+            <span style="color:#FFE066;">Factory</span> Cards
+        </a>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
     </div>
+
     <div class="offcanvas-body p-0">
 
-        {{-- Buscador móvil --}}
+        {{-- Buscador mobile --}}
         <div class="p-3 bg-light border-bottom">
             <form action="{{ route('shop.search') }}" method="GET" class="d-flex gap-2">
-                <input type="search" name="q" class="form-control" placeholder="Buscar productos..." value="{{ request('q') }}">
-                <button class="btn btn-warning px-3" type="submit"><i class="bi bi-search"></i></button>
+                <input type="search" name="q" class="form-control"
+                       placeholder="Buscar productos..." value="{{ request('q') }}">
+                <button class="btn btn-dark px-3" type="submit"><i class="bi bi-search"></i></button>
             </form>
         </div>
 
-        {{-- Navegación móvil --}}
         <ul class="list-group list-group-flush">
+
+            {{-- Inicio --}}
             <li class="list-group-item">
-                <a href="{{ route('home') }}" class="d-flex align-items-center gap-2 text-dark text-decoration-none py-1">
-                    <i class="bi bi-house-fill text-primary"></i> Inicio
+                <a href="{{ route('home') }}"
+                   class="d-flex align-items-center gap-2 text-dark text-decoration-none py-1">
+                    <i class="bi bi-house-fill" style="color:var(--fc-verde)"></i> Inicio
                 </a>
             </li>
             <li class="list-group-item">
-                <a href="{{ route('shop.catalog') }}" class="d-flex align-items-center gap-2 text-dark text-decoration-none py-1">
-                    <i class="bi bi-shop text-primary"></i> Ver toda la tienda
+                <a href="{{ route('shop.catalog') }}"
+                   class="d-flex align-items-center gap-2 text-dark text-decoration-none py-1">
+                    <i class="bi bi-shop" style="color:var(--fc-verde)"></i> Ver toda la tienda
                 </a>
             </li>
 
             {{-- Franquicias --}}
-            <li class="list-group-item bg-light">
+            <li class="list-group-item bg-light py-2">
                 <span class="small fw-bold text-muted text-uppercase">Franquicias</span>
             </li>
             @foreach($headerFranchises ?? [] as $franchise)
@@ -232,9 +319,10 @@
                     <a href="{{ route('shop.franchise', $franchise->slug) }}"
                        class="d-flex align-items-center gap-2 text-dark text-decoration-none py-1">
                         @if($franchise->icon_url)
-                            <img src="{{ asset($franchise->icon_url) }}" alt="" style="width:20px;height:20px;object-fit:contain;">
+                            <img src="{{ asset($franchise->icon_url) }}" alt=""
+                                 style="width:20px;height:20px;object-fit:contain;">
                         @else
-                            <i class="bi bi-collection-fill text-primary"></i>
+                            <i class="bi bi-collection-fill" style="color:var(--fc-verde)"></i>
                         @endif
                         {{ $franchise->name }}
                     </a>
@@ -242,121 +330,88 @@
             @endforeach
 
             {{-- Categorías --}}
-            <li class="list-group-item bg-light">
+            <li class="list-group-item bg-light py-2">
                 <span class="small fw-bold text-muted text-uppercase">Categorías</span>
             </li>
             @foreach($headerCategories ?? [] as $cat)
                 <li class="list-group-item">
                     <a href="{{ route('shop.category', $cat->slug) }}"
                        class="d-flex align-items-center gap-2 text-dark text-decoration-none py-1">
-                        <i class="bi bi-tag-fill text-primary"></i> {{ $cat->name }}
+                        <i class="bi bi-tag-fill" style="color:var(--fc-verde)"></i> {{ $cat->name }}
                     </a>
                 </li>
             @endforeach
 
-            <li class="list-group-item bg-light">
+            {{-- Cuenta --}}
+            <li class="list-group-item bg-light py-2">
                 <span class="small fw-bold text-muted text-uppercase">Mi cuenta</span>
             </li>
             @auth
                 <li class="list-group-item">
-                    <a href="{{ route('user.dashboard') }}" class="d-flex align-items-center gap-2 text-dark text-decoration-none py-1">
-                        <i class="bi bi-person-circle text-primary"></i> {{ auth()->user()->name }}
+                    <a href="{{ route('user.dashboard') }}"
+                       class="d-flex align-items-center gap-2 text-dark text-decoration-none py-1">
+                        <i class="bi bi-person-circle" style="color:var(--fc-verde)"></i>
+                        {{ auth()->user()->name }}
                     </a>
                 </li>
                 <li class="list-group-item">
-                    <a href="{{ route('user.orders') }}" class="d-flex align-items-center gap-2 text-dark text-decoration-none py-1">
-                        <i class="bi bi-bag-check-fill text-primary"></i> Mis pedidos
+                    <a href="{{ route('user.orders') }}"
+                       class="d-flex align-items-center gap-2 text-dark text-decoration-none py-1">
+                        <i class="bi bi-bag-check-fill" style="color:var(--fc-verde)"></i> Mis pedidos
                     </a>
                 </li>
                 @if(auth()->user()->isAdmin())
                     <li class="list-group-item">
-                        <a href="{{ route('admin.dashboard') }}" class="d-flex align-items-center gap-2 text-warning text-decoration-none py-1 fw-semibold">
+                        <a href="{{ route('admin.dashboard') }}"
+                           class="d-flex align-items-center gap-2 text-decoration-none fw-semibold py-1"
+                           style="color:var(--fc-verde)">
                             <i class="bi bi-speedometer2"></i> Panel Admin
                         </a>
                     </li>
                 @endif
                 <li class="list-group-item">
-                    <form action="{{ route('logout') }}" method="POST">
+                    <form action="{{ route('logout', absolute: false) }}" method="POST">
                         @csrf
-                        <button type="submit" class="btn btn-link p-0 d-flex align-items-center gap-2 text-danger text-decoration-none">
+                        <button type="submit"
+                                class="btn btn-link p-0 d-flex align-items-center gap-2 text-danger text-decoration-none">
                             <i class="bi bi-box-arrow-right"></i> Cerrar sesión
                         </button>
                     </form>
                 </li>
             @else
                 <li class="list-group-item">
-                    <a href="{{ route('login') }}" class="d-flex align-items-center gap-2 text-dark text-decoration-none py-1">
-                        <i class="bi bi-person text-primary"></i> Iniciar sesión
+                    <a href="{{ route('login') }}"
+                       class="d-flex align-items-center gap-2 text-dark text-decoration-none py-1">
+                        <i class="bi bi-person" style="color:var(--fc-verde)"></i> Iniciar sesión
                     </a>
                 </li>
                 <li class="list-group-item">
-                    <a href="{{ route('register') }}" class="d-flex align-items-center gap-2 text-dark text-decoration-none py-1">
-                        <i class="bi bi-person-plus text-primary"></i> Registrarse
+                    <a href="{{ route('register') }}"
+                       class="d-flex align-items-center gap-2 text-dark text-decoration-none py-1">
+                        <i class="bi bi-person-plus" style="color:var(--fc-verde)"></i> Registrarse
                     </a>
                 </li>
             @endauth
+
         </ul>
     </div>
 </div>
 
-{{-- ============================================================
-     TRUST BADGES (Barra de confianza)
-============================================================ --}}
-<div class="trust-bar bg-light border-bottom py-2">
-    <div class="container">
-        <div class="row text-center g-2">
-            <div class="col-6 col-md-3">
-                <div class="d-flex align-items-center justify-content-center gap-2 small">
-                    <i class="bi bi-truck text-primary fs-5"></i>
-                    <div class="text-start">
-                        <div class="fw-bold lh-1 small">Envío Gratis</div>
-                        <div class="text-muted" style="font-size:.72rem">En pedidos +50€</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="d-flex align-items-center justify-content-center gap-2 small">
-                    <i class="bi bi-shield-lock-fill text-success fs-5"></i>
-                    <div class="text-start">
-                        <div class="fw-bold lh-1 small">Pago Seguro</div>
-                        <div class="text-muted" style="font-size:.72rem">SSL + Stripe / TPV</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="d-flex align-items-center justify-content-center gap-2 small">
-                    <i class="bi bi-arrow-return-left text-warning fs-5"></i>
-                    <div class="text-start">
-                        <div class="fw-bold lh-1 small">Devoluciones</div>
-                        <div class="text-muted" style="font-size:.72rem">14 días sin problema</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="d-flex align-items-center justify-content-center gap-2 small">
-                    <i class="bi bi-headset text-danger fs-5"></i>
-                    <div class="text-start">
-                        <div class="fw-bold lh-1 small">Soporte</div>
-                        <div class="text-muted" style="font-size:.72rem">Lunes a Sábado</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
-{{-- ============================================================
-     CONTENIDO PRINCIPAL
-============================================================ --}}
-<main id="main-content">
+{{-- ================================================================
+     CONTENIDO PRINCIPAL — Las vistas inyectan aquí con @yield
+================================================================ --}}
+<main id="contenido-principal">
+
+    {{-- Alertas de sesión (flash messages) --}}
     @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show m-0 rounded-0 border-0 text-center" role="alert">
+        <div class="alert alert-success alert-dismissible fade show m-0 rounded-0 border-0 text-center small" role="alert">
             <i class="bi bi-check-circle-fill me-2"></i>{{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif
     @if(session('error'))
-        <div class="alert alert-danger alert-dismissible fade show m-0 rounded-0 border-0 text-center" role="alert">
+        <div class="alert alert-danger alert-dismissible fade show m-0 rounded-0 border-0 text-center small" role="alert">
             <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ session('error') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
@@ -365,14 +420,15 @@
     @yield('content')
 </main>
 
-{{-- ============================================================
+
+{{-- ================================================================
      FOOTER
-============================================================ --}}
+================================================================ --}}
 <footer class="bg-dark text-white pt-5 pb-3 mt-5">
     <div class="container">
         <div class="row g-4">
 
-            {{-- Col 1: Marca y descripción --}}
+            {{-- Col 1: Marca --}}
             <div class="col-12 col-md-4">
                 <h5 class="fw-black mb-3">
                     <span class="text-warning">Factory</span> Cards
@@ -391,11 +447,12 @@
 
             {{-- Col 2: Franquicias --}}
             <div class="col-6 col-md-2">
-                <h6 class="text-uppercase fw-bold text-warning mb-3 small">Franquicias</h6>
+                <h6 class="text-uppercase fw-bold mb-3 small" style="color:var(--fc-verde)">Franquicias</h6>
                 <ul class="list-unstyled small">
                     @foreach($headerFranchises ?? [] as $franchise)
                         <li class="mb-1">
-                            <a href="{{ route('shop.franchise', $franchise->slug) }}" class="text-muted text-decoration-none footer-link">
+                            <a href="{{ route('shop.franchise', $franchise->slug) }}"
+                               class="text-muted text-decoration-none footer-link">
                                 {{ $franchise->name }}
                             </a>
                         </li>
@@ -405,7 +462,7 @@
 
             {{-- Col 3: Información --}}
             <div class="col-6 col-md-2">
-                <h6 class="text-uppercase fw-bold text-warning mb-3 small">Información</h6>
+                <h6 class="text-uppercase fw-bold mb-3 small" style="color:var(--fc-verde)">Información</h6>
                 <ul class="list-unstyled small">
                     <li class="mb-1"><a href="#" class="text-muted text-decoration-none footer-link">Sobre nosotros</a></li>
                     <li class="mb-1"><a href="#" class="text-muted text-decoration-none footer-link">Cómo comprar</a></li>
@@ -417,7 +474,7 @@
 
             {{-- Col 4: Mi cuenta --}}
             <div class="col-6 col-md-2">
-                <h6 class="text-uppercase fw-bold text-warning mb-3 small">Mi cuenta</h6>
+                <h6 class="text-uppercase fw-bold mb-3 small" style="color:var(--fc-verde)">Mi cuenta</h6>
                 <ul class="list-unstyled small">
                     <li class="mb-1"><a href="{{ route('login') }}" class="text-muted text-decoration-none footer-link">Iniciar sesión</a></li>
                     <li class="mb-1"><a href="{{ route('register') }}" class="text-muted text-decoration-none footer-link">Registrarse</a></li>
@@ -426,9 +483,9 @@
                 </ul>
             </div>
 
-            {{-- Col 5: Métodos de pago --}}
+            {{-- Col 5: Pago seguro --}}
             <div class="col-6 col-md-2">
-                <h6 class="text-uppercase fw-bold text-warning mb-3 small">Pago seguro</h6>
+                <h6 class="text-uppercase fw-bold mb-3 small" style="color:var(--fc-verde)">Pago seguro</h6>
                 <div class="d-flex flex-wrap gap-2">
                     <span class="badge bg-secondary p-2"><i class="bi bi-credit-card-2-front-fill me-1"></i>Tarjeta</span>
                     <span class="badge bg-secondary p-2"><i class="bi bi-bank me-1"></i>TPV Virtual</span>
@@ -457,7 +514,8 @@
     </div>
 </footer>
 
-{{-- Bootstrap JS --}}
+
+{{-- Bootstrap JS Bundle (incluye Popper) --}}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 {{-- JS propio --}}
 <script src="{{ asset('js/app.js') }}"></script>
