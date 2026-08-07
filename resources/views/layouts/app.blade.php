@@ -212,7 +212,7 @@
                     <a href="{{ route('cart.index') }}" class="btn-carrito-navbar">
                         <i class="bi bi-cart3 me-1"></i>
                         CARRITO
-                        <span class="carrito-precio ms-1">€0,00</span>
+                        <span class="carrito-precio ms-1">{{ number_format($cartTotal ?? 0, 2, ',', '.') }} €</span>
                         @if(($cartCount ?? 0) > 0)
                             <span class="badge bg-white text-success rounded-pill ms-1 small">{{ $cartCount }}</span>
                         @endif

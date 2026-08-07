@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use App\Models\Category;
 use App\Models\Franchise;
+use App\Models\CartItem;
 
 class ViewServiceProvider extends ServiceProvider
 {
@@ -28,6 +29,9 @@ class ViewServiceProvider extends ServiceProvider
                     'cartCount' => auth()->check()
                         ? auth()->user()->cartItems()->sum('quantity')
                         : (int) session('cart_count', 0),
+                    'cartTotal' => auth()->check()
+                        ? CartItem::with('product')->where('user_id', auth()->id())->get()->sum(fn($i) => $i->lineTotal())
+                        : collect(session('cart', []))->sum(fn($i) => ($i['price'] ?? 0) * ($i['quantity'] ?? 0)),
                 ]);
             } catch (\Exception $e) {
                 // Silencioso durante setup inicial
