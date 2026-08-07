@@ -73,6 +73,9 @@
         <a href="{{ route('admin.banners.index') }}" class="nav-link @if(request()->routeIs('admin.banners.*')) active @endif">
             <i class="bi bi-image"></i> Banners
         </a>
+        <a href="{{ route('admin.eventos.index') }}" class="nav-link @if(request()->routeIs('admin.eventos.*')) active @endif">
+            <i class="bi bi-calendar-event"></i> Eventos
+        </a>
 
         <div class="nav-section mt-2">Ventas</div>
         <a href="{{ route('admin.orders.index') }}" class="nav-link @if(request()->routeIs('admin.orders.*')) active @endif">

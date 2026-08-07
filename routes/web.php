@@ -11,6 +11,8 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\FranchiseController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\BannerController;
+use App\Http\Controllers\Admin\EventController as AdminEventController;
+use App\Http\Controllers\EventController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +22,7 @@ use App\Http\Controllers\Admin\BannerController;
 
 Route::get('/', [ShopController::class, 'index'])->name('home');
 Route::get('/tienda', [ShopController::class, 'catalog'])->name('shop.catalog');
+Route::get('/eventos', [EventController::class, 'index'])->name('events.index');
 Route::get('/producto/{slug}', [ShopController::class, 'show'])->name('shop.product');
 Route::get('/franquicia/{slug}', [ShopController::class, 'byFranchise'])->name('shop.franchise');
 Route::get('/categoria/{slug}', [ShopController::class, 'byCategory'])->name('shop.category');
@@ -96,6 +99,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Banners (hero slider de la portada)
     Route::resource('banners', BannerController::class);
     Route::patch('banners/{banner}/toggle', [BannerController::class, 'toggleActivo'])->name('banners.toggle');
+
+    // Eventos y torneos
+    Route::resource('eventos', AdminEventController::class);
 });
 
 /*

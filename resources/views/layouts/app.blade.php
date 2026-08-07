@@ -80,8 +80,8 @@
                             </button>
                         </form>
 
-                        {{-- Botón EVENTOS — negro redondeado --}}
-                        <a href="#" class="btn btn-dark btn-sm rounded-pill px-3 fw-bold text-nowrap btn-eventos">
+                        {{-- Botón EVENTOS — enlaza a la página de eventos y torneos --}}
+                        <a href="{{ route('events.index') }}" class="btn btn-dark btn-sm rounded-pill px-3 fw-bold text-nowrap btn-eventos">
                             EVENTOS
                         </a>
 

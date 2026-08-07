@@ -24,3 +24,4 @@ database/*.sqlite-journal
 /.nova
 /.vscode
 /.zed
+/public/images/
