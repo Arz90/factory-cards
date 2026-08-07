@@ -206,26 +206,26 @@ body {
     align-items: center;
 }
 
-/* Fondos temáticos por slide */
-.hero-slide--oscuro { background: linear-gradient(135deg, #0d1117 0%, #1a2332 70%, #0d1117 100%); }
-.hero-slide--verde  { background: linear-gradient(135deg, #0f1a0a 0%, #1a3015 70%, #0f1a0a 100%); }
-.hero-slide--rojo   { background: linear-gradient(135deg, #1a0a0a 0%, #2d1010 70%, #1a0a0a 100%); }
+/* Fondo neutro de respaldo (visible solo si no hay imagen) */
+.hero-slide--oscuro { background: #0d1117; }
+.hero-slide--verde  { background: #0f1a0a; }
+.hero-slide--rojo   { background: #1a0a0a; }
 
-/* Imagen de fondo del slide (oculta, es solo un pixel de color) */
+/* Imagen de fondo del slide — protagonista total, sin apagar */
 .hero-bg-img {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: .3;
+    opacity: 1;
 }
 
-/* Overlay degradado para enfocar el texto a la izquierda */
+/* Overlay suave solo a la izquierda para que el texto sea legible */
 .hero-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, rgba(0,0,0,.75) 0%, rgba(0,0,0,.2) 60%, transparent 100%);
+    background: linear-gradient(90deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.15) 50%, transparent 100%);
     z-index: 1;
 }
 
