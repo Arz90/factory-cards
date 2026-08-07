@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
@@ -16,7 +17,7 @@ use Illuminate\View\View;
 class RegisteredUserController extends Controller
 {
     /**
-     * Display the registration view.
+     * Muestra el formulario de registro.
      */
     public function create(): View
     {
@@ -24,28 +25,35 @@ class RegisteredUserController extends Controller
     }
 
     /**
-     * Handle an incoming registration request.
+     * Procesa el registro de un nuevo usuario.
+     * Los nuevos registros son siempre clientes → redirige a la portada.
      *
      * @throws ValidationException
      */
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'name'     => ['required', 'string', 'max:255'],
+            'email'    => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
+        $nuevoUsuario = User::create([
+            'name'     => $request->name,
+            'email'    => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
-        event(new Registered($user));
+        event(new Registered($nuevoUsuario));
 
-        Auth::login($user);
+        Auth::login($nuevoUsuario);
 
-        return redirect(route('dashboard', absolute: false));
+        Log::info('Nuevo usuario registrado', [
+            'usuario_id'    => $nuevoUsuario->id,
+            'usuario_email' => $nuevoUsuario->email,
+        ]);
+
+        // Los registros públicos son siempre clientes → portada de la tienda
+        return redirect(route('home'));
     }
 }
