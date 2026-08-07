@@ -11,7 +11,11 @@ class CartController extends Controller
     public function index()
     {
         $items = $this->getCartItems();
-        $total = $items->sum(fn($i) => $i->price * $i->quantity);
+        // Para usuarios: CartItem objects con relación product (usamos lineTotal()).
+        // Para guests: arrays de sesión con clave 'price'.
+        $total = auth()->check()
+            ? $items->sum(fn($i) => $i->lineTotal())
+            : $items->sum(fn($i) => ($i['price'] ?? 0) * ($i['quantity'] ?? 0));
         return view('shop.cart', compact('items', 'total'));
     }
 
@@ -26,7 +30,6 @@ class CartController extends Controller
                 'product_id' => $product->id,
             ]);
             $item->quantity = ($item->quantity ?? 0) + $qty;
-            $item->price    = $product->price;
             $item->save();
         } else {
             $cart = session('cart', []);
