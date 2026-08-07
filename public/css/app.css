@@ -757,7 +757,7 @@ body {
 #chatbot-widget {
     position: fixed;
     bottom: 20px;
-    left: 20px;
+    right: 20px;
     z-index: 1050;
     display: flex;
     flex-direction: column;
@@ -813,7 +813,7 @@ body {
     gap: 8px;
     background: #fff;
     border: 1.5px solid var(--fc-verde);
-    border-radius: 16px 16px 16px 4px;
+    border-radius: 16px 16px 4px 16px;
     padding: 10px 14px;
     font-size: .83rem;
     font-weight: 600;
@@ -851,7 +851,7 @@ body {
 .chatbot-ventana {
     position: fixed;
     bottom: 105px;                  /* por encima del widget */
-    left: 20px;
+    right: 20px;
     width: 320px;
     max-height: 520px;
     background: #fff;
@@ -1018,7 +1018,7 @@ body {
 @media (max-width: 400px) {
     .chatbot-ventana {
         width: calc(100vw - 28px);
-        left: 14px;
+        right: 14px;
         bottom: 100px;
     }
 }
