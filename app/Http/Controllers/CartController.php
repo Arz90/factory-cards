@@ -54,6 +54,10 @@ class CartController extends Controller
     {
         $request->validate(['quantity' => 'required|integer|min:1|max:99']);
         $cartItem->update(['quantity' => $request->quantity]);
+
+        if ($request->wantsJson()) {
+            return response()->json(['ok' => true, 'quantity' => $cartItem->quantity]);
+        }
         return back();
     }
 
