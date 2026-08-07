@@ -12,7 +12,9 @@
     </a>
 </div>
 
-<form action="{{ isset($product) ? route('admin.productos.update', $product) : route('admin.productos.store') }}"
+{{-- Pasamos el ID explícitamente (no el modelo) para evitar UrlGenerationException
+     cuando Laravel no puede resolver el parámetro {producto} desde el objeto --}}
+<form action="{{ isset($product) ? route('admin.productos.update', $product->id) : route('admin.productos.store') }}"
       method="POST" enctype="multipart/form-data">
     @csrf
     @if(isset($product)) @method('PUT') @endif

@@ -124,6 +124,71 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+{{-- SweetAlert2: popups de confirmación elegantes para acciones destructivas --}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+<script>
+/**
+ * Listener global para confirmación de eliminación con SweetAlert2.
+ *
+ * Uso en cualquier vista del panel admin:
+ *   <form method="POST" action="..." class="d-inline">
+ *       @csrf  @method('DELETE')
+ *       <button type="button"
+ *               class="btn-swal-delete"
+ *               data-nombre="Nombre del elemento">
+ *           <i class="bi bi-trash"></i>
+ *       </button>
+ *   </form>
+ *
+ * El botón debe ser type="button" (no submit) para que SweetAlert intercepte el clic.
+ * Si el usuario confirma, el listener envía el formulario padre con form.submit().
+ */
+document.addEventListener('DOMContentLoaded', function () {
+
+    // Usamos delegación de eventos para que funcione con elementos cargados dinámicamente
+    document.addEventListener('click', function (e) {
+        const boton = e.target.closest('.btn-swal-delete');
+        if (!boton) return;
+
+        e.preventDefault();
+
+        // El nombre del elemento a eliminar viene del atributo data-nombre
+        const nombreElemento = boton.dataset.nombre
+            ? '"' + boton.dataset.nombre + '"'
+            : 'este elemento';
+
+        // Formulario padre que contiene la acción DELETE
+        const formulario = boton.closest('form');
+        if (!formulario) {
+            console.error('btn-swal-delete: no se encontró el <form> padre.');
+            return;
+        }
+
+        // Mostrar el popup de confirmación
+        Swal.fire({
+            title:              '¿Estás seguro?',
+            text:               '¿Estás seguro de que deseas eliminar ' + nombreElemento + '? No podrás revertir este cambio.',
+            icon:               'warning',
+            showCancelButton:   true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor:  '#6c757d',
+            confirmButtonText:  '<i class="bi bi-trash me-1"></i>Sí, eliminar',
+            cancelButtonText:   'Cancelar',
+            reverseButtons:     true,
+            focusCancel:        true,   // foco en Cancelar por defecto (más seguro)
+        }).then(function (resultado) {
+            if (resultado.isConfirmed) {
+                // El usuario confirmó: enviamos el formulario DELETE
+                formulario.submit();
+            }
+        });
+    });
+
+});
+</script>
+
 @stack('scripts')
 </body>
 </html>

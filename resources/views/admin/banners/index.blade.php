@@ -114,11 +114,13 @@
 
                             <form action="{{ route('admin.banners.destroy', $banner) }}"
                                   method="POST"
-                                  class="d-inline"
-                                  onsubmit="return confirm('¿Eliminar este banner? Esta acción no se puede deshacer.')">
+                                  class="d-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                <button type="button"
+                                        class="btn btn-sm btn-outline-danger btn-swal-delete"
+                                        data-nombre="{{ $banner->title }}"
+                                        title="Eliminar banner">
                                     <i class="bi bi-trash"></i>
                                 </button>
                             </form>

@@ -18,9 +18,14 @@
                     <td><span class="badge bg-{{ $cat->is_active ? 'success' : 'secondary' }}">{{ $cat->is_active ? 'Sí' : 'No' }}</span></td>
                     <td class="text-end">
                         <a href="{{ route('admin.categorias.edit', $cat) }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></a>
-                        <form action="{{ route('admin.categorias.destroy', $cat) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Eliminar?')">
+                        <form action="{{ route('admin.categorias.destroy', $cat) }}" method="POST" class="d-inline">
                             @csrf @method('DELETE')
-                            <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-danger btn-swal-delete"
+                                    data-nombre="{{ $cat->name }}"
+                                    title="Eliminar categoría">
+                                <i class="bi bi-trash"></i>
+                            </button>
                         </form>
                     </td>
                 </tr>

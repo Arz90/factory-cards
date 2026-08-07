@@ -112,9 +112,15 @@
                     </td>
                     <td class="text-end">
                         <a href="{{ route('admin.productos.edit', $product) }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></a>
-                        <form action="{{ route('admin.productos.destroy', $product) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Eliminar «{{ addslashes($product->name) }}»?')">
+                        {{-- type="button" para que SweetAlert intercepte antes de enviar el form --}}
+                        <form action="{{ route('admin.productos.destroy', $product) }}" method="POST" class="d-inline">
                             @csrf @method('DELETE')
-                            <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-danger btn-swal-delete"
+                                    data-nombre="{{ $product->name }}"
+                                    title="Eliminar producto">
+                                <i class="bi bi-trash"></i>
+                            </button>
                         </form>
                     </td>
                 </tr>

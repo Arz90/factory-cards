@@ -19,9 +19,14 @@
                     <td><span class="badge bg-{{ $f->is_active ? 'success' : 'secondary' }}">{{ $f->is_active ? 'Sí' : 'No' }}</span></td>
                     <td class="text-end">
                         <a href="{{ route('admin.franquicias.edit', $f) }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></a>
-                        <form action="{{ route('admin.franquicias.destroy', $f) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Eliminar?')">
+                        <form action="{{ route('admin.franquicias.destroy', $f) }}" method="POST" class="d-inline">
                             @csrf @method('DELETE')
-                            <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-danger btn-swal-delete"
+                                    data-nombre="{{ $f->name }}"
+                                    title="Eliminar franquicia">
+                                <i class="bi bi-trash"></i>
+                            </button>
                         </form>
                     </td>
                 </tr>
