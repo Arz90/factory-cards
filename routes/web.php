@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\ChatbotController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +28,16 @@ Route::get('/producto/{slug}', [ShopController::class, 'show'])->name('shop.prod
 Route::get('/franquicia/{slug}', [ShopController::class, 'byFranchise'])->name('shop.franchise');
 Route::get('/categoria/{slug}', [ShopController::class, 'byCategory'])->name('shop.category');
 Route::get('/buscar', [ShopController::class, 'search'])->name('shop.search');
+
+/*
+|--------------------------------------------------------------------------
+| Chatbot (AJAX — sin autenticación requerida)
+|--------------------------------------------------------------------------
+*/
+Route::prefix('chatbot')->name('chatbot.')->group(function () {
+    Route::get('/eventos',   [ChatbotController::class, 'eventosProximos'])->name('eventos');
+    Route::post('/contacto', [ChatbotController::class, 'enviarMensaje'])->name('contacto');
+});
 
 /*
 |--------------------------------------------------------------------------
