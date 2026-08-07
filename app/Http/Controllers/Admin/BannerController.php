@@ -51,9 +51,17 @@ class BannerController extends Controller
             'button_text' => 'required|string|max:50',
             'order'       => 'required|integer|min:0',
             'is_active'   => 'boolean',
-            // La imagen es obligatoria al crear
-            'imagen'      => 'required|image|mimes:jpg,jpeg,png,webp|max:3072',
+            // Nota: no usamos 'image' ni 'mimes' porque dependen de la extensión
+            // fileinfo, que está bloqueada por Windows App Control en este entorno.
+            // La validación de tipo de archivo se hace manualmente más abajo.
+            'imagen'      => 'required|max:3072',
         ]);
+
+        // Validación manual de extensión (sin fileinfo) — obligatoria al crear
+        $errorExtension = $this->validarExtensionImagen($request->file('imagen'));
+        if ($errorExtension) {
+            return back()->withInput()->withErrors(['imagen' => $errorExtension]);
+        }
 
         try {
             // Subir la imagen antes de crear el registro
@@ -109,9 +117,17 @@ class BannerController extends Controller
             'button_text' => 'required|string|max:50',
             'order'       => 'required|integer|min:0',
             'is_active'   => 'boolean',
-            // La imagen es opcional en edición (se mantiene la actual si no se sube)
-            'imagen'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:3072',
+            // Sin 'image'/'mimes' — fileinfo bloqueada. Validación manual abajo.
+            'imagen'      => 'nullable|max:3072',
         ]);
+
+        // Validación manual de extensión solo si se subió un archivo nuevo
+        if ($request->hasFile('imagen')) {
+            $errorExtension = $this->validarExtensionImagen($request->file('imagen'));
+            if ($errorExtension) {
+                return back()->withInput()->withErrors(['imagen' => $errorExtension]);
+            }
+        }
 
         try {
             $datosActualizar = [
@@ -215,15 +231,50 @@ class BannerController extends Controller
     // ── Métodos privados de ayuda ─────────────────────────────────────────
 
     /**
-     * Sube la imagen del banner a public/images/banners/ y devuelve la ruta relativa.
+     * Valida la extensión del archivo sin usar fileinfo/MIME.
+     * Acepta: jpg, jpeg, png, webp.
+     *
+     * @return string|null  Mensaje de error, o null si la extensión es válida.
+     */
+    private function validarExtensionImagen($archivo): ?string
+    {
+        if (!$archivo || !$archivo->isValid()) {
+            return 'El archivo no es válido o hubo un error al subirlo.';
+        }
+
+        $extensionesPermitidas = ['jpg', 'jpeg', 'png', 'webp'];
+        $extension = strtolower($archivo->getClientOriginalExtension());
+
+        if (!in_array($extension, $extensionesPermitidas, true)) {
+            return 'Solo se aceptan imágenes con extensión: JPG, JPEG, PNG o WebP. '
+                 . "Se recibió: \".{$extension}\"";
+        }
+
+        return null;
+    }
+
+    /**
+     * Sube la imagen a public/images/banners/ y devuelve la ruta relativa.
+     *
+     * Limpia el nombre para evitar:
+     *  - Dobles extensiones (ej: foto.jpg.webp → foto.webp)
+     *  - Caracteres especiales o espacios en el nombre del archivo
      */
     private function subirImagen(Request $request): string
     {
-        $archivo      = $request->file('imagen');
-        $nombreUnico  = time() . '_' . preg_replace('/[^a-z0-9._-]/i', '_', $archivo->getClientOriginalName());
+        $archivo    = $request->file('imagen');
+        $extension  = strtolower($archivo->getClientOriginalExtension());
+
+        // Extraer el nombre sin extensión final y luego quitar cualquier
+        // extensión anidada (ej: "foto.jpg" → "foto" cuando el archivo es "foto.jpg.webp")
+        $stemOriginal  = pathinfo($archivo->getClientOriginalName(), PATHINFO_FILENAME);
+        $stemLimpio    = preg_replace('/\.[a-z0-9]+$/i', '', $stemOriginal); // quita .jpg de "foto.jpg"
+        $stemSeguro    = \Illuminate\Support\Str::slug($stemLimpio) ?: 'banner'; // slug o fallback
+
+        $nombreUnico    = time() . '_' . $stemSeguro . '.' . $extension;
         $carpetaDestino = public_path('images/banners');
 
-        // Crear la carpeta si no existe
+        // Crear la carpeta si no existe todavía
         if (!is_dir($carpetaDestino)) {
             mkdir($carpetaDestino, 0755, true);
         }
@@ -234,7 +285,7 @@ class BannerController extends Controller
     }
 
     /**
-     * Elimina el archivo de imagen anterior del servidor (si existe y no es placeholder).
+     * Elimina el archivo de imagen del servidor si existe (no actúa sobre placeholders remotos).
      */
     private function eliminarImagenAnterior(?string $rutaImagen): void
     {

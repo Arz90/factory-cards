@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Franchise;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class ProductController extends Controller
@@ -41,7 +42,16 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $data = $this->validateProduct($request);
-        $data['slug'] = Str::slug($data['name']);
+
+        // Validación manual de extensión si se adjuntó imagen
+        if ($request->hasFile('image')) {
+            $errorExt = $this->validarExtensionImagen($request->file('image'));
+            if ($errorExt) {
+                return back()->withInput()->withErrors(['image' => $errorExt]);
+            }
+        }
+
+        $data['slug']      = Str::slug($data['name']);
         $data['image_url'] = $this->handleImageUpload($request);
 
         Product::create($data);
@@ -62,6 +72,11 @@ class ProductController extends Controller
         $data = $this->validateProduct($request, $product->id);
 
         if ($request->hasFile('image')) {
+            // Validación manual de extensión sin fileinfo
+            $errorExt = $this->validarExtensionImagen($request->file('image'));
+            if ($errorExt) {
+                return back()->withInput()->withErrors(['image' => $errorExt]);
+            }
             $data['image_url'] = $this->handleImageUpload($request);
         }
 
@@ -112,20 +127,67 @@ class ProductController extends Controller
             'status'            => 'required|in:active,inactive,preorder',
             'is_featured'       => 'boolean',
             'weight'            => 'nullable|numeric|min:0',
-            'image'             => 'nullable|image|max:4096',
+            // Sin 'image' ni 'mimes': ambas reglas requieren la extensión fileinfo,
+            // que está bloqueada por Windows App Control. La extensión se valida manualmente.
+            'image'             => 'nullable|max:4096',
         ]);
     }
 
+    /**
+     * Valida la extensión del archivo de imagen sin usar fileinfo/MIME detection.
+     * Extensiones aceptadas: jpg, jpeg, png, webp.
+     *
+     * @return string|null  Mensaje de error o null si es válida.
+     */
+    private function validarExtensionImagen($archivo): ?string
+    {
+        if (!$archivo || !$archivo->isValid()) {
+            return 'El archivo no es válido o hubo un error al subirlo.';
+        }
+
+        $extensionesPermitidas = ['jpg', 'jpeg', 'png', 'webp'];
+        $extension = strtolower($archivo->getClientOriginalExtension());
+
+        if (!in_array($extension, $extensionesPermitidas, true)) {
+            return 'Solo se aceptan imágenes JPG, JPEG, PNG o WebP. '
+                 . "Se recibió: \".{$extension}\"";
+        }
+
+        return null;
+    }
+
+    /**
+     * Sube la imagen del producto a public/images/products/ y devuelve la ruta relativa.
+     *
+     * Limpia el nombre para evitar dobles extensiones (ej: foto.jpg.webp → foto.webp)
+     * y caracteres especiales que puedan causar problemas en el sistema de archivos.
+     */
     private function handleImageUpload(Request $request): ?string
     {
         if (!$request->hasFile('image')) {
             return null;
         }
 
-        $file = $request->file('image');
-        $name = time() . '_' . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->getClientOriginalExtension();
-        $file->move(public_path('images/products'), $name);
+        $archivo   = $request->file('image');
+        $extension = strtolower($archivo->getClientOriginalExtension());
 
-        return 'images/products/' . $name;
+        // Extraer el stem del nombre original y quitar cualquier extensión anidada
+        // Ejemplo: "producto.jpg.webp" → stem="producto.jpg" → limpio="producto"
+        $stemOriginal = pathinfo($archivo->getClientOriginalName(), PATHINFO_FILENAME);
+        $stemLimpio   = preg_replace('/\.[a-z0-9]+$/i', '', $stemOriginal);
+        $stemSeguro   = Str::slug($stemLimpio) ?: 'producto';
+
+        $nombreFinal = time() . '_' . $stemSeguro . '.' . $extension;
+
+        $carpeta = public_path('images/products');
+        if (!is_dir($carpeta)) {
+            mkdir($carpeta, 0755, true);
+        }
+
+        $archivo->move($carpeta, $nombreFinal);
+
+        Log::info('Imagen de producto subida', ['archivo' => $nombreFinal]);
+
+        return 'images/products/' . $nombreFinal;
     }
 }
