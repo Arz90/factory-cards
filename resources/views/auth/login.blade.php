@@ -25,7 +25,8 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('login') }}">
+    {{-- Usamos URL relativa (/login) para evitar mismatch de dominio en cookies de sesión --}}
+    <form method="POST" action="{{ route('login', absolute: false) }}">
         @csrf
 
         {{-- Campo: Email --}}

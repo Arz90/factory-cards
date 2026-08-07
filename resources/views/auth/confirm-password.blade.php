@@ -16,7 +16,8 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('password.confirm') }}">
+    {{-- URL relativa para evitar mismatch de dominio con la cookie de sesión --}}
+    <form method="POST" action="{{ route('password.confirm', absolute: false) }}">
         @csrf
 
         <div class="mb-4">

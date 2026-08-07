@@ -16,7 +16,8 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('register') }}">
+    {{-- URL relativa para evitar mismatch de dominio con la cookie de sesión --}}
+    <form method="POST" action="{{ route('register', absolute: false) }}">
         @csrf
 
         {{-- Campo: Nombre --}}

@@ -14,7 +14,8 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('password.store') }}">
+    {{-- URL relativa para evitar mismatch de dominio con la cookie de sesión --}}
+    <form method="POST" action="{{ route('password.store', absolute: false) }}">
         @csrf
 
         {{-- Token de restablecimiento (oculto, enviado por email) --}}

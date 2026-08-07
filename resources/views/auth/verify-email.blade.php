@@ -23,7 +23,8 @@
 
     <div class="d-grid gap-2">
         {{-- Botón para reenviar el email de verificación --}}
-        <form method="POST" action="{{ route('verification.send') }}">
+        {{-- URL relativa para evitar mismatch de dominio con la cookie de sesión --}}
+        <form method="POST" action="{{ route('verification.send', absolute: false) }}">
             @csrf
             <button type="submit" class="btn btn-primary w-100">
                 <i class="bi bi-envelope-check me-2"></i>Reenviar email de verificación
@@ -31,7 +32,7 @@
         </form>
 
         {{-- Opción para cerrar sesión --}}
-        <form method="POST" action="{{ route('logout') }}">
+        <form method="POST" action="{{ route('logout', absolute: false) }}">
             @csrf
             <button type="submit" class="btn btn-outline-secondary w-100">
                 <i class="bi bi-box-arrow-left me-2"></i>Cerrar sesión

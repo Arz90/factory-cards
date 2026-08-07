@@ -24,7 +24,8 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('password.email') }}">
+    {{-- URL relativa para evitar mismatch de dominio con la cookie de sesión --}}
+    <form method="POST" action="{{ route('password.email', absolute: false) }}">
         @csrf
 
         <div class="mb-4">
