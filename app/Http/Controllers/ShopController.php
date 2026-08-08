@@ -24,20 +24,35 @@ class ShopController extends Controller
             $featured  = Product::with(['franchise', 'category'])->featured()->active()->inStock()->limit(8)->get();
             $preorders = Product::with(['franchise', 'category'])->preorder()->limit(4)->get();
 
+            // Franquicias activas que tengan al menos un producto, con sus últimos 10 productos.
+            // Se usa para los carruseles por franquicia de la portada.
+            $porFranquicia = Franchise::where('is_active', true)
+                ->has('products')
+                ->with(['products' => function ($q) {
+                    $q->whereIn('status', ['active', 'preorder'])
+                      ->orderByDesc('is_featured')
+                      ->orderByDesc('created_at')
+                      ->take(10);
+                }])
+                ->orderBy('sort_order')
+                ->get();
+
             Log::info('Portada cargada', [
                 'banners_activos'    => $banners->count(),
                 'productos_featured' => $featured->count(),
+                'franquicias'        => $porFranquicia->count(),
             ]);
 
         } catch (\Throwable $e) {
             // Si falla la carga de banners no rompemos la portada
             Log::error('Error al cargar banners en la portada', ['error' => $e->getMessage()]);
-            $banners   = collect();
-            $featured  = collect();
-            $preorders = collect();
+            $banners       = collect();
+            $featured      = collect();
+            $preorders     = collect();
+            $porFranquicia = collect();
         }
 
-        return view('shop.home', compact('banners', 'featured', 'preorders'));
+        return view('shop.home', compact('banners', 'featured', 'preorders', 'porFranquicia'));
     }
 
     public function catalog(Request $request)

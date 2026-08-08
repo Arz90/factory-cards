@@ -1025,6 +1025,358 @@ body {
 
 
 /* ================================================================
+   CARRUSELES POR FRANQUICIA — Secciones de la portada
+   Cada sección tiene cabecera estilizada + Swiper horizontal.
+================================================================ */
+
+/* Contenedor general de todas las secciones */
+.secciones-franquicia {
+    padding-bottom: 2rem;
+}
+
+/* Separador sutil entre secciones de franquicia */
+.franquicia-separador {
+    height: 1px;
+    background: #f0f0f0;
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+/* ── Cabecera de sección de franquicia ── */
+.franquicia-seccion-header {
+    gap: 12px;
+}
+
+.franquicia-titulo-grupo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Barra de color a la izquierda del título (hereda color de la franquicia via style inline) */
+.franquicia-titulo-barra {
+    display: inline-block;
+    width: 4px;
+    height: 1.5rem;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+.franquicia-titulo-h2 {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--fc-dark);
+    letter-spacing: -.3px;
+}
+
+.franquicia-ver-todos {
+    font-size: .75rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* ── Contenedor Swiper: necesita overflow visible para las flechas ── */
+.swiper-franquicia {
+    /* Dejar espacio lateral para que las flechas no tapen las tarjetas */
+    padding: 4px 2px 12px !important;
+    overflow: visible !important;    /* para que la sombra hover no se corte */
+    clip-path: inset(-20px -40px -20px -40px); /* permite que las flechas salgan del clip */
+}
+
+/* ── Flechas de navegación Swiper ── */
+.swiper-btn-franquicia {
+    /* Tamaño pequeño y discreto */
+    width: 32px !important;
+    height: 32px !important;
+    background: #fff;
+    border: 1.5px solid #dee2e6;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0,0,0,.1);
+    transition: background var(--fc-transition), border-color var(--fc-transition);
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    margin-top: -20px !important; /* compensar el padding-bottom del swiper */
+}
+
+.swiper-btn-franquicia::after {
+    font-size: .65rem !important;
+    font-weight: 900;
+    color: var(--fc-dark);
+}
+
+.swiper-btn-franquicia:hover {
+    background: var(--fc-verde);
+    border-color: var(--fc-verde);
+}
+
+.swiper-btn-franquicia:hover::after {
+    color: #fff;
+}
+
+/* Ocultar flechas cuando no hay slides suficientes (Swiper añade swiper-button-disabled) */
+.swiper-button-disabled.swiper-btn-franquicia {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* ── Slide individual: altura uniforme ── */
+.swiper-slide {
+    height: auto;  /* cada slide se estira al alto del más alto */
+}
+
+
+/* ================================================================
+   TARJETA DE PRODUCTO (pc-card)
+   Diseño para los carruseles de la portada.
+   Diferente del .product-card legacy que se usa en el catálogo.
+================================================================ */
+
+.pc-card {
+    background: #fff;
+    border: 1px solid #E5E7EB;
+    border-radius: var(--fc-card-radius);
+    overflow: hidden;
+    transition: box-shadow var(--fc-transition), transform var(--fc-transition);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.pc-card:hover {
+    box-shadow: 0 8px 28px rgba(0,0,0,.1);
+    transform: translateY(-3px);
+}
+
+/* ── Área de imagen ── */
+.pc-img-area {
+    position: relative;
+    overflow: hidden;
+    background: #F3F4F6;
+    aspect-ratio: 1 / 1;   /* cuadrado: funciona bien para cartas y cajas TCG */
+}
+
+/* Imagen real */
+.pc-img-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.pc-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 10px;
+    transition: transform .3s ease;
+}
+
+.pc-card:hover .pc-img {
+    transform: scale(1.05);
+}
+
+/* Placeholder cuando no hay imagen */
+.pc-img-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pc-img-icon {
+    font-size: 2.5rem;
+    opacity: .5;
+}
+
+/* ── Badge OFERTA / PRECOMPRA ── */
+.pc-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    font-size: .62rem;
+    font-weight: 800;
+    letter-spacing: .5px;
+    padding: 3px 7px;
+    border-radius: 4px;
+    z-index: 2;
+    text-transform: uppercase;
+    line-height: 1.2;
+}
+
+.pc-badge--danger  { background: #EF4444; color: #fff; }
+.pc-badge--primary { background: #3B82F6; color: #fff; }
+
+/* ── Overlay hover con botones de acción ── */
+.pc-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px;
+    background: rgba(0,0,0,.35);
+    opacity: 0;
+    transition: opacity .22s ease;
+    z-index: 3;
+}
+
+.pc-card:hover .pc-overlay {
+    opacity: 1;
+}
+
+/* Botón base del overlay */
+.pc-overlay-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border: none;
+    border-radius: 20px;
+    padding: 7px 13px;
+    font-size: .75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform .15s ease, background var(--fc-transition);
+    white-space: nowrap;
+}
+
+.pc-overlay-btn:hover {
+    transform: scale(1.05);
+}
+
+/* Botón "Añadir al carrito" */
+.pc-overlay-btn--cart {
+    background: var(--fc-verde);
+    color: #fff;
+    flex: 1;
+}
+
+.pc-overlay-btn--cart:hover {
+    background: var(--fc-verde-dark);
+}
+
+/* Estado OK tras añadir */
+.pc-overlay-btn--ok {
+    background: var(--fc-verde-dark) !important;
+}
+
+/* Botón "Favoritos" */
+.pc-overlay-btn--fav {
+    background: rgba(255,255,255,.9);
+    color: var(--fc-dark);
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 50%;
+}
+
+.pc-overlay-btn--fav:hover {
+    background: #fff;
+    color: #EF4444;
+}
+
+/* ── Cuerpo de la tarjeta ── */
+.pc-body {
+    padding: 10px 12px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+}
+
+/* Nombre de categoría/franquicia pequeño */
+.pc-meta {
+    font-size: .67rem;
+    color: #9CA3AF;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Nombre del producto (máximo 2 líneas) */
+.pc-nombre {
+    font-size: .82rem;
+    font-weight: 700;
+    color: var(--fc-dark);
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.pc-nombre:hover {
+    color: var(--fc-verde-dark);
+}
+
+/* ── Área de precios ── */
+.pc-precios {
+    margin-top: auto;
+    padding-top: 6px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px;
+}
+
+/* Precio principal (rebajado o normal) */
+.pc-precio-actual {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--fc-verde-dark);
+    line-height: 1;
+}
+
+/* Precio original tachado */
+.pc-precio-original {
+    font-size: .75rem;
+    color: #9CA3AF;
+    text-decoration: line-through;
+}
+
+/* Porcentaje de ahorro */
+.pc-ahorro {
+    font-size: .65rem;
+    font-weight: 800;
+    background: #FEF2F2;
+    color: #DC2626;
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+
+/* Etiqueta de precompra */
+.pc-precompra-label {
+    font-size: .65rem;
+    font-weight: 700;
+    color: #3B82F6;
+    background: #EFF6FF;
+    padding: 2px 6px;
+    border-radius: 3px;
+    width: 100%;
+    text-align: center;
+    margin-top: 4px;
+}
+
+/* Etiqueta sin stock */
+.pc-sinstock-label {
+    font-size: .65rem;
+    font-weight: 700;
+    color: #6B7280;
+    background: #F3F4F6;
+    padding: 2px 6px;
+    border-radius: 3px;
+    width: 100%;
+    text-align: center;
+    margin-top: 4px;
+}
+
+
+/* ================================================================
    PAGINACIÓN — Bootstrap 5 con colores de Factory Cards
    Aplica tanto en la tienda pública como en el panel admin.
 ================================================================ */

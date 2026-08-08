@@ -8,6 +8,11 @@
 @section('title', 'Factory Cards — Tienda TCG')
 @section('meta_description', 'Tienda online especializada en TCG. Pokémon, Magic: The Gathering, One Piece y más. Envío rápido y precios competitivos.')
 
+{{-- CSS de Swiper.js — solo se carga en la portada --}}
+@push('styles')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+@endpush
+
 @section('content')
 
 {{-- ================================================================
@@ -216,74 +221,282 @@
 
 
 {{-- ================================================================
-     PRODUCTOS DESTACADOS — Grid de tarjetas (si hay featured)
+     CARRUSELES POR FRANQUICIA
+     Una sección por cada franquicia activa con productos.
+     Cada carrusel es un Swiper independiente con flechas.
 ================================================================ --}}
-@if(isset($featured) && $featured->count())
-<section class="py-5">
-    <div class="container-xl">
+@if(isset($porFranquicia) && $porFranquicia->count())
 
-        {{-- Título de sección --}}
-        <div class="d-flex align-items-center justify-content-between mb-4">
-            <h2 class="h4 fw-black mb-0">
-                <span class="seccion-titulo-acento"></span>
-                Productos destacados
-            </h2>
-            <a href="{{ route('shop.catalog') }}"
-               class="btn btn-outline-secondary btn-sm">
-                Ver todos <i class="bi bi-arrow-right ms-1"></i>
-            </a>
-        </div>
+<div class="secciones-franquicia">
+@foreach($porFranquicia as $franquicia)
+    @if($franquicia->products->isEmpty()) @continue @endif
 
-        {{-- Grid de productos --}}
-        <div class="row g-3">
-            @foreach($featured as $product)
-            <div class="col-6 col-md-4 col-lg-3">
-                <a href="{{ route('shop.product', $product->slug) }}" class="text-decoration-none">
-                    <div class="product-card card h-100 position-relative">
+    {{-- ── Sección de franquicia ── --}}
+    <section class="seccion-franquicia py-4" id="franquicia-{{ $franquicia->slug }}">
+        <div class="container-xl">
 
-                        {{-- Badge de estado (oferta / precompra) --}}
-                        @if($product->badgeLabel())
-                            <span class="product-badge badge bg-{{ $product->badgeColor() }}">
-                                {{ $product->badgeLabel() }}
-                            </span>
-                        @endif
-
-                        {{-- Imagen del producto --}}
-                        @if($product->image_url)
-                            <img src="{{ asset($product->image_url) }}"
-                                 class="card-img-top"
-                                 alt="{{ $product->name }}">
-                        @else
-                            <div class="card-img-top d-flex align-items-center justify-content-center bg-light">
-                                <i class="bi bi-image fs-1 text-muted"></i>
-                            </div>
-                        @endif
-
-                        <div class="card-body">
-                            {{-- Nombre del producto (truncado a 2 líneas) --}}
-                            <div class="card-title">{{ $product->name }}</div>
-
-                            {{-- Precio --}}
-                            <div class="mt-auto pt-2">
-                                <span class="price-current">
-                                    {{ number_format($product->price, 2, ',', '.') }} €
-                                </span>
-                                @if($product->hasDiscount())
-                                    <span class="price-original ms-1">
-                                        {{ number_format($product->original_price, 2, ',', '.') }} €
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                    </div>
+            {{-- Cabecera: título + línea decorativa + enlace "Ver todos" --}}
+            <div class="franquicia-seccion-header d-flex align-items-center justify-content-between mb-3">
+                <div class="franquicia-titulo-grupo">
+                    {{-- Línea de color a la izquierda del título --}}
+                    <span class="franquicia-titulo-barra"
+                          style="background:{{ $franquicia->color ?? 'var(--fc-verde)' }}"></span>
+                    <h2 class="franquicia-titulo-h2 mb-0">{{ $franquicia->name }}</h2>
+                </div>
+                <a href="{{ route('shop.franchise', $franquicia->slug) }}"
+                   class="btn btn-outline-secondary btn-sm franquicia-ver-todos">
+                    Ver todos <i class="bi bi-arrow-right ms-1"></i>
                 </a>
             </div>
-            @endforeach
-        </div>
 
-    </div>
-</section>
+            {{-- Swiper — cada franquicia tiene su propio contenedor --}}
+            <div class="swiper swiper-franquicia" data-slug="{{ $franquicia->slug }}">
+
+                {{-- Botón anterior (se posiciona con CSS fuera del wrapper) --}}
+                <div class="swiper-button-prev swiper-btn-franquicia"></div>
+
+                <div class="swiper-wrapper">
+                    @foreach($franquicia->products as $producto)
+                    <div class="swiper-slide">
+
+                        {{-- ── TARJETA DE PRODUCTO ── --}}
+                        <div class="pc-card">
+
+                            {{-- Área de imagen con overlay hover --}}
+                            <div class="pc-img-area">
+
+                                {{-- Imagen o placeholder con color de franquicia --}}
+                                <a href="{{ route('shop.product', $producto->slug) }}"
+                                   class="pc-img-link" tabindex="-1" aria-hidden="true">
+                                    @if($producto->image_url)
+                                        <img src="{{ asset($producto->image_url) }}"
+                                             alt="{{ $producto->name }}"
+                                             class="pc-img"
+                                             loading="lazy">
+                                    @else
+                                        <div class="pc-img-placeholder"
+                                             style="background:{{ $franquicia->color ?? '#e9ecef' }}22">
+                                            <i class="bi bi-box-seam pc-img-icon"
+                                               style="color:{{ $franquicia->color ?? '#6c757d' }}"></i>
+                                        </div>
+                                    @endif
+                                </a>
+
+                                {{-- Badge OFERTA / PRECOMPRA (esquina superior izquierda) --}}
+                                @if($producto->badgeLabel())
+                                    <span class="pc-badge pc-badge--{{ $producto->badgeColor() }}">
+                                        {{ $producto->badgeLabel() }}
+                                    </span>
+                                @endif
+
+                                {{-- Overlay con botones: aparece al hacer hover sobre la imagen --}}
+                                <div class="pc-overlay" aria-hidden="true">
+
+                                    {{-- Botón Añadir al Carrito (AJAX) --}}
+                                    <button class="pc-overlay-btn pc-overlay-btn--cart"
+                                            data-producto-id="{{ $producto->id }}"
+                                            data-url="{{ route('cart.add', $producto->id) }}"
+                                            title="Añadir al carrito">
+                                        <i class="bi bi-cart-plus"></i>
+                                        <span>Añadir</span>
+                                    </button>
+
+                                    {{-- Botón Favoritos (stub — Fase 4) --}}
+                                    <button class="pc-overlay-btn pc-overlay-btn--fav"
+                                            title="Añadir a favoritos">
+                                        <i class="bi bi-heart"></i>
+                                    </button>
+
+                                </div>
+
+                            </div>{{-- /.pc-img-area --}}
+
+                            {{-- Cuerpo de la tarjeta --}}
+                            <div class="pc-body">
+
+                                {{-- Franquicia / Categoría en gris pequeño --}}
+                                <div class="pc-meta">
+                                    {{ $producto->category->name ?? $franquicia->name }}
+                                </div>
+
+                                {{-- Nombre del producto (enlace, máximo 2 líneas) --}}
+                                <a href="{{ route('shop.product', $producto->slug) }}"
+                                   class="pc-nombre text-decoration-none">
+                                    {{ $producto->name }}
+                                </a>
+
+                                {{-- Precios --}}
+                                <div class="pc-precios">
+                                    @if($producto->hasDiscount())
+                                        {{-- Precio rebajado + precio tachado + % ahorro --}}
+                                        <span class="pc-precio-actual">
+                                            {{ number_format($producto->price, 2, ',', '.') }} €
+                                        </span>
+                                        <span class="pc-precio-original">
+                                            {{ number_format($producto->original_price, 2, ',', '.') }} €
+                                        </span>
+                                        <span class="pc-ahorro">
+                                            -{{ $producto->discountPercentage() }}%
+                                        </span>
+                                    @else
+                                        <span class="pc-precio-actual">
+                                            {{ number_format($producto->price, 2, ',', '.') }} €
+                                        </span>
+                                    @endif
+
+                                    {{-- Estado: sin stock / precompra --}}
+                                    @if($producto->status === 'preorder')
+                                        <div class="pc-precompra-label">Precompra</div>
+                                    @elseif($producto->stock === 0)
+                                        <div class="pc-sinstock-label">Sin stock</div>
+                                    @endif
+                                </div>
+
+                            </div>{{-- /.pc-body --}}
+
+                        </div>{{-- /.pc-card --}}
+
+                    </div>{{-- /.swiper-slide --}}
+                    @endforeach
+                </div>{{-- /.swiper-wrapper --}}
+
+                {{-- Botón siguiente --}}
+                <div class="swiper-button-next swiper-btn-franquicia"></div>
+
+            </div>{{-- /.swiper --}}
+
+        </div>
+    </section>
+
+    {{-- Separador sutil entre secciones (excepto la última) --}}
+    @if(!$loop->last)
+        <div class="franquicia-separador"></div>
+    @endif
+
+@endforeach
+</div>{{-- /.secciones-franquicia --}}
+
 @endif
 
 @endsection
+
+{{-- JS de Swiper + inicialización — al final del body vía stack --}}
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+(function () {
+    'use strict';
+
+    // ── Configuración responsive compartida por todos los carruseles ─────
+    const breakpoints = {
+        0: {
+            // Móvil: 1.5 tarjetas para dar pista visual de que hay más
+            slidesPerView: 1.5,
+            spaceBetween: 10,
+        },
+        576: {
+            // Mobile landscape / tablet pequeña
+            slidesPerView: 2.5,
+            spaceBetween: 12,
+        },
+        768: {
+            // Tablet
+            slidesPerView: 3,
+            spaceBetween: 16,
+        },
+        992: {
+            // Desktop
+            slidesPerView: 4,
+            spaceBetween: 16,
+        },
+        1200: {
+            // Desktop grande
+            slidesPerView: 5,
+            spaceBetween: 20,
+        },
+    };
+
+    // ── Inicializar un Swiper independiente por cada sección de franquicia ─
+    document.querySelectorAll('.swiper-franquicia').forEach(function (contenedor) {
+        new Swiper(contenedor, {
+            breakpoints:      breakpoints,
+            grabCursor:       true,
+            // Flechas de navegación
+            navigation: {
+                nextEl: contenedor.querySelector('.swiper-button-next'),
+                prevEl: contenedor.querySelector('.swiper-button-prev'),
+            },
+            // Accesibilidad
+            a11y: {
+                prevSlideMessage: 'Producto anterior',
+                nextSlideMessage: 'Producto siguiente',
+            },
+        });
+    });
+
+    // ── Botón "Añadir al carrito" en el overlay (AJAX) ──────────────────
+    const TOKEN_CSRF = document.querySelector('meta[name="csrf-token"]')?.content ?? '';
+
+    document.addEventListener('click', function (e) {
+        const boton = e.target.closest('.pc-overlay-btn--cart');
+        if (!boton) return;
+
+        // Evitar doble clic mientras procesa
+        if (boton.dataset.cargando === 'true') return;
+        boton.dataset.cargando = 'true';
+
+        const url  = boton.dataset.url;
+        const icon = boton.querySelector('i');
+        const span = boton.querySelector('span');
+
+        // Feedback visual inmediato
+        icon.className  = 'bi bi-hourglass-split';
+        span.textContent = '…';
+
+        fetch(url, {
+            method:  'POST',
+            headers: {
+                'X-CSRF-TOKEN': TOKEN_CSRF,
+                'Accept':       'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ quantity: 1 }),
+        })
+        .then(function (res) {
+            if (!res.ok) throw new Error('Error ' + res.status);
+            return res.json();
+        })
+        .then(function () {
+            // Éxito: icono de check durante 1.5 s
+            icon.className   = 'bi bi-check-lg';
+            span.textContent = '¡Añadido!';
+            boton.classList.add('pc-overlay-btn--ok');
+
+            // Actualizar el contador del carrito en el header si existe
+            const contadores = document.querySelectorAll('.cart-badge, .carrito-precio');
+            // El contador exacto requeriría otro fetch; recargamos solo si hay contador visible
+            if (contadores.length) {
+                // Refrescar página para actualizar navbar de forma simple y robusta
+                // (alternativa a mantener un estado global de carrito en JS)
+                setTimeout(function () { location.reload(); }, 1000);
+            }
+        })
+        .catch(function (err) {
+            console.error('[Carrusel] Error al añadir al carrito:', err);
+            icon.className   = 'bi bi-exclamation-triangle';
+            span.textContent = 'Error';
+        })
+        .finally(function () {
+            // Restaurar el estado del botón tras 2 segundos
+            setTimeout(function () {
+                icon.className          = 'bi bi-cart-plus';
+                span.textContent        = 'Añadir';
+                boton.dataset.cargando  = 'false';
+                boton.classList.remove('pc-overlay-btn--ok');
+            }, 2000);
+        });
+    });
+
+})();
+</script>
+@endpush
