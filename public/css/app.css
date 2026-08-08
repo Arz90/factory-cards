@@ -24,6 +24,8 @@ body {
     font-family: 'Nunito', sans-serif;
     color: var(--fc-dark);
     background: #fff;
+    /* Evitar scroll horizontal no deseado por carruseles con overflow visible */
+    overflow-x: hidden;
 }
 
 /* ================================================================
@@ -1507,4 +1509,68 @@ body {
 nav p.small {
     font-size: .78rem;
     color: #6c757d;
+}
+
+
+/* ================================================================
+   MENÚ MÓVIL OFFCANVAS — Correcciones de cabecera y scroll
+================================================================ */
+
+/* Cabecera verde del offcanvas sin bordes ni fondos blancos */
+.menu-movil-header {
+    background: var(--fc-verde) !important;
+    border-bottom: none !important;
+    padding: .9rem 1rem;
+    align-items: center;
+}
+
+/* El offcanvas completo no debe tener fondo blanco en la cabecera */
+#menuMovil {
+    max-height: 100vh;
+}
+
+/* El cuerpo del offcanvas con scroll interno independiente */
+#menuMovil .offcanvas-body {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+
+/* ================================================================
+   CHATBOT FLOTANTE — Adaptación mobile
+   En móvil se mueve a la esquina inferior izquierda, tamaño reducido
+   y z-index por encima del footer pero sin bloquear el offcanvas.
+================================================================ */
+@media (max-width: 767.98px) {
+
+    /* Widget: esquina inferior izquierda en móvil */
+    #chatbot-widget {
+        bottom: 15px;
+        left: 15px;
+        right: auto;
+        z-index: 1080;
+    }
+
+    /* Mascota más pequeña para no restar espacio en pantalla pequeña */
+    .chatbot-toggle-btn,
+    .chatbot-mascot-img,
+    .chatbot-mascot-fallback {
+        width: 50px !important;
+        height: 50px !important;
+    }
+
+    .chatbot-mascot-fallback { font-size: 1.4rem; }
+
+    /* Ventana de chat: ocupa casi todo el ancho en móvil, anclada a la izquierda */
+    .chatbot-ventana {
+        bottom: 75px;
+        left: 10px;
+        right: 10px;
+        width: auto !important;
+    }
+
+    /* Bocadillo: limitado al ancho disponible */
+    .chatbot-bubble {
+        max-width: 180px;
+    }
 }

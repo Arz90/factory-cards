@@ -278,15 +278,14 @@
 ================================================================ --}}
 <div class="offcanvas offcanvas-start" tabindex="-1" id="menuMovil" aria-labelledby="menuMovilLabel">
 
-    <div class="offcanvas-header" style="background:var(--fc-verde);">
+    <div class="offcanvas-header menu-movil-header">
         <a href="{{ route('home') }}"
-           class="text-decoration-none d-inline-block"
+           class="text-decoration-none"
            id="menuMovilLabel"
            aria-label="Factory Cards — Inicio">
             <img src="{{ asset('images/logo.png') }}"
                  alt="Factory Cards"
-                 class="logo-img"
-                 style="height:36px;filter:brightness(0) invert(1);">
+                 style="max-height:40px;width:auto;display:block;filter:brightness(0) invert(1);background:transparent;">
         </a>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
     </div>
