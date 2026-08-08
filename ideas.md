@@ -2,4 +2,6 @@
 2.- pasarela de pago
 3.- mejorar footer, revisar todo lo que se suele usar en las mejores webs, dejar las urls vacias. ---- HECHOS
 4.- HACER CALENDARIO DE EVENTOS
+5.- REVISAR DONDE LLEGA EL EMAIL DEL CHATBOT
+
 

@@ -45,7 +45,22 @@ class CartController extends Controller
         }
 
         if ($request->wantsJson()) {
-            return response()->json(['ok' => true]);
+            // Calcular totales actuales para actualizar la navbar sin recargar
+            if (auth()->check()) {
+                $items      = CartItem::with('product')->where('user_id', auth()->id())->get();
+                $cartCount  = $items->sum('quantity');
+                $cartTotal  = $items->sum(fn($i) => $i->lineTotal());
+            } else {
+                $cartData   = session('cart', []);
+                $cartCount  = collect($cartData)->sum('quantity');
+                $cartTotal  = collect($cartData)->sum(fn($i) => ($i['price'] ?? 0) * ($i['quantity'] ?? 0));
+            }
+
+            return response()->json([
+                'ok'         => true,
+                'cart_count' => $cartCount,
+                'cart_total' => number_format($cartTotal, 2, ',', '.'),
+            ]);
         }
         return back()->with('success', '"' . $product->name . '" añadido al carrito.');
     }
