@@ -42,20 +42,27 @@ body {
 ================================================================ */
 @media (pointer: fine) {
 
-    /* Cursor base — fondo de la tienda y navegación general */
+    /* Cursor base — fondo de la tienda y navegación general.
+       !important necesario para que no lo sobreescriba ninguna regla de Bootstrap */
     body {
-        cursor: url('/images/pikachu-cursor.png') 0 0, auto;
+        cursor: url('/images/pikachu-cursor.png') 0 0, auto !important;
     }
 
-    /* Cursor interactivo — enlaces, botones, tarjetas y elementos clicables */
+    /* Cursor interactivo — enlaces, botones, tarjetas y elementos clicables.
+       Bootstrap 5 usa selectores como button:not(:disabled) con mayor especificidad,
+       por eso se necesita !important para garantizar que el cursor personalizado gane */
     a,
     button,
     .btn,
     .card,
     .pc-card,
     input[type="submit"],
-    [role="button"] {
-        cursor: url('/images/pikachu-pointer.png') 10 0, pointer;
+    select,
+    label[for],
+    [role="button"],
+    [type="button"],
+    [type="submit"] {
+        cursor: url('/images/pikachu-pointer.png') 10 0, pointer !important;
     }
 }
 
