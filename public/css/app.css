@@ -77,7 +77,7 @@ body {
 /* Logo de la tienda */
 /* Logo imagen — cabecera (desktop) */
 .logo-img {
-    max-height: 65px;
+    max-height: 80px;
     width: auto;
     display: block;
     object-fit: contain;
