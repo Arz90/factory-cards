@@ -75,17 +75,25 @@ body {
 ================================================================ */
 
 /* Logo de la tienda */
-/* Logo imagen — cabecera y menú móvil */
+/* Logo imagen — cabecera (desktop) */
 .logo-img {
-    height: 44px;
+    max-height: 65px;
     width: auto;
     display: block;
     object-fit: contain;
 }
 
-/* Logo en el footer — ligeramente más grande sobre fondo oscuro */
+/* Logo responsive — móvil (<768px) */
+@media (max-width: 767.98px) {
+    .logo-img {
+        max-height: 45px;
+    }
+}
+
+/* Logo en el footer — más peso visual sobre fondo oscuro */
 .logo-img--footer {
-    height: 52px;
+    max-height: 75px;
+    width: auto;
     /* El PNG original tiene fondo transparente; si fuera necesario un filtro
        para invertir sobre fondo oscuro se puede activar esta línea:
        filter: brightness(0) invert(1); */

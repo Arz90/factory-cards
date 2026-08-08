@@ -36,7 +36,7 @@
             <div class="row align-items-center g-2">
 
                 {{-- ── Columna izquierda: Logo de la tienda ── --}}
-                <div class="col-auto col-lg-2">
+                <div class="col-auto col-lg-2 d-flex align-items-center">
                     <a href="{{ route('home') }}" class="text-decoration-none d-inline-block" aria-label="Factory Cards — Inicio">
                         <img src="{{ asset('images/logo.png') }}"
                              alt="Factory Cards"
