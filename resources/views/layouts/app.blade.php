@@ -26,7 +26,7 @@
      BLOQUE PEGAJOSO: Cabecera blanca + Navbar verde (sticky-top)
      Replica la estructura de dos barras de miceliongames.com
 ================================================================ --}}
-<div id="bloque-cabecera-sticky" class="sticky-top">
+<div id="bloque-cabecera-sticky">
 
     {{-- ── CABECERA PRINCIPAL (Fondo blanco) ──────────────────────────────────
          Estructura: Logo | Buscador + EVENTOS | Iconos de cuenta

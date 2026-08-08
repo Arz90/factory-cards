@@ -68,8 +68,15 @@ body {
     }
 }
 
-/* ── Elimina el margin-top que Bootstrap sticky-top añade vía --bs-scroll-margin ── */
-#bloque-cabecera-sticky { z-index: 1030; }
+/* ── Cabecera blanca: sticky solo en mobile (desktop: se oculta al hacer scroll) ── */
+@media (max-width: 991.98px) {
+    #cabecera-principal {
+        position: sticky;
+        top: 0;
+        z-index: 1030;
+        background: #fff;
+    }
+}
 
 
 /* ================================================================
@@ -143,6 +150,11 @@ body {
 #navbar-verde {
     background-color: var(--fc-verde);
     border-bottom: 2px solid var(--fc-verde-dark);
+    /* ── Sticky: se queda fija en la parte superior al hacer scroll ── */
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* Links de la navbar */
@@ -1577,8 +1589,10 @@ nav p.small {
 
 /* ================================================================
    SCROLL / DESBORDAMIENTO GLOBAL — Prevenir zonas blancas en móvil
+   IMPORTANTE: overflow-x:clip en lugar de hidden para NO crear un
+   scroll-container que rompería position:sticky en elementos hijos.
 ================================================================ */
 html {
-    overflow-x: hidden;
+    overflow-x: clip;   /* corta el desbordamiento sin crear scroll-container */
     max-width: 100%;
 }
