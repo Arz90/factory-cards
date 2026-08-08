@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ChatbotController;
+use App\Http\Controllers\WishlistController;
 
 /*
 |--------------------------------------------------------------------------
@@ -73,6 +74,16 @@ Route::prefix('checkout')->name('checkout.')->group(function () {
 | Panel de Usuario (requiere auth)
 |--------------------------------------------------------------------------
 */
+
+/*
+|--------------------------------------------------------------------------
+| Lista de Deseos / Wishlist (requiere auth)
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth'])->prefix('deseos')->name('wishlist.')->group(function () {
+    Route::get('/',                         [WishlistController::class, 'index'])->name('index');
+    Route::post('/toggle/{product}',        [WishlistController::class, 'toggle'])->name('toggle');
+});
 
 Route::middleware(['auth'])->prefix('mi-cuenta')->name('user.')->group(function () {
     Route::get('/', [UserController::class, 'dashboard'])->name('dashboard');

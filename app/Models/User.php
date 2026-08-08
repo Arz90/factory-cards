@@ -50,6 +50,22 @@ class User extends Authenticatable
         return $this->hasMany(CartItem::class);
     }
 
+    /** Registros de la tabla wishlists de este usuario */
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
+
+    /**
+     * Productos en la lista de deseos del usuario.
+     * Permite usar eager loading y la query builder de Product directamente.
+     */
+    public function wishlistProducts()
+    {
+        return $this->belongsToMany(Product::class, 'wishlists')
+                    ->withTimestamps();
+    }
+
     // Productos comprados previamente (para recomendaciones)
     public function purchasedProducts()
     {

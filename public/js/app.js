@@ -96,3 +96,115 @@ function createToastContainer() {
 
 // Exportar para uso global
 window.showToast = showToast;
+
+// ── Tarjeta de producto (pc-card): Añadir al carrito ─────────────────────
+// Maneja el botón [data-pc-cart] del overlay de las tarjetas de la portada y catálogo.
+document.addEventListener('click', function (e) {
+    const boton = e.target.closest('[data-pc-cart]');
+    if (!boton) return;
+    e.preventDefault();
+
+    if (boton.dataset.cargando === 'true') return;
+    boton.dataset.cargando = 'true';
+
+    const productId = boton.dataset.pcCart;
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+    const icon = boton.querySelector('i');
+    const span = boton.querySelector('span');
+
+    icon.className  = 'bi bi-hourglass-split';
+    span.textContent = '…';
+
+    fetch(`/carrito/anadir/${productId}`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': csrfToken,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ quantity: 1 }),
+    })
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(data => {
+        // Actualizar contador del carrito en la navbar
+        document.querySelectorAll('.cart-badge').forEach(badge => {
+            badge.textContent = data.cart_count ?? '';
+            badge.classList.remove('d-none');
+        });
+        icon.className   = 'bi bi-check-lg';
+        span.textContent = '¡Añadido!';
+        boton.classList.add('pc-overlay-btn--ok');
+        showToast('Producto añadido al carrito', 'success');
+    })
+    .catch(err => {
+        console.error('[pc-cart] Error al añadir al carrito:', err);
+        icon.className   = 'bi bi-exclamation-triangle';
+        span.textContent = 'Error';
+        showToast('No se pudo añadir el producto', 'danger');
+    })
+    .finally(() => {
+        setTimeout(() => {
+            icon.className          = 'bi bi-cart-plus';
+            span.textContent        = 'Añadir';
+            boton.dataset.cargando  = 'false';
+            boton.classList.remove('pc-overlay-btn--ok');
+        }, 2000);
+    });
+});
+
+// ── Tarjeta de producto (pc-card): Toggle Wishlist ────────────────────────
+// Maneja el botón [data-pc-wishlist] — requiere autenticación.
+document.addEventListener('click', function (e) {
+    const boton = e.target.closest('[data-pc-wishlist]');
+    if (!boton) return;
+    e.preventDefault();
+
+    // Si el usuario no está autenticado, redirigir al login
+    const autenticado = document.querySelector('meta[name="user-autenticado"]')?.content === '1';
+    if (!autenticado) {
+        showToast('Inicia sesión para guardar favoritos', 'warning');
+        setTimeout(() => { window.location.href = '/login'; }, 1500);
+        return;
+    }
+
+    if (boton.dataset.cargando === 'true') return;
+    boton.dataset.cargando = 'true';
+
+    const productId  = boton.dataset.pcWishlist;
+    const estaEnWish = boton.dataset.pcWishlisted === '1';
+    const csrfToken  = document.querySelector('meta[name="csrf-token"]').content;
+    const icon       = boton.querySelector('i');
+
+    fetch(`/deseos/toggle/${productId}`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': csrfToken,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(data => {
+        const añadido = data.añadido;
+
+        // Actualizar icono y estado visual
+        icon.className = añadido ? 'bi bi-heart-fill' : 'bi bi-heart';
+        boton.dataset.pcWishlisted = añadido ? '1' : '0';
+        boton.title = añadido ? 'Quitar de favoritos' : 'Añadir a favoritos';
+
+        if (añadido) {
+            boton.classList.add('pc-overlay-btn--fav-activo');
+        } else {
+            boton.classList.remove('pc-overlay-btn--fav-activo');
+        }
+
+        showToast(data.mensaje ?? (añadido ? 'Añadido a favoritos' : 'Eliminado de favoritos'), 'success');
+    })
+    .catch(err => {
+        console.error('[pc-wishlist] Error al actualizar wishlist:', err);
+        showToast('No se pudo actualizar la lista de deseos', 'danger');
+    })
+    .finally(() => {
+        boton.dataset.cargando = 'false';
+    });
+});

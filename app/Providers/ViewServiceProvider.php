@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\View;
 use App\Models\Category;
 use App\Models\Franchise;
 use App\Models\CartItem;
+use App\Models\Wishlist;
 
 class ViewServiceProvider extends ServiceProvider
 {
@@ -32,6 +33,11 @@ class ViewServiceProvider extends ServiceProvider
                     'cartTotal' => auth()->check()
                         ? CartItem::with('product')->where('user_id', auth()->id())->get()->sum(fn($i) => $i->lineTotal())
                         : collect(session('cart', []))->sum(fn($i) => ($i['price'] ?? 0) * ($i['quantity'] ?? 0)),
+                    // IDs de productos en la wishlist del usuario autenticado.
+                    // Array plano para usar in_array() en las vistas sin queries adicionales.
+                    'wishlistIds' => auth()->check()
+                        ? Wishlist::where('user_id', auth()->id())->pluck('product_id')->toArray()
+                        : [],
                 ]);
             } catch (\Exception $e) {
                 // Silencioso durante setup inicial

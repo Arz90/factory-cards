@@ -258,104 +258,11 @@
                 <div class="swiper-wrapper">
                     @foreach($franquicia->products as $producto)
                     <div class="swiper-slide">
-
-                        {{-- ── TARJETA DE PRODUCTO ── --}}
-                        <div class="pc-card">
-
-                            {{-- Área de imagen con overlay hover --}}
-                            <div class="pc-img-area">
-
-                                {{-- Imagen o placeholder con color de franquicia --}}
-                                <a href="{{ route('shop.product', $producto->slug) }}"
-                                   class="pc-img-link" tabindex="-1" aria-hidden="true">
-                                    @if($producto->image_url)
-                                        <img src="{{ asset($producto->image_url) }}"
-                                             alt="{{ $producto->name }}"
-                                             class="pc-img"
-                                             loading="lazy">
-                                    @else
-                                        <div class="pc-img-placeholder"
-                                             style="background:{{ $franquicia->color ?? '#e9ecef' }}22">
-                                            <i class="bi bi-box-seam pc-img-icon"
-                                               style="color:{{ $franquicia->color ?? '#6c757d' }}"></i>
-                                        </div>
-                                    @endif
-                                </a>
-
-                                {{-- Badge OFERTA / PRECOMPRA (esquina superior izquierda) --}}
-                                @if($producto->badgeLabel())
-                                    <span class="pc-badge pc-badge--{{ $producto->badgeColor() }}">
-                                        {{ $producto->badgeLabel() }}
-                                    </span>
-                                @endif
-
-                                {{-- Overlay con botones: aparece al hacer hover sobre la imagen --}}
-                                <div class="pc-overlay" aria-hidden="true">
-
-                                    {{-- Botón Añadir al Carrito (AJAX) --}}
-                                    <button class="pc-overlay-btn pc-overlay-btn--cart"
-                                            data-producto-id="{{ $producto->id }}"
-                                            data-url="{{ route('cart.add', $producto->id) }}"
-                                            title="Añadir al carrito">
-                                        <i class="bi bi-cart-plus"></i>
-                                        <span>Añadir</span>
-                                    </button>
-
-                                    {{-- Botón Favoritos (stub — Fase 4) --}}
-                                    <button class="pc-overlay-btn pc-overlay-btn--fav"
-                                            title="Añadir a favoritos">
-                                        <i class="bi bi-heart"></i>
-                                    </button>
-
-                                </div>
-
-                            </div>{{-- /.pc-img-area --}}
-
-                            {{-- Cuerpo de la tarjeta --}}
-                            <div class="pc-body">
-
-                                {{-- Franquicia / Categoría en gris pequeño --}}
-                                <div class="pc-meta">
-                                    {{ $producto->category->name ?? $franquicia->name }}
-                                </div>
-
-                                {{-- Nombre del producto (enlace, máximo 2 líneas) --}}
-                                <a href="{{ route('shop.product', $producto->slug) }}"
-                                   class="pc-nombre text-decoration-none">
-                                    {{ $producto->name }}
-                                </a>
-
-                                {{-- Precios --}}
-                                <div class="pc-precios">
-                                    @if($producto->hasDiscount())
-                                        {{-- Precio rebajado + precio tachado + % ahorro --}}
-                                        <span class="pc-precio-actual">
-                                            {{ number_format($producto->price, 2, ',', '.') }} €
-                                        </span>
-                                        <span class="pc-precio-original">
-                                            {{ number_format($producto->original_price, 2, ',', '.') }} €
-                                        </span>
-                                        <span class="pc-ahorro">
-                                            -{{ $producto->discountPercentage() }}%
-                                        </span>
-                                    @else
-                                        <span class="pc-precio-actual">
-                                            {{ number_format($producto->price, 2, ',', '.') }} €
-                                        </span>
-                                    @endif
-
-                                    {{-- Estado: sin stock / precompra --}}
-                                    @if($producto->status === 'preorder')
-                                        <div class="pc-precompra-label">Precompra</div>
-                                    @elseif($producto->stock === 0)
-                                        <div class="pc-sinstock-label">Sin stock</div>
-                                    @endif
-                                </div>
-
-                            </div>{{-- /.pc-body --}}
-
-                        </div>{{-- /.pc-card --}}
-
+                        {{-- Partial reutilizable — pasa la franquicia para el color del placeholder --}}
+                        @include('partials.product-card', [
+                            'product'   => $producto,
+                            'franchise' => $franquicia,
+                        ])
                     </div>{{-- /.swiper-slide --}}
                     @endforeach
                 </div>{{-- /.swiper-wrapper --}}
@@ -434,68 +341,8 @@
         });
     });
 
-    // ── Botón "Añadir al carrito" en el overlay (AJAX) ──────────────────
-    const TOKEN_CSRF = document.querySelector('meta[name="csrf-token"]')?.content ?? '';
-
-    document.addEventListener('click', function (e) {
-        const boton = e.target.closest('.pc-overlay-btn--cart');
-        if (!boton) return;
-
-        // Evitar doble clic mientras procesa
-        if (boton.dataset.cargando === 'true') return;
-        boton.dataset.cargando = 'true';
-
-        const url  = boton.dataset.url;
-        const icon = boton.querySelector('i');
-        const span = boton.querySelector('span');
-
-        // Feedback visual inmediato
-        icon.className  = 'bi bi-hourglass-split';
-        span.textContent = '…';
-
-        fetch(url, {
-            method:  'POST',
-            headers: {
-                'X-CSRF-TOKEN': TOKEN_CSRF,
-                'Accept':       'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ quantity: 1 }),
-        })
-        .then(function (res) {
-            if (!res.ok) throw new Error('Error ' + res.status);
-            return res.json();
-        })
-        .then(function () {
-            // Éxito: icono de check durante 1.5 s
-            icon.className   = 'bi bi-check-lg';
-            span.textContent = '¡Añadido!';
-            boton.classList.add('pc-overlay-btn--ok');
-
-            // Actualizar el contador del carrito en el header si existe
-            const contadores = document.querySelectorAll('.cart-badge, .carrito-precio');
-            // El contador exacto requeriría otro fetch; recargamos solo si hay contador visible
-            if (contadores.length) {
-                // Refrescar página para actualizar navbar de forma simple y robusta
-                // (alternativa a mantener un estado global de carrito en JS)
-                setTimeout(function () { location.reload(); }, 1000);
-            }
-        })
-        .catch(function (err) {
-            console.error('[Carrusel] Error al añadir al carrito:', err);
-            icon.className   = 'bi bi-exclamation-triangle';
-            span.textContent = 'Error';
-        })
-        .finally(function () {
-            // Restaurar el estado del botón tras 2 segundos
-            setTimeout(function () {
-                icon.className          = 'bi bi-cart-plus';
-                span.textContent        = 'Añadir';
-                boton.dataset.cargando  = 'false';
-                boton.classList.remove('pc-overlay-btn--ok');
-            }, 2000);
-        });
-    });
+    // El botón "Añadir al carrito" [data-pc-cart] es gestionado globalmente
+    // desde public/js/app.js — no se necesita handler inline aquí.
 
 })();
 </script>

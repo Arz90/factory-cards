@@ -1277,6 +1277,12 @@ body {
     color: #EF4444;
 }
 
+/* Estado activo: producto ya está en la wishlist */
+.pc-overlay-btn--fav-activo {
+    background: #fff;
+    color: #EF4444;
+}
+
 /* ── Cuerpo de la tarjeta ── */
 .pc-body {
     padding: 10px 12px 12px;
