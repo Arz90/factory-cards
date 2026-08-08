@@ -221,6 +221,48 @@
 
 
 {{-- ================================================================
+     PRODUCTOS DESTACADOS — Carrusel Swiper con navegación
+     Productos marcados como is_featured=true desde el panel admin.
+     Usa la misma clase .swiper-franquicia para inicialización automática.
+================================================================ --}}
+@if($featured->isNotEmpty())
+<section class="seccion-franquicia py-4" id="seccion-destacados">
+    <div class="container-xl">
+
+        {{-- Cabecera con barra dorada, icono estrella y enlace al catálogo --}}
+        <div class="franquicia-seccion-header d-flex align-items-center justify-content-between mb-3">
+            <div class="franquicia-titulo-grupo">
+                <span class="franquicia-titulo-barra" style="background:#FFE066"></span>
+                <h2 class="franquicia-titulo-h2 mb-0">
+                    <i class="bi bi-star-fill me-2" style="color:#FFE066;font-size:.85em;vertical-align:-.05em"></i>Productos Destacados
+                </h2>
+            </div>
+            <a href="{{ route('shop.catalog') }}"
+               class="btn btn-outline-secondary btn-sm franquicia-ver-todos">
+                Ver todos <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+
+        {{-- Swiper — comparte clase con los de franquicia, se inicializa automáticamente --}}
+        <div class="swiper swiper-franquicia" data-slug="destacados">
+            <div class="swiper-button-prev swiper-btn-franquicia"></div>
+            <div class="swiper-wrapper">
+                @foreach($featured as $producto)
+                <div class="swiper-slide">
+                    @include('partials.product-card', ['product' => $producto])
+                </div>
+                @endforeach
+            </div>
+            <div class="swiper-button-next swiper-btn-franquicia"></div>
+        </div>
+
+    </div>
+</section>
+<div class="franquicia-separador"></div>
+@endif
+
+
+{{-- ================================================================
      CARRUSELES POR FRANQUICIA
      Una sección por cada franquicia activa con productos.
      Cada carrusel es un Swiper independiente con flechas.

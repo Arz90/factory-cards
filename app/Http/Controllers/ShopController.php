@@ -21,7 +21,7 @@ class ShopController extends Controller
             // Banners activos ordenados por su campo 'order' (de menor a mayor)
             $banners = Banner::activos()->ordenados()->get();
 
-            $featured  = Product::with(['franchise', 'category'])->featured()->active()->inStock()->limit(8)->get();
+            $featured  = Product::with(['franchise', 'category'])->featured()->active()->inStock()->limit(12)->get();
             $preorders = Product::with(['franchise', 'category'])->preorder()->limit(4)->get();
 
             // Franquicias activas que tengan al menos un producto, con sus últimos 10 productos.
