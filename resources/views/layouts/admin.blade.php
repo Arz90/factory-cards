@@ -121,6 +121,9 @@
         <a href="{{ route('admin.banners.index') }}" class="nav-link @if(request()->routeIs('admin.banners.*')) active @endif">
             <i class="bi bi-image"></i> Banners
         </a>
+        <a href="{{ route('admin.promo-banners.index') }}" class="nav-link @if(request()->routeIs('admin.promo-banners.*')) active @endif">
+            <i class="bi bi-layout-split"></i> Promo Banner
+        </a>
         <a href="{{ route('admin.eventos.index') }}" class="nav-link @if(request()->routeIs('admin.eventos.*')) active @endif">
             <i class="bi bi-calendar-event"></i> Eventos
         </a>

@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\FranchiseController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
+use App\Http\Controllers\Admin\PromoBannerController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\WishlistController;
@@ -124,6 +125,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     // Eventos y torneos
     Route::resource('eventos', AdminEventController::class);
+
+    // Promo Banners (sección destacada de la portada)
+    Route::resource('promo-banners', PromoBannerController::class);
+    Route::patch('promo-banners/{promoBanner}/toggle', [PromoBannerController::class, 'toggleActivo'])->name('promo-banners.toggle');
 });
 
 /*

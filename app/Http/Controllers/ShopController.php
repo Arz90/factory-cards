@@ -6,6 +6,7 @@ use App\Models\Banner;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Franchise;
+use App\Models\PromoBanner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -19,7 +20,8 @@ class ShopController extends Controller
     {
         try {
             // Banners activos ordenados por su campo 'order' (de menor a mayor)
-            $banners = Banner::activos()->ordenados()->get();
+            $banners     = Banner::activos()->ordenados()->get();
+            $promoBanner = PromoBanner::activo();
 
             $featured  = Product::with(['franchise', 'category'])->featured()->active()->inStock()->limit(12)->get();
             $preorders = Product::with(['franchise', 'category'])->preorder()->limit(4)->get();
@@ -47,12 +49,13 @@ class ShopController extends Controller
             // Si falla la carga de banners no rompemos la portada
             Log::error('Error al cargar banners en la portada', ['error' => $e->getMessage()]);
             $banners       = collect();
+            $promoBanner   = null;
             $featured      = collect();
             $preorders     = collect();
             $porFranquicia = collect();
         }
 
-        return view('shop.home', compact('banners', 'featured', 'preorders', 'porFranquicia'));
+        return view('shop.home', compact('banners', 'promoBanner', 'featured', 'preorders', 'porFranquicia'));
     }
 
     public function catalog(Request $request)

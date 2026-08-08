@@ -167,57 +167,59 @@
 
 
 {{-- ================================================================
-     SECCIÓN DESTACADA — Split 50/50: Texto izquierda | Imagen derecha
-     La imagen ocupa toda la mitad derecha a sangre (sin padding).
+     PROMO BANNER — Split 50/50: Texto izquierda | Imagen derecha
+     Se carga desde la BD (tabla promo_banners). Solo se muestra si hay
+     un banner activo; si no hay ninguno, la sección queda oculta.
 ================================================================ --}}
+@if($promoBanner)
 <section class="seccion-destacada">
     <div class="container-fluid p-0">
         <div class="row g-0 min-vh-50">
 
-            {{-- ── Mitad izquierda: texto e información del producto ── --}}
+            {{-- ── Mitad izquierda: texto e información ── --}}
             <div class="col-lg-6 destacado-lado-texto">
                 <div class="destacado-contenido">
 
-                    {{-- Etiqueta pequeña de franquicia --}}
-                    <span class="destacado-franquicia-label">
-                        <i class="bi bi-collection-fill me-1"></i>MAGIC: THE GATHERING
-                    </span>
+                    @if($promoBanner->franchise_label)
+                        <span class="destacado-franquicia-label">
+                            <i class="bi bi-collection-fill me-1"></i>{{ $promoBanner->franchise_label }}
+                        </span>
+                    @endif
 
-                    {{-- Título grande del producto --}}
-                    <h2 class="destacado-titulo">SECRETOS DE<br>STRIXHAVEN</h2>
+                    <h2 class="destacado-titulo">{{ $promoBanner->title }}</h2>
 
-                    {{-- Fecha de lanzamiento --}}
-                    <p class="destacado-fecha">
-                        <i class="bi bi-calendar3 me-2"></i>Lanzamiento: 15 de noviembre de 2025
-                    </p>
+                    @if($promoBanner->launch_date)
+                        <p class="destacado-fecha">
+                            <i class="bi bi-calendar3 me-2"></i>Lanzamiento: {{ $promoBanner->fechaFormateada() }}
+                        </p>
+                    @endif
 
-                    {{-- Descripción breve --}}
-                    <p class="destacado-descripcion">
-                        La academia de magos más poderosa del multiverso abre sus puertas.
-                        Consigue tu caja sellada antes del lanzamiento oficial al precio más competitivo del mercado.
-                    </p>
+                    <p class="destacado-descripcion">{{ $promoBanner->description }}</p>
 
-                    {{-- Botón de precompra verde brillante --}}
-                    <a href="{{ route('shop.catalog') }}" class="btn-destacado-precompra">
-                        <i class="bi bi-bag-plus me-2"></i>PRECOMPRA AHORA
+                    <a href="{{ $promoBanner->button_url }}" class="btn-destacado-precompra">
+                        <i class="bi bi-bag-plus me-2"></i>{{ $promoBanner->button_text }}
                     </a>
 
                 </div>
             </div>
 
-            {{-- ── Mitad derecha: imagen del producto a sangre ── --}}
+            {{-- ── Mitad derecha: imagen a sangre ── --}}
             <div class="col-lg-6 destacado-lado-imagen">
-                {{-- Placeholder hasta tener imagen real del producto --}}
-                <img
-                    src="https://placehold.co/800x560/1a2332/4a90d9?text=Secretos+de+Strixhaven"
-                    alt="Secretos de Strixhaven — Magic: The Gathering"
-                    class="destacado-imagen"
-                >
+                @if($promoBanner->image_path)
+                    <img src="{{ $promoBanner->urlImagen() }}"
+                         alt="{{ $promoBanner->title }}"
+                         class="destacado-imagen">
+                @else
+                    <img src="https://placehold.co/800x560/1a2332/4a90d9?text={{ urlencode($promoBanner->title) }}"
+                         alt="{{ $promoBanner->title }}"
+                         class="destacado-imagen">
+                @endif
             </div>
 
         </div>
     </div>
 </section>
+@endif
 
 
 {{-- ================================================================
