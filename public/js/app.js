@@ -17,6 +17,39 @@
     }, { passive: true });
 })();
 
+// ── Helpers: actualizar navbar sin recargar ───────────────────────────────
+
+/**
+ * Actualiza el contador y precio del carrito en la navbar (desktop + mobile).
+ * @param {number} count  - Número total de unidades en el carrito
+ * @param {string} total  - Total formateado (ej: "12,50")
+ */
+function actualizarCarritoNavbar(count, total) {
+    // Badges (mobile header y desktop pill)
+    document.querySelectorAll('.cart-badge').forEach(badge => {
+        badge.textContent = count;
+        badge.classList.toggle('d-none', count === 0);
+    });
+    // Precio en el botón de carrito del navbar verde
+    const precio = document.querySelector('.carrito-precio');
+    if (precio) precio.textContent = total + ' €';
+}
+
+/**
+ * Actualiza el badge de la lista de deseos en la navbar.
+ * @param {number} count - Número total de productos en wishlist
+ */
+function actualizarWishlistNavbar(count) {
+    document.querySelectorAll('.wishlist-badge').forEach(badge => {
+        badge.textContent = count > 0 ? count : '';
+        badge.classList.toggle('d-none', count === 0);
+    });
+}
+
+// Exportar para uso desde Blade inline si se necesitara
+window.actualizarCarritoNavbar  = actualizarCarritoNavbar;
+window.actualizarWishlistNavbar = actualizarWishlistNavbar;
+
 // ── Añadir al carrito via AJAX ────────────────────────────────────────────
 document.addEventListener('click', function (e) {
     const btn = e.target.closest('[data-add-to-cart]');
@@ -41,12 +74,8 @@ document.addEventListener('click', function (e) {
     })
     .then(r => r.json())
     .then(data => {
-        if (data.success) {
-            // Actualizar contador del carrito
-            document.querySelectorAll('.cart-badge').forEach(badge => {
-                badge.textContent = data.cart_count;
-                badge.classList.remove('d-none');
-            });
+        if (data.ok) {
+            actualizarCarritoNavbar(data.cart_count ?? 0, data.cart_total ?? '0,00');
             btn.innerHTML = '<i class="bi bi-check-lg"></i> Añadido';
             btn.classList.replace('btn-warning', 'btn-success');
             setTimeout(() => {
@@ -126,11 +155,7 @@ document.addEventListener('click', function (e) {
     })
     .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
     .then(data => {
-        // Actualizar contador del carrito en la navbar
-        document.querySelectorAll('.cart-badge').forEach(badge => {
-            badge.textContent = data.cart_count ?? '';
-            badge.classList.remove('d-none');
-        });
+        actualizarCarritoNavbar(data.cart_count ?? 0, data.cart_total ?? '0,00');
         icon.className   = 'bi bi-check-lg';
         span.textContent = '¡Añadido!';
         boton.classList.add('pc-overlay-btn--ok');
@@ -196,6 +221,11 @@ document.addEventListener('click', function (e) {
             boton.classList.add('pc-overlay-btn--fav-activo');
         } else {
             boton.classList.remove('pc-overlay-btn--fav-activo');
+        }
+
+        // Actualizar badge de wishlist en la navbar
+        if (data.wishlist_count !== undefined) {
+            actualizarWishlistNavbar(data.wishlist_count);
         }
 
         showToast(data.mensaje ?? (añadido ? 'Añadido a favoritos' : 'Eliminado de favoritos'), 'success');

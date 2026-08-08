@@ -122,9 +122,13 @@
 
                         {{-- Lista de deseos: solo visible para usuarios autenticados --}}
                         @auth
-                        <a href="{{ route('wishlist.index') }}" class="icono-cabecera text-decoration-none" title="Lista de deseos">
+                        <a href="{{ route('wishlist.index') }}" class="icono-cabecera text-decoration-none position-relative" title="Lista de deseos">
                             <i class="bi bi-heart fs-4 d-block text-center lh-1"></i>
                             <span class="icono-etiqueta">Deseos</span>
+                            @php $wishlistCount = count($wishlistIds ?? []); @endphp
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger wishlist-badge {{ $wishlistCount === 0 ? 'd-none' : '' }}">
+                                {{ $wishlistCount ?: '' }}
+                            </span>
                         </a>
                         @endauth
 
@@ -133,11 +137,9 @@
                            class="icono-cabecera text-decoration-none position-relative d-lg-none">
                             <i class="bi bi-cart3 fs-4 d-block text-center lh-1"></i>
                             <span class="icono-etiqueta">Carrito</span>
-                            @if(($cartCount ?? 0) > 0)
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-badge">
-                                    {{ $cartCount }}
-                                </span>
-                            @endif
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-badge {{ ($cartCount ?? 0) === 0 ? 'd-none' : '' }}">
+                                {{ $cartCount ?? 0 }}
+                            </span>
                         </a>
 
                         {{-- Botón hamburguesa: abre menú móvil --}}
@@ -217,9 +219,7 @@
                         <i class="bi bi-cart3 me-1"></i>
                         CARRITO
                         <span class="carrito-precio ms-1">{{ number_format($cartTotal ?? 0, 2, ',', '.') }} €</span>
-                        @if(($cartCount ?? 0) > 0)
-                            <span class="badge bg-white text-success rounded-pill ms-1 small">{{ $cartCount }}</span>
-                        @endif
+                        <span class="badge bg-white text-success rounded-pill ms-1 small cart-badge {{ ($cartCount ?? 0) === 0 ? 'd-none' : '' }}">{{ $cartCount ?? 0 }}</span>
                     </a>
                 </div>
 

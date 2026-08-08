@@ -59,10 +59,13 @@ class WishlistController extends Controller
             'accion'      => $añadido ? 'añadido' : 'eliminado',
         ]);
 
+        $wishlistCount = Wishlist::where('user_id', $usuario->id)->count();
+
         return response()->json([
-            'ok'      => true,
-            'añadido' => $añadido,
-            'mensaje' => $mensaje,
+            'ok'             => true,
+            'añadido'        => $añadido,
+            'mensaje'        => $mensaje,
+            'wishlist_count' => $wishlistCount,
         ]);
     }
 }
