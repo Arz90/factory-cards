@@ -39,21 +39,31 @@
             padding: .75rem 1.25rem .25rem; letter-spacing: .08em;
         }
 
-        /* ── Desktop (≥992px): sidebar fija a la izquierda, contenido desplazado ── */
+        /* ── Desktop (≥992px): layout flex — sidebar + contenido uno al lado del otro ──
+           Evita el conflicto entre position:fixed y el z-index alto de Bootstrap offcanvas.
+           La sidebar usa position:sticky para quedar pegada al scroll sin salirse del flujo. ── */
         @media (min-width: 992px) {
+            body {
+                display: flex;
+                min-height: 100vh;
+                align-items: flex-start;
+            }
             .sidebar {
-                position: fixed;
-                top: 0; left: 0;
-                width: var(--sidebar-w);
-                height: 100vh;
-                z-index: 1000;
-                /* Anular estados de Bootstrap offcanvas en desktop */
+                position: sticky !important;
+                top: 0 !important;
+                width: var(--sidebar-w) !important;
+                min-width: var(--sidebar-w) !important;
+                height: 100vh !important;
+                flex-shrink: 0;
+                /* Anular Bootstrap offcanvas */
                 transform: none !important;
                 visibility: visible !important;
             }
             .main-content {
-                margin-left: var(--sidebar-w);
-                width: calc(100% - var(--sidebar-w));
+                flex: 1;
+                min-width: 0;   /* evita que el contenido desborde el flex */
+                margin-left: 0; /* el flex ya posiciona, no hace falta margen */
+                width: auto;
             }
             .admin-menu-toggle { display: none !important; }
         }
