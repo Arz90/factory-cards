@@ -28,19 +28,26 @@ body {
 
 /* ================================================================
    CURSOR PERSONALIZADO — Pikachu
-   Solo se aplica en dispositivos con ratón preciso (no táctiles).
-   Formato PNG: compatible con todos los navegadores modernos.
-   Los dos números tras la URL son el hotspot (punto de clic):
-   0 0 = esquina superior izquierda de la imagen.
+   Solo se aplica en dispositivos con ratón preciso (no táctiles)
+   gracias a @media (pointer: fine). En móvil y tablet con pantalla
+   táctil el cursor del sistema no se ve afectado.
+
+   Dos imágenes distintas según el contexto:
+     pikachu-cursor.png  → navegación general (cursor base)
+     pikachu-pointer.png → sobre enlaces, botones y elementos clicables
+
+   Los dos números tras la URL son el hotspot (punto de clic exacto):
+     0 0  = esquina superior izquierda de la imagen (cursor base)
+     10 0 = desplazado 10 px a la derecha para el puntero interactivo
 ================================================================ */
 @media (pointer: fine) {
 
-    /* Cursor general en toda la página */
+    /* Cursor base — fondo de la tienda y navegación general */
     body {
-        cursor: url('/images/pikachu.png') 0 0, default;
+        cursor: url('/images/pikachu-cursor.png') 0 0, auto;
     }
 
-    /* Cursor pointer en todos los elementos interactivos */
+    /* Cursor interactivo — enlaces, botones, tarjetas y elementos clicables */
     a,
     button,
     .btn,
@@ -48,7 +55,7 @@ body {
     .pc-card,
     input[type="submit"],
     [role="button"] {
-        cursor: url('/images/pikachu.png') 0 0, pointer;
+        cursor: url('/images/pikachu-pointer.png') 10 0, pointer;
     }
 }
 
