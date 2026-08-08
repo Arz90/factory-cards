@@ -199,6 +199,40 @@ document.addEventListener('click', function (e) {
         }
 
         showToast(data.mensaje ?? (añadido ? 'Añadido a favoritos' : 'Eliminado de favoritos'), 'success');
+
+        // ── Si estamos en la página de wishlist y se ha eliminado, animar y quitar la tarjeta ──
+        if (!añadido) {
+            const grid = document.getElementById('wishlist-grid');
+            if (!grid) return; // no estamos en la página wishlist
+
+            // Buscar la columna contenedora de esta tarjeta
+            const columna = boton.closest('[class*="col-"]');
+            if (!columna) return;
+
+            // Aplicar animación pop-out y eliminar del DOM al terminar
+            columna.classList.add('wishlist-salida');
+            columna.addEventListener('animationend', function () {
+                columna.remove();
+
+                // Actualizar contador
+                const restantes = grid.querySelectorAll('[class*="col-"]').length;
+                const contador  = document.getElementById('wishlist-contador');
+                if (contador) {
+                    if (restantes > 0) {
+                        contador.textContent = restantes + ' ' + (restantes === 1 ? 'producto' : 'productos');
+                    } else {
+                        contador.classList.add('d-none');
+                    }
+                }
+
+                // Si no quedan productos, mostrar estado vacío y ocultar grid
+                if (restantes === 0) {
+                    grid.classList.add('d-none');
+                    const vacio = document.getElementById('wishlist-vacio');
+                    if (vacio) vacio.classList.remove('d-none');
+                }
+            }, { once: true });
+        }
     })
     .catch(err => {
         console.error('[pc-wishlist] Error al actualizar wishlist:', err);

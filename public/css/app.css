@@ -1283,6 +1283,18 @@ body {
     color: #EF4444;
 }
 
+/* ── Animación de eliminación en la wishlist ── */
+@keyframes wishlist-pop-out {
+    0%   { transform: scale(1)    rotate(0deg);   opacity: 1; }
+    25%  { transform: scale(1.1)  rotate(-3deg);  opacity: 1; }
+    100% { transform: scale(0)    rotate(6deg);   opacity: 0; }
+}
+
+.wishlist-salida {
+    animation: wishlist-pop-out .4s cubic-bezier(.55,.06,.68,.19) forwards;
+    pointer-events: none;
+}
+
 /* ── Cuerpo de la tarjeta ── */
 .pc-body {
     padding: 10px 12px 12px;
