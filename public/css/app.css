@@ -1022,3 +1022,58 @@ body {
         bottom: 100px;
     }
 }
+
+
+/* ================================================================
+   PAGINACIÓN — Bootstrap 5 con colores de Factory Cards
+   Aplica tanto en la tienda pública como en el panel admin.
+================================================================ */
+
+/* Tamaño base: pequeño y compacto */
+.pagination {
+    font-size: .83rem;
+    margin-bottom: 0;
+    flex-wrap: wrap;
+    gap: 2px;
+}
+
+/* Cada botón de página */
+.page-link {
+    color: var(--fc-verde-dark);
+    border-color: #dee2e6;
+    padding: .35rem .65rem;
+    line-height: 1.4;
+    min-width: 34px;
+    text-align: center;
+    transition: background var(--fc-transition), color var(--fc-transition), border-color var(--fc-transition);
+}
+
+.page-link:hover,
+.page-link:focus {
+    color: #fff;
+    background-color: var(--fc-verde);
+    border-color: var(--fc-verde);
+    box-shadow: none;
+}
+
+/* Página activa — fondo verde */
+.page-item.active .page-link {
+    background-color: var(--fc-verde);
+    border-color: var(--fc-verde);
+    color: #fff;
+    font-weight: 700;
+}
+
+/* Página deshabilitada */
+.page-item.disabled .page-link {
+    color: #adb5bd;
+    background-color: #fff;
+    border-color: #dee2e6;
+}
+
+/* Texto "Showing X to Y of Z results" del template Bootstrap */
+.pagination + p,
+nav p.small {
+    font-size: .78rem;
+    color: #6c757d;
+}
