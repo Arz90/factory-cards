@@ -29,45 +29,6 @@ body {
     overflow-x: clip;
 }
 
-/* ================================================================
-   CURSOR PERSONALIZADO — Pikachu
-   Solo se aplica en dispositivos con ratón preciso (no táctiles)
-   gracias a @media (pointer: fine). En móvil y tablet con pantalla
-   táctil el cursor del sistema no se ve afectado.
-
-   Dos imágenes distintas según el contexto:
-     pikachu-cursor.png  → navegación general (cursor base)
-     pikachu-pointer.png → sobre enlaces, botones y elementos clicables
-
-   Los dos números tras la URL son el hotspot (punto de clic exacto):
-     0 0  = esquina superior izquierda de la imagen (cursor base)
-     10 0 = desplazado 10 px a la derecha para el puntero interactivo
-================================================================ */
-@media (pointer: fine) {
-
-    /* Cursor base — fondo de la tienda y navegación general.
-       !important necesario para que no lo sobreescriba ninguna regla de Bootstrap */
-    body {
-        cursor: url('/images/pikachu-cursor.png') 0 0, auto !important;
-    }
-
-    /* Cursor interactivo — enlaces, botones, tarjetas y elementos clicables.
-       Bootstrap 5 usa selectores como button:not(:disabled) con mayor especificidad,
-       por eso se necesita !important para garantizar que el cursor personalizado gane */
-    a,
-    button,
-    .btn,
-    .card,
-    .pc-card,
-    input[type="submit"],
-    select,
-    label[for],
-    [role="button"],
-    [type="button"],
-    [type="submit"] {
-        cursor: url('/images/pikachu-pointer.png') 10 0, pointer !important;
-    }
-}
 
 /* ── Cabecera blanca: sticky solo en mobile (desktop: se oculta al hacer scroll) ── */
 @media (max-width: 991.98px) {
