@@ -23,9 +23,7 @@
 @if($banners->isNotEmpty())
 
 <div id="heroSlider"
-     class="carousel slide carousel-fade"
-     data-bs-ride="carousel"
-     data-bs-interval="3500">
+     class="carousel slide carousel-fade">
 
     {{-- ── Indicadores de posición (uno por banner) ── --}}
     <div class="carousel-indicators hero-indicadores">
@@ -387,6 +385,20 @@
 
     // El botón "Añadir al carrito" [data-pc-cart] es gestionado globalmente
     // desde public/js/app.js — no se necesita handler inline aquí.
+
+    // ── Hero Slider: inicialización JS para garantizar bucle continuo ─────
+    // Se inicializa por JS (no por data-bs-*) para poder usar:
+    //   wrap:true  → vuelve al primer slide al acabar
+    //   pause:false → no se detiene al pasar el ratón por encima
+    var heroEl = document.getElementById('heroSlider');
+    if (heroEl) {
+        new bootstrap.Carousel(heroEl, {
+            interval: 3500,
+            wrap:     true,
+            pause:    false,
+            ride:     'carousel',
+        });
+    }
 
 })();
 </script>
