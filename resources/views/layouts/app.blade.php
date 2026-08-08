@@ -285,7 +285,7 @@
            aria-label="Factory Cards — Inicio">
             <img src="{{ asset('images/logo.png') }}"
                  alt="Factory Cards"
-                 style="max-height:40px;width:auto;display:block;filter:brightness(0) invert(1);background:transparent;">
+                 style="max-height:40px;width:auto;display:block;">
         </a>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
     </div>
