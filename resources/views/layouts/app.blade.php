@@ -119,11 +119,13 @@
                             </a>
                         @endauth
 
-                        {{-- Lista de deseos (stub — Fase 4) --}}
-                        <a href="#" class="icono-cabecera text-decoration-none" title="Lista de deseos">
+                        {{-- Lista de deseos: solo visible para usuarios autenticados --}}
+                        @auth
+                        <a href="{{ route('wishlist.index') }}" class="icono-cabecera text-decoration-none" title="Lista de deseos">
                             <i class="bi bi-heart fs-4 d-block text-center lh-1"></i>
                             <span class="icono-etiqueta">Deseos</span>
                         </a>
+                        @endauth
 
                         {{-- Carrito visible en mobile dentro de la cabecera --}}
                         <a href="{{ route('cart.index') }}"
