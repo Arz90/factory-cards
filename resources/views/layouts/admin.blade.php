@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
-        :root { --sidebar-w: 240px; }
+        :root { --sidebar-w: 260px; }
         body { background: #f0f2f5; }
 
         /* ── Sidebar base ── */
@@ -39,23 +39,28 @@
             padding: .75rem 1.25rem .25rem; letter-spacing: .08em;
         }
 
-        /* ── Desktop (≥768px): sidebar fija a la izquierda ── */
-        @media (min-width: 768px) {
+        /* ── Desktop (≥992px): sidebar fija a la izquierda, contenido desplazado ── */
+        @media (min-width: 992px) {
             .sidebar {
                 position: fixed;
                 top: 0; left: 0;
-                min-height: 100vh;
+                width: var(--sidebar-w);
+                height: 100vh;
+                z-index: 1000;
                 /* Anular estados de Bootstrap offcanvas en desktop */
                 transform: none !important;
                 visibility: visible !important;
             }
-            .main-content { margin-left: var(--sidebar-w); }
+            .main-content {
+                margin-left: var(--sidebar-w);
+                width: calc(100% - var(--sidebar-w));
+            }
             .admin-menu-toggle { display: none !important; }
         }
 
-        /* ── Móvil (<768px): sidebar como offcanvas, main sin margen ── */
-        @media (max-width: 767.98px) {
-            .main-content { margin-left: 0; }
+        /* ── Móvil y tablet (<992px): sidebar como offcanvas, main a ancho completo ── */
+        @media (max-width: 991.98px) {
+            .main-content { margin-left: 0; width: 100%; }
             .page-body { padding: 1rem; }
             /* Botones de acción con área táctil cómoda en móvil */
             .btn-sm { min-height: 38px; min-width: 38px; }
