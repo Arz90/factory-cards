@@ -26,8 +26,8 @@
     @endif
 
     <div class="row g-3">
-        {{-- Left column --}}
-        <div class="col-lg-8">
+        {{-- Columna principal — ocupa todo en móvil, 8/12 en desktop --}}
+        <div class="col-12 col-lg-8">
             <div class="card shadow-sm mb-3">
                 <div class="card-header bg-white py-3"><h6 class="mb-0 fw-semibold">Información básica</h6></div>
                 <div class="card-body">
@@ -53,7 +53,7 @@
                 <div class="card-header bg-white py-3"><h6 class="mb-0 fw-semibold">Precios y stock</h6></div>
                 <div class="card-body">
                     <div class="row g-3">
-                        <div class="col-sm-4">
+                        <div class="col-6 col-sm-4">
                             <label class="form-label">Precio venta <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <input type="number" name="price" step="0.01" min="0" class="form-control @error('price') is-invalid @enderror"
@@ -61,7 +61,7 @@
                                 <span class="input-group-text">€</span>
                             </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-6 col-sm-4">
                             <label class="form-label">Precio original (tachado)</label>
                             <div class="input-group">
                                 <input type="number" name="original_price" step="0.01" min="0" class="form-control"
@@ -69,7 +69,7 @@
                                 <span class="input-group-text">€</span>
                             </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-6 col-sm-4">
                             <label class="form-label">Coste (privado)</label>
                             <div class="input-group">
                                 <input type="number" name="cost_price" step="0.01" min="0" class="form-control"
@@ -77,17 +77,17 @@
                                 <span class="input-group-text">€</span>
                             </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-6 col-sm-4">
                             <label class="form-label">Stock <span class="text-danger">*</span></label>
                             <input type="number" name="stock" min="0" class="form-control @error('stock') is-invalid @enderror"
                                    value="{{ old('stock', $product->stock ?? 0) }}" required>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-6 col-sm-4">
                             <label class="form-label">SKU</label>
                             <input type="text" name="sku" class="form-control"
                                    value="{{ old('sku', $product->sku ?? '') }}">
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-6 col-sm-4">
                             <label class="form-label">Peso (kg)</label>
                             <input type="number" name="weight" step="0.001" min="0" class="form-control"
                                    value="{{ old('weight', $product->weight ?? '') }}">
@@ -97,8 +97,8 @@
             </div>
         </div>
 
-        {{-- Right column --}}
-        <div class="col-lg-4">
+        {{-- Columna lateral — ocupa todo en móvil, 4/12 en desktop --}}
+        <div class="col-12 col-lg-4">
             <div class="card shadow-sm mb-3">
                 <div class="card-header bg-white py-3"><h6 class="mb-0 fw-semibold">Publicación</h6></div>
                 <div class="card-body">
@@ -152,7 +152,11 @@
                     @if(isset($product) && $product->image_url)
                         <img src="{{ asset($product->image_url) }}" class="img-fluid rounded mb-2" alt="">
                     @endif
-                    <input type="file" name="image" class="form-control form-control-sm @error('image') is-invalid @enderror" accept="image/*">
+                    {{-- accept="image/*" + capture="environment" abre el carrete/cámara en móvil --}}
+                    <input type="file" name="image"
+                           class="form-control @error('image') is-invalid @enderror"
+                           accept="image/*"
+                           capture="environment">
                     @error('image')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     <div class="text-muted mt-1" style="font-size:.75rem">JPG, PNG. Máx 4 MB.</div>
                 </div>

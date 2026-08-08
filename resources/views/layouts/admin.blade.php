@@ -10,9 +10,13 @@
     <style>
         :root { --sidebar-w: 240px; }
         body { background: #f0f2f5; }
+
+        /* ── Sidebar base ── */
         .sidebar {
-            width: var(--sidebar-w); min-height: 100vh; background: #1a1d23;
-            position: fixed; top: 0; left: 0; z-index: 100; display: flex; flex-direction: column;
+            width: var(--sidebar-w);
+            background: #1a1d23;
+            display: flex;
+            flex-direction: column;
         }
         .sidebar .brand {
             padding: 1.25rem 1rem; background: #111318; color: #fff;
@@ -21,9 +25,11 @@
         }
         .sidebar .brand span { color: #f59e0b; }
         .sidebar .nav-link {
-            color: #adb5bd; padding: .6rem 1.25rem; border-radius: 6px;
+            color: #adb5bd; padding: .65rem 1.25rem; border-radius: 6px;
             margin: 2px 8px; display: flex; align-items: center; gap: .6rem;
             font-size: .9rem; transition: background .15s, color .15s;
+            /* Área táctil mínima recomendada para móvil */
+            min-height: 44px;
         }
         .sidebar .nav-link:hover, .sidebar .nav-link.active {
             background: #2d3139; color: #fff;
@@ -32,7 +38,30 @@
             font-size: .7rem; text-transform: uppercase; color: #6c757d;
             padding: .75rem 1.25rem .25rem; letter-spacing: .08em;
         }
-        .main-content { margin-left: var(--sidebar-w); min-height: 100vh; }
+
+        /* ── Desktop (≥768px): sidebar fija a la izquierda ── */
+        @media (min-width: 768px) {
+            .sidebar {
+                position: fixed;
+                top: 0; left: 0;
+                min-height: 100vh;
+                /* Anular estados de Bootstrap offcanvas en desktop */
+                transform: none !important;
+                visibility: visible !important;
+            }
+            .main-content { margin-left: var(--sidebar-w); }
+            .admin-menu-toggle { display: none !important; }
+        }
+
+        /* ── Móvil (<768px): sidebar como offcanvas, main sin margen ── */
+        @media (max-width: 767.98px) {
+            .main-content { margin-left: 0; }
+            .page-body { padding: 1rem; }
+            /* Botones de acción con área táctil cómoda en móvil */
+            .btn-sm { min-height: 38px; min-width: 38px; }
+        }
+
+        /* ── Topbar ── */
         .topbar {
             background: #fff; border-bottom: 1px solid #dee2e6;
             padding: .75rem 1.5rem; display: flex; align-items: center;
@@ -46,9 +75,13 @@
 </head>
 <body>
 
-{{-- Sidebar --}}
-<nav class="sidebar">
-    <a href="{{ route('admin.dashboard') }}" class="brand">
+{{-- Sidebar — en móvil actúa como offcanvas Bootstrap; en desktop queda fija via CSS --}}
+<nav class="sidebar offcanvas offcanvas-start"
+     tabindex="-1"
+     id="adminSidebar"
+     aria-labelledby="adminSidebarLabel">
+
+    <a href="{{ route('admin.dashboard') }}" class="brand" id="adminSidebarLabel">
         <i class="bi bi-shop"></i> Factory <span>Cards</span>
     </a>
 
@@ -99,7 +132,18 @@
 {{-- Main --}}
 <div class="main-content">
     <div class="topbar">
-        <h6 class="mb-0 fw-semibold">@yield('title', 'Dashboard')</h6>
+        <div class="d-flex align-items-center gap-3">
+            {{-- Botón hamburguesa — solo visible en móvil, abre el sidebar como offcanvas --}}
+            <button class="btn btn-outline-secondary border-0 admin-menu-toggle p-1"
+                    type="button"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#adminSidebar"
+                    aria-controls="adminSidebar"
+                    aria-label="Abrir menú">
+                <i class="bi bi-list fs-4"></i>
+            </button>
+            <h6 class="mb-0 fw-semibold">@yield('title', 'Dashboard')</h6>
+        </div>
         <div class="d-flex align-items-center gap-3">
             <span class="text-muted small">{{ auth()->user()->name }}</span>
             <div class="rounded-circle bg-warning d-flex align-items-center justify-content-center" style="width:36px;height:36px;font-weight:700;font-size:.85rem;">
