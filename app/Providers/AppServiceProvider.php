@@ -26,10 +26,11 @@ class AppServiceProvider extends ServiceProvider
         // las clases utilitarias w-5/h-5 de Tailwind cargadas.
         Paginator::useBootstrapFive();
 
-        // Forzar HTTPS cuando la aplicación está detrás de un proxy o túnel externo
-        // (Cloudflare Tunnel, ngrok, etc.). En local con APP_ENV=local también se activa
-        // para que los asset() y route() generen URLs https:// correctas.
-        if (config('app.env') !== 'production') {
+        // Forzar HTTPS solo cuando la petición llega a través de un proxy o túnel externo
+        // (Cloudflare Tunnel, ngrok, etc.) que añade la cabecera X-Forwarded-Proto: https.
+        // En navegación local directa (http://127.0.0.1:8000) NO se activa, evitando
+        // que asset() y route() generen URLs https:// que el servidor local no puede servir.
+        if ($this->app->environment('production') || request()->header('X-Forwarded-Proto') === 'https') {
             URL::forceScheme('https');
         }
     }
