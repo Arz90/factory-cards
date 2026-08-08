@@ -25,7 +25,7 @@
 <div id="heroSlider"
      class="carousel slide carousel-fade"
      data-bs-ride="carousel"
-     data-bs-interval="5000">
+     data-bs-interval="3500">
 
     {{-- ── Indicadores de posición (uno por banner) ── --}}
     <div class="carousel-indicators hero-indicadores">
