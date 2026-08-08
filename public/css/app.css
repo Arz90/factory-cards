@@ -24,8 +24,9 @@ body {
     font-family: 'Nunito', sans-serif;
     color: var(--fc-dark);
     background: #fff;
-    /* Evitar scroll horizontal no deseado por carruseles con overflow visible */
-    overflow-x: hidden;
+    /* overflow-x:clip en lugar de hidden para NO crear scroll-container
+       que rompería position:sticky en elementos hijos */
+    overflow-x: clip;
 }
 
 /* ================================================================
@@ -150,11 +151,19 @@ body {
 #navbar-verde {
     background-color: var(--fc-verde);
     border-bottom: 2px solid var(--fc-verde-dark);
-    /* ── Sticky: se queda fija en la parte superior al hacer scroll ── */
-    position: sticky;
-    top: 0;
-    z-index: 1020;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* ── Sticky solo en desktop: la barra verde se queda fija al hacer scroll ──
+   Funciona porque #navbar-verde ahora es hermano directo del body (no está
+   dentro de un wrapper corto), y body usa overflow-x:clip (no crea
+   scroll-container que rompería sticky). ── */
+@media (min-width: 992px) {
+    #navbar-verde {
+        position: sticky;
+        top: 0;
+        z-index: 1020;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
 }
 
 /* Links de la navbar */

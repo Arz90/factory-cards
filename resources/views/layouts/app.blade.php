@@ -158,76 +158,77 @@
         </div>
     </header>
 
-    {{-- ── NAVBAR VERDE — Links de categorías + Carrito (desktop) ────────────
-         Fondo verde brillante, texto blanco en mayúsculas.
-         El carrito aparece como botón outline a la derecha.
-    ─────────────────────────────────────────────────────────────────────────── --}}
-    <nav id="navbar-verde" class="d-none d-lg-block">
-        <div class="container-xl">
-            <div class="d-flex align-items-stretch">
-
-                {{-- ── Links de navegación principal ── --}}
-                <ul class="nav navbar-verde-nav me-auto">
-
-                    {{-- JUEGOS TCG: dropdown con franquicias --}}
-                    <li class="nav-item dropdown">
-                        <a class="nav-verde-link dropdown-toggle" href="{{ route('shop.catalog') }}"
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            JUEGOS TCG
-                        </a>
-                        <ul class="dropdown-menu dropdown-verde">
-                            @foreach($headerFranchises ?? [] as $f)
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('shop.franchise', $f->slug) }}">
-                                        {{ $f->name }}
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </li>
-
-                    {{-- JUEGOS DE MESA --}}
-                    <li class="nav-item">
-                        <a class="nav-verde-link" href="{{ route('shop.catalog') }}">JUEGOS DE MESA</a>
-                    </li>
-
-                    {{-- WARHAMMER --}}
-                    <li class="nav-item">
-                        <a class="nav-verde-link" href="{{ route('shop.franchise', 'warhammer') }}">WARHAMMER</a>
-                    </li>
-
-                    {{-- JUEGOS DE ROL --}}
-                    <li class="nav-item">
-                        <a class="nav-verde-link" href="{{ route('shop.catalog') }}">JUEGOS DE ROL</a>
-                    </li>
-
-                    {{-- ACCESORIOS --}}
-                    <li class="nav-item">
-                        <a class="nav-verde-link" href="{{ route('shop.category', 'accesorios') }}">ACCESORIOS</a>
-                    </li>
-
-                    {{-- VENDE TUS CARTAS (stub) --}}
-                    <li class="nav-item">
-                        <a class="nav-verde-link nav-verde-link--resaltado" href="#">VENDE TUS CARTAS</a>
-                    </li>
-
-                </ul>
-
-                {{-- ── Botón carrito (outline verde oscuro) ── --}}
-                <div class="d-flex align-items-center py-1">
-                    <a href="{{ route('cart.index') }}" class="btn-carrito-navbar">
-                        <i class="bi bi-cart3 me-1"></i>
-                        CARRITO
-                        <span class="carrito-precio ms-1">{{ number_format($cartTotal ?? 0, 2, ',', '.') }} €</span>
-                        <span class="badge bg-white text-success rounded-pill ms-1 small cart-badge {{ ($cartCount ?? 0) === 0 ? 'd-none' : '' }}">{{ $cartCount ?? 0 }}</span>
-                    </a>
-                </div>
-
-            </div>
-        </div>
-    </nav>
 
 </div>{{-- fin bloque-cabecera-sticky --}}
+
+{{-- ── NAVBAR VERDE — fuera del wrapper para que position:sticky funcione ──
+     Solo visible en desktop (d-none d-lg-block).
+     Se pega al top en cuanto el usuario hace scroll y la cabecera blanca desaparece.
+─────────────────────────────────────────────────────────────────────────── --}}
+<nav id="navbar-verde" class="d-none d-lg-block">
+    <div class="container-xl">
+        <div class="d-flex align-items-stretch">
+
+            {{-- ── Links de navegación principal ── --}}
+            <ul class="nav navbar-verde-nav me-auto">
+
+                {{-- JUEGOS TCG: dropdown con franquicias --}}
+                <li class="nav-item dropdown">
+                    <a class="nav-verde-link dropdown-toggle" href="{{ route('shop.catalog') }}"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        JUEGOS TCG
+                    </a>
+                    <ul class="dropdown-menu dropdown-verde">
+                        @foreach($headerFranchises ?? [] as $f)
+                            <li>
+                                <a class="dropdown-item" href="{{ route('shop.franchise', $f->slug) }}">
+                                    {{ $f->name }}
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </li>
+
+                {{-- JUEGOS DE MESA --}}
+                <li class="nav-item">
+                    <a class="nav-verde-link" href="{{ route('shop.catalog') }}">JUEGOS DE MESA</a>
+                </li>
+
+                {{-- WARHAMMER --}}
+                <li class="nav-item">
+                    <a class="nav-verde-link" href="{{ route('shop.franchise', 'warhammer') }}">WARHAMMER</a>
+                </li>
+
+                {{-- JUEGOS DE ROL --}}
+                <li class="nav-item">
+                    <a class="nav-verde-link" href="{{ route('shop.catalog') }}">JUEGOS DE ROL</a>
+                </li>
+
+                {{-- ACCESORIOS --}}
+                <li class="nav-item">
+                    <a class="nav-verde-link" href="{{ route('shop.category', 'accesorios') }}">ACCESORIOS</a>
+                </li>
+
+                {{-- VENDE TUS CARTAS (stub) --}}
+                <li class="nav-item">
+                    <a class="nav-verde-link nav-verde-link--resaltado" href="#">VENDE TUS CARTAS</a>
+                </li>
+
+            </ul>
+
+            {{-- ── Botón carrito (outline verde oscuro) ── --}}
+            <div class="d-flex align-items-center py-1">
+                <a href="{{ route('cart.index') }}" class="btn-carrito-navbar">
+                    <i class="bi bi-cart3 me-1"></i>
+                    CARRITO
+                    <span class="carrito-precio ms-1">{{ number_format($cartTotal ?? 0, 2, ',', '.') }} €</span>
+                    <span class="badge bg-white text-success rounded-pill ms-1 small cart-badge {{ ($cartCount ?? 0) === 0 ? 'd-none' : '' }}">{{ $cartCount ?? 0 }}</span>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</nav>
 
 
 {{-- ================================================================
