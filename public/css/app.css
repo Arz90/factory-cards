@@ -1113,10 +1113,11 @@ body {
     color: #fff;
 }
 
-/* Ocultar flechas cuando no hay slides suficientes (Swiper añade swiper-button-disabled) */
+/* Flechas desactivadas: visibles pero atenuadas (sin ocultar) */
 .swiper-button-disabled.swiper-btn-franquicia {
-    opacity: 0;
+    opacity: .3;
     pointer-events: none;
+    cursor: default;
 }
 
 /* ── Slide individual: altura uniforme ── */
