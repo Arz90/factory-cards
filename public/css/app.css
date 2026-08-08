@@ -29,16 +29,15 @@ body {
 /* ================================================================
    CURSOR PERSONALIZADO — Pikachu
    Solo se aplica en dispositivos con ratón preciso (no táctiles).
-   Cadena de fallback: .cur → .ani → cursor del sistema.
-   .cur es el formato estático compatible con todos los navegadores;
-   .ani es el formato animado de Windows (solo IE/Edge lo soporta,
-   pero se incluye como segunda opción antes del fallback 'default').
+   Formato PNG: compatible con todos los navegadores modernos.
+   Los dos números tras la URL son el hotspot (punto de clic):
+   0 0 = esquina superior izquierda de la imagen.
 ================================================================ */
 @media (pointer: fine) {
 
     /* Cursor general en toda la página */
     body {
-        cursor: url('/images/pikachu.cur'), url('/images/pikachu.ani'), default;
+        cursor: url('/images/pikachu.png') 0 0, default;
     }
 
     /* Cursor pointer en todos los elementos interactivos */
@@ -49,7 +48,7 @@ body {
     .pc-card,
     input[type="submit"],
     [role="button"] {
-        cursor: url('/images/pikachu.cur'), url('/images/pikachu.ani'), pointer;
+        cursor: url('/images/pikachu.png') 0 0, pointer;
     }
 }
 
