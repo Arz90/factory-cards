@@ -75,9 +75,21 @@ body {
 ================================================================ */
 
 /* Logo de la tienda */
-.logo-tienda       { line-height: 1; }
-.logo-factory      { font-size: 1.5rem; font-weight: 900; color: var(--fc-verde); letter-spacing: -.5px; }
-.logo-cards        { font-size: 1.5rem; font-weight: 700; color: var(--fc-dark);  letter-spacing: -.5px; }
+/* Logo imagen — cabecera y menú móvil */
+.logo-img {
+    height: 44px;
+    width: auto;
+    display: block;
+    object-fit: contain;
+}
+
+/* Logo en el footer — ligeramente más grande sobre fondo oscuro */
+.logo-img--footer {
+    height: 52px;
+    /* El PNG original tiene fondo transparente; si fuera necesario un filtro
+       para invertir sobre fondo oscuro se puede activar esta línea:
+       filter: brightness(0) invert(1); */
+}
 
 /* Buscador principal — input group con select + text + botón */
 .buscador-principal   { border: 1.5px solid #dee2e6; border-radius: 6px; overflow: hidden; }

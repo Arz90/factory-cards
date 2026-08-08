@@ -37,9 +37,10 @@
 
                 {{-- ── Columna izquierda: Logo de la tienda ── --}}
                 <div class="col-auto col-lg-2">
-                    <a href="{{ route('home') }}" class="text-decoration-none logo-tienda d-inline-block">
-                        {{-- Placeholder de logo — reemplazar por <img> cuando esté el archivo --}}
-                        <span class="logo-factory">Factory</span><span class="logo-cards">Cards</span>
+                    <a href="{{ route('home') }}" class="text-decoration-none d-inline-block" aria-label="Factory Cards — Inicio">
+                        <img src="{{ asset('images/logo.png') }}"
+                             alt="Factory Cards"
+                             class="logo-img">
                     </a>
                 </div>
 
@@ -279,9 +280,13 @@
 
     <div class="offcanvas-header" style="background:var(--fc-verde);">
         <a href="{{ route('home') }}"
-           class="text-white text-decoration-none fw-bold fs-5"
-           id="menuMovilLabel">
-            <span style="color:#FFE066;">Factory</span> Cards
+           class="text-decoration-none d-inline-block"
+           id="menuMovilLabel"
+           aria-label="Factory Cards — Inicio">
+            <img src="{{ asset('images/logo.png') }}"
+                 alt="Factory Cards"
+                 class="logo-img"
+                 style="height:36px;filter:brightness(0) invert(1);">
         </a>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
     </div>
@@ -441,7 +446,9 @@
 
                     {{-- Logo --}}
                     <a href="{{ route('home') }}" class="text-decoration-none d-inline-block mb-3" aria-label="Factory Cards — Inicio">
-                        <span class="footer-logo-factory">Factory</span><span class="footer-logo-cards">Cards</span>
+                        <img src="{{ asset('images/logo.png') }}"
+                             alt="Factory Cards"
+                             class="logo-img logo-img--footer">
                     </a>
 
                     {{-- Descripción (texto SEO relevante) --}}
