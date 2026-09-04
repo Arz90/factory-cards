@@ -2246,6 +2246,92 @@ html {
     margin: 0;
 }
 
+/* ── Botones rápidos de la calculadora (+100, +250…) ── */
+.sell-calc-quick-btns {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.sell-calc-quick-btn {
+    flex: 1;
+    min-width: 60px;
+    background: rgba(41,164,79,.15);
+    border: 1.5px solid rgba(41,164,79,.35);
+    color: var(--fc-verde);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: .82rem;
+    border-radius: 8px;
+    padding: .45rem .3rem;
+    cursor: pointer;
+    transition: background var(--fc-transition), border-color var(--fc-transition), color var(--fc-transition);
+    text-align: center;
+}
+
+.sell-calc-quick-btn:hover {
+    background: var(--fc-verde);
+    border-color: var(--fc-verde);
+    color: #fff;
+}
+
+/* Cabecera de la calc con flex para alinear el subtítulo a la derecha */
+.sell-calc-header {
+    display: flex;
+    align-items: center;
+}
+
+/* ── Hint vacío en la mini-tabla de referencia ── */
+.sell-bulk-empty-hint {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 2rem 1rem;
+    color: #9CA3AF;
+    font-size: .83rem;
+    text-align: center;
+}
+
+.sell-bulk-empty-hint p { margin: 0; }
+
+/* ── Panel de avisos ── */
+.sell-bulk-avisos {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sell-bulk-aviso-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: .75rem 1rem;
+    font-size: .82rem;
+    color: #374151;
+    line-height: 1.45;
+}
+
+.sell-bulk-aviso-item i {
+    color: #6B7280;
+    font-size: 1rem;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.sell-bulk-aviso-item--destacado {
+    background: #f0faf4;
+    border-color: #c6e8d4;
+}
+
+.sell-bulk-aviso-item--destacado i {
+    color: var(--fc-verde);
+}
+
 /* ── Responsive ── */
 @media (max-width: 991.98px) {
     .sell-bulk-section { padding: 3rem 0; }
@@ -2255,4 +2341,5 @@ html {
 @media (max-width: 575.98px) {
     .sell-bulk-precio { font-size: 1rem; }
     .sell-calc-resultado-valor { font-size: 1.8rem; }
+    .sell-calc-quick-btn { font-size: .75rem; padding: .4rem .2rem; }
 }

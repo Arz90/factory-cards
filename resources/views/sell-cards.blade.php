@@ -154,7 +154,7 @@
 </section>
 
 {{-- ══════════════════════════════════════════════════════════════
-     SECCIÓN BULK — Venta a Granel
+     SECCIÓN BULK — Venta a Granel con calculadora dinámica
 ══════════════════════════════════════════════════════════════ --}}
 <section class="sell-bulk-section">
     <div class="container">
@@ -170,113 +170,114 @@
             </h2>
             <p class="text-muted mx-auto" style="max-width:520px;font-size:.95rem;">
                 ¿Tienes cajas llenas de cartas repetidas? Te las compramos por volumen.
-                Precios fijos, sin tasación individual.
+                Calcula al instante cuánto vale tu granel.
             </p>
         </div>
 
-        <div class="row g-4 align-items-start">
+        <div class="row g-4 align-items-start justify-content-center">
 
-            {{-- ── Tabla de tarifas ── --}}
+            {{-- ── Calculadora dinámica ── --}}
             <div class="col-lg-7">
-                <div class="sell-bulk-card">
-                    <div class="sell-bulk-card-header">
-                        <i class="bi bi-tag-fill me-2"></i>Tarifas de compra por cada 1.000 cartas
-                    </div>
-                    <div class="sell-bulk-card-body">
-                        <div class="sell-bulk-row sell-bulk-row--highlight">
-                            <div class="sell-bulk-tipo">
-                                <span class="sell-bulk-dot" style="background:#6B7280;"></span>
-                                <div>
-                                    <strong>Comunes / Infrecuentes</strong>
-                                    <span class="sell-bulk-desc">C / UC — cualquier juego</span>
-                                </div>
-                            </div>
-                            <div class="sell-bulk-precio">12,00 €<span>/1.000</span></div>
-                        </div>
-                        <div class="sell-bulk-row">
-                            <div class="sell-bulk-tipo">
-                                <span class="sell-bulk-dot" style="background:#F59E0B;"></span>
-                                <div>
-                                    <strong>Raras (Sin brillo)</strong>
-                                    <span class="sell-bulk-desc">R — sin holo, sin reverse</span>
-                                </div>
-                            </div>
-                            <div class="sell-bulk-precio">20,00 €<span>/1.000</span></div>
-                        </div>
-                        <div class="sell-bulk-row">
-                            <div class="sell-bulk-tipo">
-                                <span class="sell-bulk-dot" style="background:#8B5CF6;"></span>
-                                <div>
-                                    <strong>Holos / Reverse Holos</strong>
-                                    <span class="sell-bulk-desc">Holo Rare, Reverse Holo</span>
-                                </div>
-                            </div>
-                            <div class="sell-bulk-precio">35,00 €<span>/1.000</span></div>
-                        </div>
-                        <div class="sell-bulk-row">
-                            <div class="sell-bulk-tipo">
-                                <span class="sell-bulk-dot" style="background:#29A44F;"></span>
-                                <div>
-                                    <strong>Energías Básicas</strong>
-                                    <span class="sell-bulk-desc">Solo cartas de energía</span>
-                                </div>
-                            </div>
-                            <div class="sell-bulk-precio">2,00 €<span>/1.000</span></div>
-                        </div>
-
-                        {{-- CTA informativo --}}
-                        <div class="sell-bulk-cta">
-                            <i class="bi bi-info-circle-fill me-2" style="color:var(--fc-verde);flex-shrink:0;"></i>
-                            <span>
-                                Para vender tu granel, selecciona
-                                <strong>"Cartas a granel (Bulk)"</strong> en el formulario de abajo
-                                e indícanos las cantidades estimadas en los comentarios.
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {{-- ── Calculadora rápida ── --}}
-            <div class="col-lg-5">
                 <div class="sell-calc-card">
                     <div class="sell-calc-header">
-                        <i class="bi bi-calculator-fill me-2"></i>Calculadora rápida
+                        <i class="bi bi-calculator-fill me-2"></i>Calculadora de Granel
+                        <span style="font-size:.75rem;opacity:.7;font-weight:600;margin-left:auto;">
+                            Tarifas de mercado europeo
+                        </span>
                     </div>
                     <div class="sell-calc-body">
-                        <p class="sell-calc-hint">
-                            Estima al instante cuánto vale tu granel.
-                        </p>
 
-                        <label class="sell-calc-label" for="calc-tipo">Tipo de carta</label>
-                        <select id="calc-tipo" class="sell-calc-select mb-3">
-                            <option value="12">Comunes / Infrecuentes — 12 €/1.000</option>
-                            <option value="20">Raras (Sin brillo) — 20 €/1.000</option>
-                            <option value="35">Holos / Reverse Holos — 35 €/1.000</option>
-                            <option value="2">Energías Básicas — 2 €/1.000</option>
-                        </select>
+                        {{-- Select juego --}}
+                        <div class="mb-3">
+                            <label class="sell-calc-label" for="calc-juego">Juego</label>
+                            <select id="calc-juego" class="sell-calc-select">
+                                <option value="">— Selecciona un juego —</option>
+                                <option value="pokemon">Pokémon TCG</option>
+                                <option value="magic">Magic: The Gathering</option>
+                                <option value="onepiece">One Piece Card Game</option>
+                                <option value="lorcana">Disney Lorcana</option>
+                            </select>
+                        </div>
 
-                        <label class="sell-calc-label" for="calc-cantidad">¿Cuántas cartas tienes?</label>
-                        <input type="number"
-                               id="calc-cantidad"
-                               class="sell-calc-input mb-4"
-                               placeholder="Ej: 3500"
-                               min="0"
-                               step="100">
+                        {{-- Select rareza (dependiente) --}}
+                        <div class="mb-3">
+                            <label class="sell-calc-label" for="calc-rareza">Rareza / Tipo</label>
+                            <select id="calc-rareza" class="sell-calc-select" disabled>
+                                <option value="">— Elige primero el juego —</option>
+                            </select>
+                        </div>
+
+                        {{-- Input cantidad --}}
+                        <div class="mb-2">
+                            <label class="sell-calc-label" for="calc-cantidad">Cantidad de cartas</label>
+                            <input type="number"
+                                   id="calc-cantidad"
+                                   class="sell-calc-input"
+                                   placeholder="Ej: 3.500"
+                                   min="0"
+                                   step="1">
+                        </div>
+
+                        {{-- Botones rápidos --}}
+                        <div class="sell-calc-quick-btns mb-4">
+                            <button type="button" class="sell-calc-quick-btn" data-add="100">+100</button>
+                            <button type="button" class="sell-calc-quick-btn" data-add="250">+250</button>
+                            <button type="button" class="sell-calc-quick-btn" data-add="500">+500</button>
+                            <button type="button" class="sell-calc-quick-btn" data-add="1000">+1.000</button>
+                        </div>
 
                         {{-- Resultado --}}
-                        <div class="sell-calc-resultado" id="calc-resultado">
-                            <div class="sell-calc-resultado-label">Estimación aproximada</div>
+                        <div class="sell-calc-resultado">
+                            <div class="sell-calc-resultado-label">Estimación de compra</div>
                             <div class="sell-calc-resultado-valor" id="calc-valor">— €</div>
                             <div class="sell-calc-resultado-sub" id="calc-sub"></div>
                         </div>
 
-                        <p class="sell-calc-aviso">
-                            * Estimación orientativa. El precio final se confirma tras la tasación.
-                            Precios por cada 1.000 cartas o fracción.
-                        </p>
                     </div>
                 </div>
+            </div>
+
+            {{-- ── Panel de referencia + avisos ── --}}
+            <div class="col-lg-5">
+
+                {{-- Mini tabla de precios del juego seleccionado --}}
+                <div class="sell-bulk-card mb-3">
+                    <div class="sell-bulk-card-header">
+                        <i class="bi bi-tag-fill me-2"></i>
+                        <span id="calc-ref-titulo">Precios por unidad</span>
+                    </div>
+                    <div class="sell-bulk-card-body" id="calc-ref-tabla">
+                        <div class="sell-bulk-empty-hint">
+                            <i class="bi bi-arrow-left-circle" style="color:var(--fc-verde);font-size:1.5rem;"></i>
+                            <p>Selecciona un juego para ver las tarifas</p>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Avisos --}}
+                <div class="sell-bulk-avisos">
+                    <div class="sell-bulk-aviso-item">
+                        <i class="bi bi-shop-window"></i>
+                        <span>Mínimo <strong>100 cartas</strong> en tienda física.</span>
+                    </div>
+                    <div class="sell-bulk-aviso-item">
+                        <i class="bi bi-truck"></i>
+                        <span>Mínimo <strong>1.000 cartas</strong> o <strong>15 €</strong> para envíos.</span>
+                    </div>
+                    <div class="sell-bulk-aviso-item sell-bulk-aviso-item--destacado">
+                        <i class="bi bi-gift-fill"></i>
+                        <span>El <strong>crédito de tienda</strong> otorga un <strong>+10% extra</strong> en material a granel.</span>
+                    </div>
+                    <div class="sell-bulk-cta mt-3">
+                        <i class="bi bi-info-circle-fill me-2" style="color:var(--fc-verde);flex-shrink:0;"></i>
+                        <span>
+                            Para vender tu granel, selecciona
+                            <strong>"Cartas a granel (Bulk)"</strong> en el formulario de abajo
+                            e indícanos las cantidades en los comentarios.
+                        </span>
+                    </div>
+                </div>
+
             </div>
 
         </div>
@@ -631,43 +632,146 @@ document.getElementById('sell-archivos')?.addEventListener('change', function ()
 });
 
 /**
- * Calculadora de venta a granel.
- * Calcula el precio estimado en tiempo real según tipo y cantidad de cartas.
- * Precio por cada 1.000 cartas (fracción incluida).
+ * Calculadora dinámica de venta a granel (Bulk).
+ * Precios por unidad basados en tarifas de mercado europeo.
+ * El select de rareza se actualiza según el juego elegido.
  */
 (function () {
-    const elTipo      = document.getElementById('calc-tipo');
-    const elCantidad  = document.getElementById('calc-cantidad');
-    const elValor     = document.getElementById('calc-valor');
-    const elSub       = document.getElementById('calc-sub');
+    // ── Diccionario de precios por unidad (€/carta) ─────────────────────────
+    const TARIFAS = {
+        pokemon: [
+            { label: 'C / U — Comunes / Infrecuentes', precio: 0.010, color: '#6B7280' },
+            { label: 'Rare — Raras sin brillo',         precio: 0.015, color: '#F59E0B' },
+            { label: 'Holo / Reverse Holo',             precio: 0.030, color: '#8B5CF6' },
+            { label: 'V / ex / Especiales',             precio: 0.400, color: '#EF4444' },
+            { label: 'Energías Básicas',                precio: 0.001, color: '#29A44F' },
+        ],
+        magic: [
+            { label: 'C / U — Comunes / Infrecuentes', precio: 0.004, color: '#6B7280' },
+            { label: 'Rare — Raras sin brillo',         precio: 0.075, color: '#F59E0B' },
+            { label: 'Foil C / U',                      precio: 0.006, color: '#60A5FA' },
+            { label: 'Rare Foil',                       precio: 0.100, color: '#8B5CF6' },
+            { label: 'Tierras Básicas',                 precio: 0.002, color: '#29A44F' },
+        ],
+        onepiece: [
+            { label: 'C / U / DON!!',                  precio: 0.003, color: '#6B7280' },
+            { label: 'Rare',                            precio: 0.015, color: '#F59E0B' },
+            { label: 'Super Rare',                     precio: 0.080, color: '#8B5CF6' },
+        ],
+        lorcana: [
+            { label: 'C / U — Comunes / Infrecuentes', precio: 0.005, color: '#6B7280' },
+            { label: 'Rare',                            precio: 0.030, color: '#F59E0B' },
+            { label: 'Super Rare',                     precio: 0.070, color: '#8B5CF6' },
+            { label: 'Legendary',                      precio: 0.150, color: '#EF4444' },
+            { label: 'Foil C / U',                     precio: 0.010, color: '#60A5FA' },
+        ],
+    };
 
-    if (!elTipo || !elCantidad) return;
+    const NOMBRES_JUEGO = {
+        pokemon:  'Pokémon TCG',
+        magic:    'Magic: The Gathering',
+        onepiece: 'One Piece',
+        lorcana:  'Disney Lorcana',
+    };
 
-    function calcular() {
-        const precioPorMil = parseFloat(elTipo.value) || 0;
-        const cantidad     = parseFloat(elCantidad.value) || 0;
+    // ── Referencias al DOM ───────────────────────────────────────────────────
+    const elJuego    = document.getElementById('calc-juego');
+    const elRareza   = document.getElementById('calc-rareza');
+    const elCantidad = document.getElementById('calc-cantidad');
+    const elValor    = document.getElementById('calc-valor');
+    const elSub      = document.getElementById('calc-sub');
+    const elRefTitulo = document.getElementById('calc-ref-titulo');
+    const elRefTabla  = document.getElementById('calc-ref-tabla');
 
-        if (cantidad <= 0) {
-            elValor.textContent = '— €';
-            elSub.textContent   = '';
+    if (!elJuego) return;
+
+    // ── Actualiza el select de rareza y la mini-tabla de referencia ──────────
+    function actualizarJuego() {
+        const juego = elJuego.value;
+
+        // Resetear rareza
+        elRareza.innerHTML = '';
+        elCantidad.value   = '';
+        resetearResultado();
+
+        if (!juego || !TARIFAS[juego]) {
+            elRareza.innerHTML = '<option value="">— Elige primero el juego —</option>';
+            elRareza.disabled  = true;
+            elRefTitulo.textContent = 'Precios por unidad';
+            elRefTabla.innerHTML = `
+                <div class="sell-bulk-empty-hint">
+                    <i class="bi bi-arrow-left-circle" style="color:var(--fc-verde);font-size:1.5rem;"></i>
+                    <p>Selecciona un juego para ver las tarifas</p>
+                </div>`;
             return;
         }
 
-        // Precio proporcional (fracción contabilizada)
-        const total = (cantidad / 1000) * precioPorMil;
+        // Poblar select de rareza
+        elRareza.disabled = false;
+        elRareza.innerHTML = '<option value="">— Selecciona rareza —</option>'
+            + TARIFAS[juego].map((t, i) =>
+                `<option value="${i}">${t.label}</option>`
+            ).join('');
 
-        // Formatear como precio en español
+        // Actualizar mini-tabla de referencia
+        elRefTitulo.textContent = NOMBRES_JUEGO[juego] + ' — tarifas por carta';
+        elRefTabla.innerHTML = TARIFAS[juego].map(t => `
+            <div class="sell-bulk-row">
+                <div class="sell-bulk-tipo">
+                    <span class="sell-bulk-dot" style="background:${t.color};"></span>
+                    <strong style="font-size:.82rem;">${t.label}</strong>
+                </div>
+                <div class="sell-bulk-precio" style="font-size:.95rem;">
+                    ${t.precio.toLocaleString('es-ES', { minimumFractionDigits: 3 })} €
+                    <span>/carta</span>
+                </div>
+            </div>`
+        ).join('');
+    }
+
+    // ── Recalcula el total ───────────────────────────────────────────────────
+    function calcular() {
+        const juego    = elJuego.value;
+        const rareza   = elRareza.value;
+        const cantidad = parseFloat(elCantidad.value) || 0;
+
+        if (!juego || rareza === '' || cantidad <= 0) {
+            resetearResultado();
+            return;
+        }
+
+        const tarifa = TARIFAS[juego][parseInt(rareza)];
+        if (!tarifa) { resetearResultado(); return; }
+
+        const total = cantidad * tarifa.precio;
+
         elValor.textContent = total.toLocaleString('es-ES', {
             minimumFractionDigits: 2,
-            maximumFractionDigits: 2
+            maximumFractionDigits: 2,
         }) + ' €';
 
         elSub.textContent = cantidad.toLocaleString('es-ES') + ' cartas × '
-            + precioPorMil.toLocaleString('es-ES', { minimumFractionDigits: 2 })
-            + ' €/1.000';
+            + tarifa.precio.toLocaleString('es-ES', { minimumFractionDigits: 3 })
+            + ' €/carta';
     }
 
-    elTipo.addEventListener('change', calcular);
+    function resetearResultado() {
+        elValor.textContent = '— €';
+        elSub.textContent   = '';
+    }
+
+    // ── Botones rápidos (+100, +250, +500, +1000) ────────────────────────────
+    document.querySelectorAll('.sell-calc-quick-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            const suma = parseInt(this.dataset.add, 10) || 0;
+            elCantidad.value = (parseFloat(elCantidad.value) || 0) + suma;
+            calcular();
+        });
+    });
+
+    // ── Listeners principales ────────────────────────────────────────────────
+    elJuego.addEventListener('change', actualizarJuego);
+    elRareza.addEventListener('change', calcular);
     elCantidad.addEventListener('input', calcular);
 })();
 </script>
