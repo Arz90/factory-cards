@@ -2048,7 +2048,9 @@ html {
     color: #fff;
     font-weight: 800;
     font-size: .95rem;
-    padding: 1rem 1.5rem;
+    padding: 1.25rem 1.5rem;
+    /* Redondeo explícito en la parte superior para coincidir con el contenedor */
+    border-radius: 20px 20px 0 0;
 }
 
 .sell-bulk-card-body {
@@ -2151,7 +2153,7 @@ html {
     color: var(--fc-verde);
     font-weight: 800;
     font-size: .95rem;
-    padding: 1rem 1.5rem;
+    padding: 1.25rem 1.5rem;
 }
 
 .sell-calc-body {
@@ -2296,7 +2298,7 @@ html {
 
 .sell-bulk-empty-hint p { margin: 0; }
 
-/* ── Panel de avisos ── */
+/* ── Panel de avisos ── Todos los ítems con el mismo estilo base ── */
 .sell-bulk-avisos {
     display: flex;
     flex-direction: column;
@@ -2307,8 +2309,8 @@ html {
     display: flex;
     align-items: flex-start;
     gap: 10px;
-    background: #fff;
-    border: 1px solid #e5e7eb;
+    background: #f0faf4;
+    border: 1px solid #d1ead9;
     border-radius: 10px;
     padding: .75rem 1rem;
     font-size: .82rem;
@@ -2317,19 +2319,15 @@ html {
 }
 
 .sell-bulk-aviso-item i {
-    color: #6B7280;
+    color: var(--fc-verde);
     font-size: 1rem;
     flex-shrink: 0;
     margin-top: 1px;
 }
 
+/* La variante --destacado conserva solo el refuerzo visual del borde */
 .sell-bulk-aviso-item--destacado {
-    background: #f0faf4;
-    border-color: #c6e8d4;
-}
-
-.sell-bulk-aviso-item--destacado i {
-    color: var(--fc-verde);
+    border-color: #b6dfca;
 }
 
 /* ── Responsive ── */
