@@ -268,13 +268,9 @@
                         <i class="bi bi-gift-fill"></i>
                         <span>El <strong>crédito de tienda</strong> otorga un <strong>+10% extra</strong> en material a granel.</span>
                     </div>
-                    <div class="sell-bulk-cta mt-3">
-                        <i class="bi bi-info-circle-fill me-2" style="color:var(--fc-verde);flex-shrink:0;"></i>
-                        <span>
-                            Para vender tu granel, selecciona
-                            <strong>"Cartas a granel (Bulk)"</strong> en el formulario de abajo
-                            e indícanos las cantidades en los comentarios.
-                        </span>
+                    <div class="sell-bulk-aviso-item">
+                        <i class="bi bi-info-circle-fill"></i>
+                        <span>Para vender tu granel, selecciona <strong>"Cartas a granel (Bulk)"</strong> en el formulario de abajo e indícanos las cantidades en los comentarios.</span>
                     </div>
                 </div>
 

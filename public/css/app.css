@@ -2124,20 +2124,6 @@ html {
 }
 
 /* CTA informativo bajo las tarifas */
-.sell-bulk-cta {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    margin: .5rem 1rem 1rem;
-    background: #f0faf4;
-    border: 1px solid #c6e8d4;
-    border-radius: 10px;
-    padding: .85rem 1rem;
-    font-size: .82rem;
-    color: #374151;
-    line-height: 1.5;
-}
-
 /* ── Calculadora ── */
 .sell-calc-card {
     background: linear-gradient(180deg, #0f1923 0%, #112218 100%);
