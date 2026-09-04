@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\PromoBannerController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\SellCardsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,10 @@ Route::get('/producto/{slug}', [ShopController::class, 'show'])->name('shop.prod
 Route::get('/franquicia/{slug}', [ShopController::class, 'byFranchise'])->name('shop.franchise');
 Route::get('/categoria/{slug}', [ShopController::class, 'byCategory'])->name('shop.category');
 Route::get('/buscar', [ShopController::class, 'search'])->name('shop.search');
+
+// Vende tus cartas — landing page de captación de stock de segunda mano
+Route::get('/vende-tus-cartas', [SellCardsController::class, 'index'])->name('sell-cards.index');
+Route::post('/vende-tus-cartas', [SellCardsController::class, 'store'])->name('sell-cards.store');
 
 /*
 |--------------------------------------------------------------------------

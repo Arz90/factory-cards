@@ -1566,3 +1566,457 @@ html {
     overflow-x: clip;   /* corta el desbordamiento sin crear scroll-container */
     max-width: 100%;
 }
+
+
+/* ================================================================
+   VENDE TUS CARTAS — Landing page de captación de segunda mano
+================================================================ */
+
+/* ── Hero section ── */
+.sell-hero {
+    background: linear-gradient(135deg, #0f1923 0%, #1a2f1f 60%, #0d2016 100%);
+    position: relative;
+    overflow: hidden;
+    padding: 5rem 0 4rem;
+}
+
+/* Patrón de puntos decorativo sobre el fondo */
+.sell-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(41,164,79,.15) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+}
+
+.sell-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,215,0,.15);
+    border: 1px solid rgba(255,215,0,.4);
+    color: var(--fc-amarillo);
+    font-size: .78rem;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 1.2rem;
+}
+
+.sell-hero-titulo {
+    font-size: clamp(1.8rem, 4.5vw, 3rem);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.15;
+    letter-spacing: -.5px;
+}
+
+.sell-hero-titulo .sell-highlight {
+    color: var(--fc-verde);
+}
+
+.sell-hero-subtitulo {
+    color: rgba(255,255,255,.75);
+    font-size: 1.05rem;
+    max-width: 540px;
+}
+
+/* Caja de bonus destacada dentro del hero */
+.sell-bonus-box {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, rgba(41,164,79,.2), rgba(41,164,79,.08));
+    border: 1.5px solid rgba(41,164,79,.5);
+    border-radius: 12px;
+    padding: 12px 20px;
+    color: #fff;
+    font-weight: 700;
+    font-size: .95rem;
+}
+
+.sell-bonus-badge {
+    background: var(--fc-verde);
+    color: #fff;
+    font-weight: 900;
+    font-size: 1.1rem;
+    padding: 4px 10px;
+    border-radius: 8px;
+    white-space: nowrap;
+}
+
+/* ── Trust badges en el hero ── */
+.sell-trust-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+    margin-top: 2rem;
+}
+
+.sell-trust-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: rgba(255,255,255,.8);
+    font-size: .82rem;
+    font-weight: 600;
+}
+
+.sell-trust-item i {
+    color: var(--fc-verde);
+    font-size: 1.05rem;
+}
+
+/* ── Sección "3 pasos" ── */
+.sell-steps {
+    background: #f8fdf9;
+    padding: 4rem 0;
+}
+
+.sell-step-card {
+    background: #fff;
+    border: 1px solid #e5f0ea;
+    border-radius: 16px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    position: relative;
+    transition: box-shadow var(--fc-transition), transform var(--fc-transition);
+    height: 100%;
+}
+
+.sell-step-card:hover {
+    box-shadow: 0 8px 28px rgba(41,164,79,.12);
+    transform: translateY(-3px);
+}
+
+/* Número de paso en esquina superior derecha */
+.sell-step-num {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--fc-verde);
+    color: #fff;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: .9rem;
+    box-shadow: 0 2px 8px rgba(41,164,79,.4);
+}
+
+.sell-step-icon {
+    width: 64px;
+    height: 64px;
+    background: #f0faf4;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0.5rem auto 1rem;
+    font-size: 1.6rem;
+    color: var(--fc-verde);
+}
+
+.sell-step-titulo {
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--fc-dark);
+    margin-bottom: .4rem;
+}
+
+.sell-step-desc {
+    font-size: .84rem;
+    color: #6B7280;
+    line-height: 1.55;
+}
+
+/* Conector entre pasos (solo desktop) */
+.sell-step-connector {
+    display: none;
+}
+
+@media (min-width: 992px) {
+    .sell-step-connector {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #29A44F;
+        font-size: 1.3rem;
+        opacity: .5;
+        padding-top: 1rem;
+    }
+}
+
+/* ── Sección del formulario ── */
+.sell-form-section {
+    padding: 4rem 0 5rem;
+    background: #fff;
+}
+
+.sell-form-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    box-shadow: 0 4px 32px rgba(0,0,0,.07);
+    overflow: hidden;
+}
+
+/* Cabecera verde del card del formulario */
+.sell-form-header {
+    background: linear-gradient(135deg, var(--fc-verde) 0%, var(--fc-verde-dark) 100%);
+    padding: 1.5rem 2rem;
+    color: #fff;
+}
+
+.sell-form-header h2 {
+    font-size: 1.25rem;
+    font-weight: 900;
+    margin-bottom: .2rem;
+}
+
+.sell-form-header p {
+    font-size: .85rem;
+    opacity: .85;
+    margin: 0;
+}
+
+.sell-form-body {
+    padding: 2rem;
+}
+
+/* Labels del formulario */
+.sell-form-body .form-label {
+    font-weight: 700;
+    font-size: .88rem;
+    color: var(--fc-dark);
+    margin-bottom: .35rem;
+}
+
+/* Inputs: borde suave, focus verde */
+.sell-form-body .form-control,
+.sell-form-body .form-select {
+    border-color: #d1d5db;
+    border-radius: 10px;
+    font-size: .9rem;
+    padding: .55rem .85rem;
+    transition: border-color var(--fc-transition), box-shadow var(--fc-transition);
+}
+
+.sell-form-body .form-control:focus,
+.sell-form-body .form-select:focus {
+    border-color: var(--fc-verde);
+    box-shadow: 0 0 0 3px rgba(41,164,79,.15);
+}
+
+/* Área de subida de ficheros */
+.sell-file-drop {
+    border: 2px dashed #d1d5db;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color var(--fc-transition), background var(--fc-transition);
+    background: #fafafa;
+}
+
+.sell-file-drop:hover,
+.sell-file-drop:focus-within {
+    border-color: var(--fc-verde);
+    background: #f0faf4;
+}
+
+.sell-file-drop input[type="file"] {
+    /* Ocultar el input nativo y dejar el área clicable */
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.sell-file-drop-inner {
+    position: relative;
+    pointer-events: none;
+}
+
+/* Radio buttons de cobro */
+.sell-cobro-option {
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    cursor: pointer;
+    transition: border-color var(--fc-transition), background var(--fc-transition);
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.sell-cobro-option:has(input:checked) {
+    border-color: var(--fc-verde);
+    background: #f0faf4;
+}
+
+.sell-cobro-option input[type="radio"] {
+    margin-top: 2px;
+    accent-color: var(--fc-verde);
+    flex-shrink: 0;
+    width: 17px;
+    height: 17px;
+}
+
+.sell-cobro-titulo {
+    font-weight: 800;
+    font-size: .92rem;
+    color: var(--fc-dark);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.sell-cobro-desc {
+    font-size: .78rem;
+    color: #6B7280;
+    margin-top: 2px;
+    line-height: 1.4;
+}
+
+/* Badge "+20% EXTRA" dentro del radio */
+.sell-bonus-inline {
+    background: var(--fc-verde);
+    color: #fff;
+    font-size: .65rem;
+    font-weight: 900;
+    padding: 2px 7px;
+    border-radius: 6px;
+    letter-spacing: .5px;
+    white-space: nowrap;
+}
+
+/* Botón de envío principal */
+.sell-btn-submit {
+    background: var(--fc-verde);
+    color: #fff;
+    font-weight: 900;
+    font-size: 1rem;
+    border: none;
+    border-radius: 12px;
+    padding: .85rem 2.5rem;
+    width: 100%;
+    transition: background var(--fc-transition), box-shadow var(--fc-transition), transform var(--fc-transition);
+    letter-spacing: .3px;
+}
+
+.sell-btn-submit:hover {
+    background: var(--fc-verde-dark);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(41,164,79,.4);
+    transform: translateY(-1px);
+}
+
+/* Nota de privacidad bajo el botón */
+.sell-privacy-note {
+    font-size: .75rem;
+    color: #9CA3AF;
+    text-align: center;
+    margin-top: .75rem;
+}
+
+/* ── Sidebar: por qué Factory Cards ── */
+.sell-sidebar-card {
+    background: linear-gradient(180deg, #0f1923 0%, #112218 100%);
+    border-radius: 16px;
+    padding: 1.8rem 1.5rem;
+    color: #fff;
+    position: sticky;
+    top: 80px;    /* debajo de la navbar verde */
+}
+
+.sell-sidebar-card h4 {
+    font-weight: 900;
+    font-size: 1.05rem;
+    margin-bottom: 1.2rem;
+    color: var(--fc-amarillo);
+}
+
+.sell-why-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 1rem;
+}
+
+.sell-why-item i {
+    color: var(--fc-verde);
+    font-size: 1.15rem;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.sell-why-item p {
+    font-size: .83rem;
+    color: rgba(255,255,255,.8);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.sell-why-item strong {
+    color: #fff;
+    display: block;
+    font-size: .88rem;
+}
+
+/* Separador animado de gradiente */
+.sell-divider {
+    height: 3px;
+    background: linear-gradient(90deg, var(--fc-verde), var(--fc-amarillo), var(--fc-verde));
+    background-size: 200% auto;
+    animation: sell-shimmer 3s linear infinite;
+    border-radius: 2px;
+    margin: 1.5rem 0;
+}
+
+@keyframes sell-shimmer {
+    0%   { background-position: 200% center; }
+    100% { background-position: 0% center; }
+}
+
+/* ── Alerta de éxito (sesión flash) ── */
+.sell-alert-success {
+    background: linear-gradient(135deg, #f0faf4, #e8f5ec);
+    border: 1.5px solid var(--fc-verde);
+    border-radius: 14px;
+    padding: 1.2rem 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    color: var(--fc-verde-dark);
+    font-weight: 600;
+    font-size: .93rem;
+}
+
+.sell-alert-success i {
+    font-size: 1.5rem;
+    color: var(--fc-verde);
+    flex-shrink: 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 991.98px) {
+    .sell-hero { padding: 3.5rem 0 3rem; }
+    .sell-form-body { padding: 1.25rem; }
+    .sell-sidebar-card { position: static; margin-top: 2rem; }
+    .sell-trust-bar { gap: .75rem 1.2rem; }
+}
+
+@media (max-width: 575.98px) {
+    .sell-hero { padding: 2.5rem 0 2.5rem; }
+    .sell-cobro-option { padding: .85rem 1rem; }
+}
