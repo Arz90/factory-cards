@@ -78,6 +78,107 @@
 </section>
 
 {{-- ══════════════════════════════════════════════════════════════
+     SECCIÓN SINGLES — Buscador de cartas individuales
+══════════════════════════════════════════════════════════════ --}}
+<section class="sell-singles-section">
+    <div class="container">
+
+        {{-- Cabecera --}}
+        <div class="text-center mb-5">
+            <div class="sell-hero-badge mx-auto mb-3" style="display:inline-flex;">
+                <i class="bi bi-card-list"></i>
+                Singles
+            </div>
+            <h2 class="fw-black mb-2" style="font-size:clamp(1.4rem,3vw,2rem);">
+                Vender Cartas Sueltas <span style="color:var(--fc-verde)">(Singles)</span>
+            </h2>
+            <p class="text-muted mx-auto" style="max-width:520px;font-size:.95rem;">
+                Busca tu carta, consulta nuestro precio de compra al instante
+                y añádela a tu lista de venta.
+            </p>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+            <div class="col-lg-8">
+
+                {{-- ── Buscador con autocompletado ── --}}
+                <div class="sell-singles-search-wrap">
+                    <div class="sell-singles-search-box">
+                        <i class="bi bi-search sell-singles-search-icon"></i>
+                        <input type="text"
+                               id="singles-search-input"
+                               class="sell-singles-search-input"
+                               placeholder="Busca tu carta (ej. Charizard)..."
+                               autocomplete="off">
+                        <div id="singles-search-spinner" class="sell-singles-spinner d-none">
+                            <div class="spinner-border spinner-border-sm text-success" role="status"></div>
+                        </div>
+                    </div>
+
+                    {{-- Dropdown de resultados --}}
+                    <ul id="singles-dropdown" class="sell-singles-dropdown d-none" role="listbox"></ul>
+                </div>
+
+                {{-- ── Lista de cartas añadidas ── --}}
+                <div id="sell-cart-list" class="sell-singles-cart mt-4 d-none">
+                    <div class="sell-singles-cart-header">
+                        <i class="bi bi-bag-check-fill me-2"></i>
+                        Tu lista de venta
+                        <button type="button" id="singles-cart-clear"
+                                class="btn btn-link btn-sm text-danger ms-auto p-0"
+                                style="font-size:.78rem;">
+                            <i class="bi bi-trash me-1"></i>Vaciar lista
+                        </button>
+                    </div>
+                    <ul id="singles-cart-items" class="sell-singles-cart-items"></ul>
+                    <div class="sell-singles-cart-footer">
+                        <span>Total estimado en efectivo:</span>
+                        <strong id="singles-cart-total">0,00 €</strong>
+                    </div>
+                </div>
+
+                {{-- Aviso cuando no hay resultados en BD --}}
+                <div id="singles-no-results" class="sell-singles-empty d-none">
+                    <i class="bi bi-search fs-3 mb-2 d-block" style="color:var(--fc-verde);opacity:.5"></i>
+                    <strong>No encontramos esa carta en nuestra base de datos.</strong>
+                    <p class="mb-0 mt-1" style="font-size:.83rem;color:#6B7280;">
+                        Puedes incluirla en los comentarios del formulario de abajo
+                        y nuestro equipo la tasará manualmente.
+                    </p>
+                </div>
+
+            </div>
+
+            {{-- Sidebar informativo --}}
+            <div class="col-lg-4">
+                <div class="sell-singles-info-card">
+                    <h5 class="fw-black mb-3" style="color:var(--fc-amarillo);">
+                        <i class="bi bi-info-circle-fill me-2"></i>¿Cómo funciona?
+                    </h5>
+                    <div class="sell-singles-info-item">
+                        <span class="sell-singles-info-num">1</span>
+                        <p>Busca tu carta y haz clic en el resultado para añadirla a tu lista.</p>
+                    </div>
+                    <div class="sell-singles-info-item">
+                        <span class="sell-singles-info-num">2</span>
+                        <p>Rellena el formulario de abajo adjuntando fotos de las cartas.</p>
+                    </div>
+                    <div class="sell-singles-info-item">
+                        <span class="sell-singles-info-num">3</span>
+                        <p>Te confirmamos precio final y condiciones en menos de 48 h.</p>
+                    </div>
+                    <div class="sell-singles-bonus-box">
+                        <i class="bi bi-wallet-fill me-2" style="color:var(--fc-amarillo)"></i>
+                        Cobra en <strong>Saldo de Tienda</strong> y recibe
+                        <span class="sell-bonus-inline">+20% EXTRA</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{-- ══════════════════════════════════════════════════════════════
      SECCIÓN 3 PASOS
 ══════════════════════════════════════════════════════════════ --}}
 <section class="sell-steps">
@@ -612,6 +713,171 @@
 
 @push('scripts')
 <script>
+/**
+ * Buscador de Singles con autocompletado.
+ * Llama a GET /api/v1/singles/search?q=... y renderiza resultados
+ * en un dropdown absoluto. Al hacer clic, añade la carta a #sell-cart-list.
+ */
+(function () {
+    const input      = document.getElementById('singles-search-input');
+    const dropdown   = document.getElementById('singles-dropdown');
+    const spinner    = document.getElementById('singles-search-spinner');
+    const cartList   = document.getElementById('sell-cart-list');
+    const cartItems  = document.getElementById('singles-cart-items');
+    const cartTotal  = document.getElementById('singles-cart-total');
+    const noResults  = document.getElementById('singles-no-results');
+    const btnClear   = document.getElementById('singles-cart-clear');
+
+    if (!input) return;
+
+    let debounceTimer = null;
+    // Array de singles añadidos: { id, name, set_name, rarity, buy_price_cash, franchise }
+    let carrito = [];
+
+    // ── Formatea número como precio español ─────────────────────────────────
+    function formatPrecio(valor) {
+        return parseFloat(valor).toLocaleString('es-ES', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }) + ' €';
+    }
+
+    // ── Cierra el dropdown ───────────────────────────────────────────────────
+    function cerrarDropdown() {
+        dropdown.innerHTML = '';
+        dropdown.classList.add('d-none');
+    }
+
+    // ── Renderiza el dropdown de resultados ──────────────────────────────────
+    function renderDropdown(singles) {
+        dropdown.innerHTML = '';
+        noResults.classList.add('d-none');
+
+        if (!singles.length) {
+            cerrarDropdown();
+            noResults.classList.remove('d-none');
+            return;
+        }
+
+        singles.forEach(function (s) {
+            const li = document.createElement('li');
+            li.className = 'sell-singles-dropdown-item';
+            li.setAttribute('role', 'option');
+            li.innerHTML = `
+                <div class="sell-singles-drop-img">
+                    ${s.image_url
+                        ? `<img src="${s.image_url}" alt="${s.name}">`
+                        : `<i class="bi bi-card-image"></i>`}
+                </div>
+                <div class="sell-singles-drop-info">
+                    <strong>${s.name}</strong>
+                    <span>${[s.set_name, s.card_number, s.rarity].filter(Boolean).join(' · ')}</span>
+                </div>
+                <div class="sell-singles-drop-precio">
+                    <span>${formatPrecio(s.buy_price_cash)}</span>
+                    <small>efectivo</small>
+                </div>`;
+
+            li.addEventListener('click', function () {
+                añadirAlCarrito(s);
+                input.value = '';
+                cerrarDropdown();
+            });
+
+            dropdown.appendChild(li);
+        });
+
+        dropdown.classList.remove('d-none');
+    }
+
+    // ── Añade un single al carrito visual ────────────────────────────────────
+    function añadirAlCarrito(single) {
+        // Evitar duplicados
+        if (carrito.find(function (c) { return c.id === single.id; })) return;
+
+        carrito.push(single);
+        actualizarCarrito();
+    }
+
+    function eliminarDelCarrito(id) {
+        carrito = carrito.filter(function (c) { return c.id !== id; });
+        actualizarCarrito();
+    }
+
+    function actualizarCarrito() {
+        cartItems.innerHTML = '';
+
+        carrito.forEach(function (s) {
+            const li = document.createElement('li');
+            li.className = 'sell-singles-cart-item';
+            li.innerHTML = `
+                <div class="sell-singles-cart-item-info">
+                    <strong>${s.name}</strong>
+                    <span>${[s.set_name, s.rarity].filter(Boolean).join(' · ')}</span>
+                </div>
+                <div class="sell-singles-cart-item-precio">
+                    ${formatPrecio(s.buy_price_cash)}
+                </div>
+                <button type="button" class="sell-singles-cart-remove"
+                        data-id="${s.id}" aria-label="Eliminar">
+                    <i class="bi bi-x-lg"></i>
+                </button>`;
+            cartItems.appendChild(li);
+        });
+
+        // Total
+        const total = carrito.reduce(function (acc, s) {
+            return acc + parseFloat(s.buy_price_cash);
+        }, 0);
+        cartTotal.textContent = formatPrecio(total);
+
+        // Mostrar/ocultar contenedor
+        cartList.classList.toggle('d-none', carrito.length === 0);
+    }
+
+    // ── Listener delegado para los botones de eliminar ───────────────────────
+    cartItems.addEventListener('click', function (e) {
+        const btn = e.target.closest('.sell-singles-cart-remove');
+        if (!btn) return;
+        eliminarDelCarrito(parseInt(btn.dataset.id, 10));
+    });
+
+    btnClear?.addEventListener('click', function () {
+        carrito = [];
+        actualizarCarrito();
+    });
+
+    // ── Búsqueda con debounce ────────────────────────────────────────────────
+    input.addEventListener('input', function () {
+        clearTimeout(debounceTimer);
+        const q = this.value.trim();
+
+        if (q.length < 2) {
+            cerrarDropdown();
+            noResults.classList.add('d-none');
+            spinner.classList.add('d-none');
+            return;
+        }
+
+        spinner.classList.remove('d-none');
+
+        debounceTimer = setTimeout(function () {
+            fetch('/api/v1/singles/search?q=' + encodeURIComponent(q))
+                .then(function (r) { return r.json(); })
+                .then(function (json) { renderDropdown(json.data || []); })
+                .catch(function (err) { console.error('Singles search error:', err); })
+                .finally(function () { spinner.classList.add('d-none'); });
+        }, 300);
+    });
+
+    // Cerrar dropdown al clicar fuera
+    document.addEventListener('click', function (e) {
+        if (!e.target.closest('.sell-singles-search-wrap')) {
+            cerrarDropdown();
+        }
+    });
+})();
+
 /**
  * Muestra los nombres de los archivos seleccionados en la zona de drop.
  */

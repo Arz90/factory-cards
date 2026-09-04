@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ProductApiController;
+use App\Http\Controllers\Api\SingleApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,4 +18,7 @@ Route::prefix('v1')->group(function () {
     // Endpoints de soporte para filtros del frontend
     Route::get('/categories', [ProductApiController::class, 'categories']);
     Route::get('/franchises', [ProductApiController::class, 'franchises']);
+
+    // Singles — búsqueda para el buscador de "Vende tus cartas"
+    Route::get('/singles/search', [SingleApiController::class, 'search']);
 });

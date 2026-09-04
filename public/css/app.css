@@ -2327,3 +2327,302 @@ html {
     .sell-calc-resultado-valor { font-size: 1.8rem; }
     .sell-calc-quick-btn { font-size: .75rem; padding: .4rem .2rem; }
 }
+
+
+/* ================================================================
+   SELL — SECCIÓN SINGLES (Buscador de cartas individuales)
+================================================================ */
+
+.sell-singles-section {
+    padding: 4rem 0;
+    background: #fff;
+}
+
+/* ── Caja de búsqueda ── */
+.sell-singles-search-wrap {
+    position: relative;
+}
+
+.sell-singles-search-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff;
+    border: 2px solid #d1d5db;
+    border-radius: 14px;
+    padding: .7rem 1.1rem;
+    transition: border-color var(--fc-transition), box-shadow var(--fc-transition);
+}
+
+.sell-singles-search-box:focus-within {
+    border-color: var(--fc-verde);
+    box-shadow: 0 0 0 4px rgba(41,164,79,.12);
+}
+
+.sell-singles-search-icon {
+    color: #9CA3AF;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.sell-singles-search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    color: var(--fc-dark);
+    background: transparent;
+}
+
+.sell-singles-search-input::placeholder { color: #9CA3AF; }
+
+.sell-singles-spinner { flex-shrink: 0; }
+
+/* ── Dropdown de resultados ── */
+.sell-singles-dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 14px;
+    box-shadow: 0 8px 32px rgba(0,0,0,.12);
+    z-index: 500;
+    list-style: none;
+    margin: 0;
+    padding: .4rem 0;
+    max-height: 360px;
+    overflow-y: auto;
+}
+
+.sell-singles-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: .7rem 1rem;
+    cursor: pointer;
+    transition: background var(--fc-transition);
+}
+
+.sell-singles-dropdown-item:hover {
+    background: #f0faf4;
+}
+
+.sell-singles-drop-img {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #9CA3AF;
+    font-size: 1.3rem;
+}
+
+.sell-singles-drop-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.sell-singles-drop-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.sell-singles-drop-info strong {
+    display: block;
+    font-size: .9rem;
+    color: var(--fc-dark);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sell-singles-drop-info span {
+    font-size: .74rem;
+    color: #9CA3AF;
+}
+
+.sell-singles-drop-precio {
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.sell-singles-drop-precio span {
+    display: block;
+    font-size: .95rem;
+    font-weight: 900;
+    color: var(--fc-verde-dark);
+}
+
+.sell-singles-drop-precio small {
+    font-size: .68rem;
+    color: #9CA3AF;
+}
+
+/* ── Carrito de singles ── */
+.sell-singles-cart {
+    background: #fff;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,.05);
+}
+
+.sell-singles-cart-header {
+    background: linear-gradient(135deg, var(--fc-verde), var(--fc-verde-dark));
+    color: #fff;
+    font-weight: 800;
+    font-size: .9rem;
+    padding: .85rem 1.2rem;
+    display: flex;
+    align-items: center;
+}
+
+.sell-singles-cart-items {
+    list-style: none;
+    margin: 0;
+    padding: .4rem 0;
+}
+
+.sell-singles-cart-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: .65rem 1.2rem;
+    border-bottom: 1px solid #f3f4f6;
+    font-size: .85rem;
+}
+
+.sell-singles-cart-item:last-child { border-bottom: none; }
+
+.sell-singles-cart-item-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.sell-singles-cart-item-info strong {
+    display: block;
+    color: var(--fc-dark);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sell-singles-cart-item-info span {
+    font-size: .72rem;
+    color: #9CA3AF;
+}
+
+.sell-singles-cart-item-precio {
+    font-weight: 800;
+    color: var(--fc-verde-dark);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.sell-singles-cart-remove {
+    background: none;
+    border: none;
+    color: #9CA3AF;
+    cursor: pointer;
+    font-size: .8rem;
+    padding: 2px 4px;
+    border-radius: 4px;
+    transition: color var(--fc-transition), background var(--fc-transition);
+    flex-shrink: 0;
+}
+
+.sell-singles-cart-remove:hover {
+    color: #EF4444;
+    background: #fef2f2;
+}
+
+.sell-singles-cart-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .75rem 1.2rem;
+    background: #f8fdf9;
+    border-top: 1.5px solid #e5e7eb;
+    font-size: .85rem;
+    color: #374151;
+}
+
+.sell-singles-cart-footer strong {
+    font-size: 1.05rem;
+    color: var(--fc-verde-dark);
+    font-weight: 900;
+}
+
+/* ── Estado vacío / no encontrado ── */
+.sell-singles-empty {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--fc-dark);
+    background: #fafafa;
+    border: 1.5px dashed #e5e7eb;
+    border-radius: 14px;
+    margin-top: 8px;
+}
+
+/* ── Sidebar informativo ── */
+.sell-singles-info-card {
+    background: linear-gradient(180deg, #0f1923 0%, #112218 100%);
+    border-radius: 16px;
+    padding: 1.8rem 1.5rem;
+    color: #fff;
+    position: sticky;
+    top: 80px;
+}
+
+.sell-singles-info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 1rem;
+}
+
+.sell-singles-info-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--fc-verde);
+    color: #fff;
+    font-weight: 900;
+    font-size: .78rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.sell-singles-info-item p {
+    font-size: .83rem;
+    color: rgba(255,255,255,.75);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.sell-singles-bonus-box {
+    background: rgba(255,215,0,.1);
+    border: 1px solid rgba(255,215,0,.3);
+    border-radius: 10px;
+    padding: .85rem 1rem;
+    font-size: .83rem;
+    color: rgba(255,255,255,.85);
+    margin-top: 1rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 991.98px) {
+    .sell-singles-section { padding: 3rem 0; }
+    .sell-singles-info-card { position: static; margin-top: 1.5rem; }
+}
