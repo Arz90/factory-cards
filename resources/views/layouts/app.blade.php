@@ -317,6 +317,13 @@
                     <i class="bi bi-shop" style="color:var(--fc-verde)"></i> Ver toda la tienda
                 </a>
             </li>
+            <li class="list-group-item">
+                <a href="{{ route('sell-cards.index') }}"
+                   class="d-flex align-items-center gap-2 text-decoration-none py-1 fw-bold"
+                   style="color:var(--fc-verde)">
+                    <i class="bi bi-cash-coin"></i> Vende tus cartas
+                </a>
+            </li>
 
             {{-- Franquicias --}}
             <li class="list-group-item bg-light py-2">
