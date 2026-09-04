@@ -359,7 +359,7 @@
                             <div class="row g-3 mb-4">
                                 {{-- Opción 1: Efectivo --}}
                                 <div class="col-sm-6">
-                                    <label class="sell-cobro-option w-100">
+                                    <label class="sell-cobro-option w-100 h-100">
                                         <input type="radio"
                                                name="cobro"
                                                value="efectivo"
@@ -378,7 +378,7 @@
 
                                 {{-- Opción 2: Saldo de tienda --}}
                                 <div class="col-sm-6">
-                                    <label class="sell-cobro-option w-100">
+                                    <label class="sell-cobro-option w-100 h-100">
                                         <input type="radio"
                                                name="cobro"
                                                value="saldo_tienda"
