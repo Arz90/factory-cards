@@ -516,6 +516,7 @@
                 <div class="col-6 col-md-4 col-lg-3">
                     <h3 class="footer-col-title">Atención al Cliente</h3>
                     <ul class="footer-links" aria-label="Atención al cliente">
+                        <li><a href="{{ route('sell-cards.index') }}" style="color:var(--fc-verde);font-weight:700;">Vende tus cartas</a></li>
                         {{-- href="#" porque estas páginas aún no existen en web.php --}}
                         <li><a href="#">Preguntas frecuentes (FAQ)</a></li>
                         <li><a href="#">Envíos y entregas</a></li>
