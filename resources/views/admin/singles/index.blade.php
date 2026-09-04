@@ -112,9 +112,9 @@
                             @enderror
                         </div>
                         <div class="form-text">
-                            Busca el ID en
-                            <a href="https://pokemontcg.io/sets" target="_blank" rel="noopener">
-                                pokemontcg.io/sets <i class="bi bi-box-arrow-up-right"></i>
+                            Consulta todos los IDs disponibles en la
+                            <a href="https://docs.pokemontcg.io/" target="_blank" rel="noopener">
+                                documentación oficial <i class="bi bi-box-arrow-up-right"></i>
                             </a>
                         </div>
                     </div>

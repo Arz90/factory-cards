@@ -59,6 +59,7 @@ class TcgImportService
 
         do {
             $respuesta = Http::timeout(30)
+                ->withoutVerifying()   // SSL desactivado en local Windows (cURL error 60)
                 ->withHeaders($this->headers())
                 ->get(self::API_BASE . '/cards', [
                     'q'        => "set.id:{$setId}",
