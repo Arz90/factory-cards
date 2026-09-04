@@ -209,9 +209,9 @@
                     <a class="nav-verde-link" href="{{ route('shop.category', 'accesorios') }}">ACCESORIOS</a>
                 </li>
 
-                {{-- VENDE TUS CARTAS (stub) --}}
+                {{-- VENDE TUS CARTAS --}}
                 <li class="nav-item">
-                    <a class="nav-verde-link nav-verde-link--resaltado" href="#">VENDE TUS CARTAS</a>
+                    <a class="nav-verde-link nav-verde-link--resaltado" href="{{ route('sell-cards.index') }}">VENDE TUS CARTAS</a>
                 </li>
 
             </ul>
