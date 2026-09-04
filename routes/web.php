@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\Admin\PromoBannerController;
+use App\Http\Controllers\Admin\SingleController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\WishlistController;
@@ -130,6 +131,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     // Eventos y torneos
     Route::resource('eventos', AdminEventController::class);
+
+    // Singles — panel de gestión y sincronización con API Pokémon TCG
+    Route::get('singles', [SingleController::class, 'index'])->name('singles.index');
+    Route::post('singles/sync', [SingleController::class, 'sync'])->name('singles.sync');
 
     // Promo Banners (sección destacada de la portada)
     Route::resource('promo-banners', PromoBannerController::class);

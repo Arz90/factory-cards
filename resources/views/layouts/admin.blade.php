@@ -127,6 +127,9 @@
         <a href="{{ route('admin.eventos.index') }}" class="nav-link @if(request()->routeIs('admin.eventos.*')) active @endif">
             <i class="bi bi-calendar-event"></i> Eventos
         </a>
+        <a href="{{ route('admin.singles.index') }}" class="nav-link @if(request()->routeIs('admin.singles.*')) active @endif">
+            <i class="bi bi-card-list"></i> Singles / API
+        </a>
 
         <div class="nav-section mt-2">Ventas</div>
         <a href="{{ route('admin.orders.index') }}" class="nav-link @if(request()->routeIs('admin.orders.*')) active @endif">
