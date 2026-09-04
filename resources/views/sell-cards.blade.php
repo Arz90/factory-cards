@@ -80,7 +80,7 @@
 {{-- ══════════════════════════════════════════════════════════════
      SECCIÓN SINGLES — Buscador de cartas individuales
 ══════════════════════════════════════════════════════════════ --}}
-<section class="sell-singles-section">
+<section class="sell-singles-section" id="singles-search">
     <div class="container">
 
         {{-- Cabecera --}}
@@ -257,7 +257,7 @@
 {{-- ══════════════════════════════════════════════════════════════
      SECCIÓN BULK — Venta a Granel con calculadora dinámica
 ══════════════════════════════════════════════════════════════ --}}
-<section class="sell-bulk-section">
+<section class="sell-bulk-section" id="bulk-calculator">
     <div class="container">
 
         {{-- Cabecera --}}
@@ -384,7 +384,7 @@
 {{-- ══════════════════════════════════════════════════════════════
      SECCIÓN FORMULARIO + SIDEBAR
 ══════════════════════════════════════════════════════════════ --}}
-<section class="sell-form-section">
+<section class="sell-form-section" id="sell-form">
     <div class="container">
 
         {{-- Alerta de éxito tras envío --}}

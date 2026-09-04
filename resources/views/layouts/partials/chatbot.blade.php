@@ -310,14 +310,28 @@
     // ── Respuesta: Vender mis cartas ────────────────────────────────────
     function respuestaVender() {
         agregarMensaje(
-            '💰 <strong>¿Quieres vender tus cartas?</strong><br><br>' +
-            '¡Compramos cartas sueltas y colecciones completas!<br><br>' +
-            '1️⃣ <strong>Valoración:</strong> Trae tus cartas a la tienda o mándanos una lista por email.<br>' +
-            '2️⃣ <strong>Precio justo:</strong> Valoramos según el mercado actual.<br>' +
-            '3️⃣ <strong>Cobro inmediato:</strong> En efectivo o crédito en tienda (+10% extra).<br><br>' +
-            '📍 Pásate por la tienda o usa el formulario de contacto.',
+            '💰 <strong>¡Convertimos tus cartas en dinero o saldo de tienda al instante!</strong><br><br>' +
+            'Elige cómo quieres vender:<br><br>' +
+            '🔍 <strong>Cartas Sueltas (Singles):</strong> Busca tu carta en nuestro buscador en vivo y obtén valoración instantánea basada en el mercado real.<br>' +
+            '📦 <strong>Venta a Granel (Bulk):</strong> ¿Tienes cajas con cientos de cartas repetidas? Usa nuestra calculadora por volumen desde 100 cartas.<br>' +
+            '📁 <strong>Colecciones Completas:</strong> Adjunta fotos o archivos de tu álbum para una tasación personalizada en menos de 48h.<br><br>' +
+            '🎁 <strong>RECOMENDACIÓN FACTORY:</strong> Elige cobrar en Saldo de Tienda y recibe un <strong>+20% EXTRA</strong> para gastar en sobres, displays o accesorios.',
             'bot'
         );
+
+        // CTAs directos a las secciones de la landing
+        const ctaHtml =
+            '<div style="display:flex;flex-direction:column;gap:6px;margin-top:4px;">' +
+                '<a href="/vende-tus-cartas#singles-search" class="chatbot-opcion" style="text-decoration:none;text-align:center;">🔍 Buscar mi carta</a>' +
+                '<a href="/vende-tus-cartas#bulk-calculator" class="chatbot-opcion" style="text-decoration:none;text-align:center;">🧮 Calcular mi Granel</a>' +
+                '<a href="/vende-tus-cartas#sell-form" class="chatbot-opcion" style="text-decoration:none;text-align:center;">📋 Tasar Colección</a>' +
+            '</div>';
+
+        const divCtas = document.createElement('div');
+        divCtas.className = 'chatbot-msg chatbot-msg--bot';
+        divCtas.innerHTML = '<div class="chatbot-msg-burbuja" style="background:transparent;border:none;box-shadow:none;padding:4px 12px;">' + ctaHtml + '</div>';
+        mensajesArea.appendChild(divCtas);
+        mensajesArea.scrollTop = mensajesArea.scrollHeight;
     }
 
     // ── Respuesta: Dejar un mensaje ─────────────────────────────────────
