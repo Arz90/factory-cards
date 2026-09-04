@@ -154,6 +154,136 @@
 </section>
 
 {{-- ══════════════════════════════════════════════════════════════
+     SECCIÓN BULK — Venta a Granel
+══════════════════════════════════════════════════════════════ --}}
+<section class="sell-bulk-section">
+    <div class="container">
+
+        {{-- Cabecera --}}
+        <div class="text-center mb-5">
+            <div class="sell-hero-badge mx-auto mb-3" style="display:inline-flex;">
+                <i class="bi bi-boxes"></i>
+                Bulk / Granel
+            </div>
+            <h2 class="fw-black mb-2" style="font-size:clamp(1.4rem,3vw,2rem);">
+                Venta a Granel <span style="color:var(--fc-verde)">(Bulk)</span>
+            </h2>
+            <p class="text-muted mx-auto" style="max-width:520px;font-size:.95rem;">
+                ¿Tienes cajas llenas de cartas repetidas? Te las compramos por volumen.
+                Precios fijos, sin tasación individual.
+            </p>
+        </div>
+
+        <div class="row g-4 align-items-start">
+
+            {{-- ── Tabla de tarifas ── --}}
+            <div class="col-lg-7">
+                <div class="sell-bulk-card">
+                    <div class="sell-bulk-card-header">
+                        <i class="bi bi-tag-fill me-2"></i>Tarifas de compra por cada 1.000 cartas
+                    </div>
+                    <div class="sell-bulk-card-body">
+                        <div class="sell-bulk-row sell-bulk-row--highlight">
+                            <div class="sell-bulk-tipo">
+                                <span class="sell-bulk-dot" style="background:#6B7280;"></span>
+                                <div>
+                                    <strong>Comunes / Infrecuentes</strong>
+                                    <span class="sell-bulk-desc">C / UC — cualquier juego</span>
+                                </div>
+                            </div>
+                            <div class="sell-bulk-precio">12,00 €<span>/1.000</span></div>
+                        </div>
+                        <div class="sell-bulk-row">
+                            <div class="sell-bulk-tipo">
+                                <span class="sell-bulk-dot" style="background:#F59E0B;"></span>
+                                <div>
+                                    <strong>Raras (Sin brillo)</strong>
+                                    <span class="sell-bulk-desc">R — sin holo, sin reverse</span>
+                                </div>
+                            </div>
+                            <div class="sell-bulk-precio">20,00 €<span>/1.000</span></div>
+                        </div>
+                        <div class="sell-bulk-row">
+                            <div class="sell-bulk-tipo">
+                                <span class="sell-bulk-dot" style="background:#8B5CF6;"></span>
+                                <div>
+                                    <strong>Holos / Reverse Holos</strong>
+                                    <span class="sell-bulk-desc">Holo Rare, Reverse Holo</span>
+                                </div>
+                            </div>
+                            <div class="sell-bulk-precio">35,00 €<span>/1.000</span></div>
+                        </div>
+                        <div class="sell-bulk-row">
+                            <div class="sell-bulk-tipo">
+                                <span class="sell-bulk-dot" style="background:#29A44F;"></span>
+                                <div>
+                                    <strong>Energías Básicas</strong>
+                                    <span class="sell-bulk-desc">Solo cartas de energía</span>
+                                </div>
+                            </div>
+                            <div class="sell-bulk-precio">2,00 €<span>/1.000</span></div>
+                        </div>
+
+                        {{-- CTA informativo --}}
+                        <div class="sell-bulk-cta">
+                            <i class="bi bi-info-circle-fill me-2" style="color:var(--fc-verde);flex-shrink:0;"></i>
+                            <span>
+                                Para vender tu granel, selecciona
+                                <strong>"Cartas a granel (Bulk)"</strong> en el formulario de abajo
+                                e indícanos las cantidades estimadas en los comentarios.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- ── Calculadora rápida ── --}}
+            <div class="col-lg-5">
+                <div class="sell-calc-card">
+                    <div class="sell-calc-header">
+                        <i class="bi bi-calculator-fill me-2"></i>Calculadora rápida
+                    </div>
+                    <div class="sell-calc-body">
+                        <p class="sell-calc-hint">
+                            Estima al instante cuánto vale tu granel.
+                        </p>
+
+                        <label class="sell-calc-label" for="calc-tipo">Tipo de carta</label>
+                        <select id="calc-tipo" class="sell-calc-select mb-3">
+                            <option value="12">Comunes / Infrecuentes — 12 €/1.000</option>
+                            <option value="20">Raras (Sin brillo) — 20 €/1.000</option>
+                            <option value="35">Holos / Reverse Holos — 35 €/1.000</option>
+                            <option value="2">Energías Básicas — 2 €/1.000</option>
+                        </select>
+
+                        <label class="sell-calc-label" for="calc-cantidad">¿Cuántas cartas tienes?</label>
+                        <input type="number"
+                               id="calc-cantidad"
+                               class="sell-calc-input mb-4"
+                               placeholder="Ej: 3500"
+                               min="0"
+                               step="100">
+
+                        {{-- Resultado --}}
+                        <div class="sell-calc-resultado" id="calc-resultado">
+                            <div class="sell-calc-resultado-label">Estimación aproximada</div>
+                            <div class="sell-calc-resultado-valor" id="calc-valor">— €</div>
+                            <div class="sell-calc-resultado-sub" id="calc-sub"></div>
+                        </div>
+
+                        <p class="sell-calc-aviso">
+                            * Estimación orientativa. El precio final se confirma tras la tasación.
+                            Precios por cada 1.000 cartas o fracción.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{{-- ══════════════════════════════════════════════════════════════
      SECCIÓN FORMULARIO + SIDEBAR
 ══════════════════════════════════════════════════════════════ --}}
 <section class="sell-form-section">
@@ -499,5 +629,46 @@ document.getElementById('sell-archivos')?.addEventListener('change', function ()
         ? archivos[0].name
         : `${archivos.length} archivos seleccionados`;
 });
+
+/**
+ * Calculadora de venta a granel.
+ * Calcula el precio estimado en tiempo real según tipo y cantidad de cartas.
+ * Precio por cada 1.000 cartas (fracción incluida).
+ */
+(function () {
+    const elTipo      = document.getElementById('calc-tipo');
+    const elCantidad  = document.getElementById('calc-cantidad');
+    const elValor     = document.getElementById('calc-valor');
+    const elSub       = document.getElementById('calc-sub');
+
+    if (!elTipo || !elCantidad) return;
+
+    function calcular() {
+        const precioPorMil = parseFloat(elTipo.value) || 0;
+        const cantidad     = parseFloat(elCantidad.value) || 0;
+
+        if (cantidad <= 0) {
+            elValor.textContent = '— €';
+            elSub.textContent   = '';
+            return;
+        }
+
+        // Precio proporcional (fracción contabilizada)
+        const total = (cantidad / 1000) * precioPorMil;
+
+        // Formatear como precio en español
+        elValor.textContent = total.toLocaleString('es-ES', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }) + ' €';
+
+        elSub.textContent = cantidad.toLocaleString('es-ES') + ' cartas × '
+            + precioPorMil.toLocaleString('es-ES', { minimumFractionDigits: 2 })
+            + ' €/1.000';
+    }
+
+    elTipo.addEventListener('change', calcular);
+    elCantidad.addEventListener('input', calcular);
+})();
 </script>
 @endpush

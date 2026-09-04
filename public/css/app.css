@@ -2022,3 +2022,237 @@ html {
     .sell-hero { padding: 2.5rem 0 2.5rem; }
     .sell-cobro-option { padding: .85rem 1rem; }
 }
+
+
+/* ================================================================
+   SELL — SECCIÓN BULK / GRANEL
+================================================================ */
+
+.sell-bulk-section {
+    padding: 4rem 0;
+    background: #f8fdf9;
+}
+
+/* ── Tarjeta de tarifas ── */
+.sell-bulk-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,.06);
+    height: 100%;
+}
+
+.sell-bulk-card-header {
+    background: linear-gradient(135deg, var(--fc-verde) 0%, var(--fc-verde-dark) 100%);
+    color: #fff;
+    font-weight: 800;
+    font-size: .95rem;
+    padding: 1rem 1.5rem;
+}
+
+.sell-bulk-card-body {
+    padding: .5rem 0;
+}
+
+/* Fila de tarifa */
+.sell-bulk-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #f3f4f6;
+    gap: 1rem;
+    transition: background var(--fc-transition);
+}
+
+.sell-bulk-row:last-of-type {
+    border-bottom: none;
+}
+
+.sell-bulk-row:hover {
+    background: #f8fdf9;
+}
+
+.sell-bulk-row--highlight {
+    background: #f0faf4;
+}
+
+.sell-bulk-tipo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.sell-bulk-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.sell-bulk-tipo strong {
+    display: block;
+    font-size: .9rem;
+    color: var(--fc-dark);
+    font-weight: 800;
+}
+
+.sell-bulk-desc {
+    font-size: .74rem;
+    color: #9CA3AF;
+    display: block;
+    margin-top: 1px;
+}
+
+.sell-bulk-precio {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: var(--fc-verde-dark);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.sell-bulk-precio span {
+    font-size: .72rem;
+    font-weight: 600;
+    color: #9CA3AF;
+    margin-left: 2px;
+}
+
+/* CTA informativo bajo las tarifas */
+.sell-bulk-cta {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: .5rem 1rem 1rem;
+    background: #f0faf4;
+    border: 1px solid #c6e8d4;
+    border-radius: 10px;
+    padding: .85rem 1rem;
+    font-size: .82rem;
+    color: #374151;
+    line-height: 1.5;
+}
+
+/* ── Calculadora ── */
+.sell-calc-card {
+    background: linear-gradient(180deg, #0f1923 0%, #112218 100%);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,.15);
+    height: 100%;
+}
+
+.sell-calc-header {
+    background: rgba(41,164,79,.2);
+    border-bottom: 1px solid rgba(41,164,79,.3);
+    color: var(--fc-verde);
+    font-weight: 800;
+    font-size: .95rem;
+    padding: 1rem 1.5rem;
+}
+
+.sell-calc-body {
+    padding: 1.5rem;
+}
+
+.sell-calc-hint {
+    font-size: .82rem;
+    color: rgba(255,255,255,.55);
+    margin-bottom: 1.2rem;
+}
+
+.sell-calc-label {
+    display: block;
+    font-size: .8rem;
+    font-weight: 700;
+    color: rgba(255,255,255,.7);
+    margin-bottom: .35rem;
+    letter-spacing: .3px;
+}
+
+.sell-calc-select,
+.sell-calc-input {
+    width: 100%;
+    background: rgba(255,255,255,.07);
+    border: 1.5px solid rgba(255,255,255,.15);
+    border-radius: 10px;
+    color: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-size: .9rem;
+    padding: .6rem .9rem;
+    outline: none;
+    transition: border-color var(--fc-transition);
+    display: block;
+}
+
+.sell-calc-select:focus,
+.sell-calc-input:focus {
+    border-color: var(--fc-verde);
+    background: rgba(41,164,79,.1);
+}
+
+/* Placeholder del input oscuro */
+.sell-calc-input::placeholder {
+    color: rgba(255,255,255,.3);
+}
+
+/* Opciones del select (heredan fondo del sistema) */
+.sell-calc-select option {
+    background: #1a2f1f;
+    color: #fff;
+}
+
+/* Resultado */
+.sell-calc-resultado {
+    background: rgba(41,164,79,.15);
+    border: 1.5px solid rgba(41,164,79,.4);
+    border-radius: 14px;
+    padding: 1.2rem 1.5rem;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.sell-calc-resultado-label {
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.5);
+    margin-bottom: .4rem;
+}
+
+.sell-calc-resultado-valor {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--fc-verde);
+    line-height: 1.1;
+    transition: all .2s ease;
+}
+
+.sell-calc-resultado-sub {
+    font-size: .75rem;
+    color: rgba(255,255,255,.45);
+    margin-top: .35rem;
+    min-height: 1.1em;
+}
+
+.sell-calc-aviso {
+    font-size: .72rem;
+    color: rgba(255,255,255,.35);
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 991.98px) {
+    .sell-bulk-section { padding: 3rem 0; }
+    .sell-calc-card { margin-top: 0; }
+}
+
+@media (max-width: 575.98px) {
+    .sell-bulk-precio { font-size: 1rem; }
+    .sell-calc-resultado-valor { font-size: 1.8rem; }
+}
