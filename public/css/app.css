@@ -1824,6 +1824,8 @@ html {
     cursor: pointer;
     transition: border-color var(--fc-transition), background var(--fc-transition);
     background: #fafafa;
+    /* CRÍTICO: sin position:relative el input absoluto se expande a todo el documento */
+    position: relative;
 }
 
 .sell-file-drop:hover,
